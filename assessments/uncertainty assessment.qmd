@@ -1,0 +1,27 @@
+---
+title: "Untitled"
+editor: visual
+---
+
+Uncertainy quiz
+
+**Example 3**.
+
+Next, consider a data set on National Football League teams, called `standings.csv` This data set contains the number of wins and losses for **each** team in very season from 2000 through 2019. In STAT/DATA 234, we made a graph that showed each team's overall win percentage during this time period.
+
+```{r, appendix = TRUE}
+nfl_df <- read_csv("data/standings.csv")
+nfl_sum <- nfl_df %>% group_by(team) %>%
+  summarise(nwins = sum(wins),
+            nlosses = sum(loss)) %>%
+  mutate(ngames = nwins + nlosses,
+         win_percentage = 100 * nwins / ngames) %>%
+  mutate(team = fct_reorder(team, win_percentage))
+ggplot(data = nfl_sum, aes(x = team, y = win_percentage)) +
+  geom_point() +
+  geom_segment(aes(x = team, xend = team, y = 0, yend = win_percentage)) +
+  coord_flip() +
+  labs(y = "Win Percentage")
+```
+
+Modify the chart so that it shows the **variability** in each team's win percentage from season to season. We will work through part of this as a class.

@@ -1,0 +1,655 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.0.36">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+<title>DATA / STAT 334 - 15&nbsp; Shiny Reactivity</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+span.underline{text-decoration: underline;}
+div.column{display: inline-block; vertical-align: top; width: 50%;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<link href="./12-shiny-intro.html" rel="prev">
+<script src="site_libs/quarto-html/quarto.js"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light"><script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit"
+  }
+}</script>
+</head>
+<body class="nav-sidebar floating">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top"><nav class="quarto-secondary-nav" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }"><div class="container-fluid d-flex justify-content-between">
+      <h1 class="quarto-secondary-nav-title"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Shiny Reactivity</span></h1>
+      <button type="button" class="quarto-btn-toggle btn" aria-label="Show secondary navigation">
+        <i class="bi bi-chevron-right"></i>
+      </button>
+    </div>
+  </nav></header><!-- content --><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse sidebar-navigation floating overflow-auto"><div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="./">DATA / STAT 334</a> 
+        <div class="sidebar-tools-main">
+  <a href="" class="quarto-reader-toggle sidebar-tool" onclick="window.quartoToggleReader(); return false;" title="Toggle reader mode">
+  <div class="quarto-reader-toggle-btn">
+  <i class="bi"></i>
+  </div>
+</a>
+</div>
+    </div>
+      </div>
+      <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+      </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+<li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link">Syllabus and Course Information</a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true">Getting Started</a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">
+<li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./00-choose-viz.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Choosing a Visualization</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./01-concepts.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Core Viz Concepts</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./04-concepts-applied.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Applied Concepts</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./02-software.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Software</span></a>
+  </div>
+</li>
+      </ul>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true">Visualization in R</a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">
+<li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./03-statdata234.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">DATA/STAT 234 Review</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./06-mapping.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Mapping Data</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./05-uncertainty.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Expressing Variability/Uncertainty</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./14-other-topics.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Other Topics</span></a>
+  </div>
+</li>
+      </ul>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true">Model Visualization</a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">
+<li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./07-stat213.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">STAT 213 Review</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./08-model-interactions.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Linear Model Visualization</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./09-logistic.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Logistic Model Visualization</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./10-ethics.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Ethics</span></a>
+  </div>
+</li>
+      </ul>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="true">Interactive Visualization</a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="true">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">
+<li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./11-when-to-use.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Introduction to Interactivity</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./12-shiny-intro.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Introduction to <code>Shiny</code></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./13-shiny-reactivity.html" class="sidebar-item-text sidebar-link active"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Shiny Reactivity</span></a>
+  </div>
+</li>
+      </ul>
+</li>
+    </ul>
+</div>
+</nav><!-- margin-sidebar --><div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc"><h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+<li><a href="#basic-reactivity-class-prep" id="toc-basic-reactivity-class-prep" class="nav-link active" data-scroll-target="#basic-reactivity-class-prep"> <span class="header-section-number">15.1</span> Basic Reactivity (Class Prep)</a></li>
+  <li><a href="#another-example-tennis-app" id="toc-another-example-tennis-app" class="nav-link" data-scroll-target="#another-example-tennis-app"> <span class="header-section-number">15.2</span> Another Example Tennis App</a></li>
+  <li><a href="#your-turn" id="toc-your-turn" class="nav-link" data-scroll-target="#your-turn"> <span class="header-section-number">15.3</span> Your Turn</a></li>
+  <li>
+<a href="#other-useful-things-for-shiny" id="toc-other-useful-things-for-shiny" class="nav-link" data-scroll-target="#other-useful-things-for-shiny"> <span class="header-section-number">15.4</span> Other Useful Things for <code>shiny</code></a>
+  <ul class="collapse">
+<li><a href="#glueglue" id="toc-glueglue" class="nav-link" data-scroll-target="#glueglue"> <span class="header-section-number">15.4.1</span> <code>glue::glue()</code></a></li>
+  <li><a href="#action-button" id="toc-action-button" class="nav-link" data-scroll-target="#action-button"> <span class="header-section-number">15.4.2</span> Action Button</a></li>
+  <li><a href="#using-if-and-else" id="toc-using-if-and-else" class="nav-link" data-scroll-target="#using-if-and-else"> <span class="header-section-number">15.4.3</span> Using <code>if</code> and <code>else</code></a></li>
+  <li><a href="#source-and-write_csv" id="toc-source-and-write_csv" class="nav-link" data-scroll-target="#source-and-write_csv"> <span class="header-section-number">15.4.4</span> <code>source()</code> and <code>write_csv()</code></a></li>
+  </ul>
+</li>
+  </ul></nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block default"><div class="quarto-title">
+<h1 class="title"><span id="reactivity" class="quarto-section-identifier d-none d-lg-block"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Shiny Reactivity</span></span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+    
+  </div>
+  
+
+</header><p>Working with <code>shiny</code> can be difficult at first because we need to think about how code is run a bit differently. In <code>.rmd</code>, <code>.qmd</code>, and <code>.R</code> files, code is run from beginning to end. This makes debugging relatively simple: we run code line by line until we get an error. Then, we try to understand why the code gives an error.</p>
+<p>On the other hand, code in a <code>shiny</code> app does <strong>not</strong> run from beginning to end. Instead, code is run through a process called <strong>reactive execution</strong>. We will explore this concept by making <strong>reactive graphs</strong>. We will begin this section with a reading from the <em>Mastering Shiny</em> book and then delve into more examples.</p>
+<section id="basic-reactivity-class-prep" class="level2" data-number="15.1"><h2 data-number="15.1" class="anchored" data-anchor-id="basic-reactivity-class-prep">
+<span class="header-section-number">15.1</span> Basic Reactivity (Class Prep)</h2>
+<p>Read Sections 3.1 through 3.3 in <a href="https://mastering-shiny.org/basic-reactivity.html" target="_blank">the Basic Reactivity Chapter of Mastering Shiny</a></p>
+<p><strong>Exercise 1</strong>. 3.3.6 Exercise 1 in <em>Mastering Shiny</em>.</p>
+<p><strong>Exercise 2</strong>. 3.3.6 Exercise 2 in <em>Mastering Shiny</em>.</p>
+<p>In Wickham’s <em>Mastering Shiny</em> book, there are a couple of sections on <strong>reactive graphs</strong>, which help conceptualize how <code>shiny</code> runs code. Read Section 3.4: <a href="https://mastering-shiny.org/basic-reactivity.html" target="_blank">the Basic Reactivity Chapter of Mastering Shiny</a>, and complete the following.</p>
+<p><strong>Exercise 3</strong>. Sketch a reactive graph for the majors app in the previous section. Make sure to include all inputs, outputs, and reactive expressions in your graph. Instead of submitting this exercise, bring your sketch to class.</p>
+</section><section id="another-example-tennis-app" class="level2" data-number="15.2"><h2 data-number="15.2" class="anchored" data-anchor-id="another-example-tennis-app">
+<span class="header-section-number">15.2</span> Another Example Tennis App</h2>
+<p>The purpose of this section is to complete another example with a different data set, continuing to strengthen our conceptual understanding of reactivity. We will use a couple of tennis data sets to create an app that lets us create a histogram of a summary statistic of our choosing for a player of our choosing. Constructing this app will cover another common use case: allowing a user to choose a variable from a data set to plot.</p>
+<p>Again, a usual first step is creating a static graph, choosing a value for each future interactive input. Begin by reading in the data and doing a bit of preparatory work. To focus on <code>shiny</code>, we will skip discussion of this work, but all of it are functions you should recognize.</p>
+<div class="cell" data-appendix="true">
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://tidyverse.tidyverse.org">tidyverse</a></span><span class="op">)</span></span>
+<span><span class="va">atp_df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://readr.tidyverse.org/reference/read_delim.html">read_csv</a></span><span class="op">(</span><span class="st">"data/atp_matches_2019.csv"</span><span class="op">)</span></span>
+<span><span class="va">wta_df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://readr.tidyverse.org/reference/read_delim.html">read_csv</a></span><span class="op">(</span><span class="st">"data/wta_matches_2019.csv"</span><span class="op">)</span></span>
+<span><span class="va">both_df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/bind_rows.html">bind_rows</a></span><span class="op">(</span><span class="va">atp_df</span>, <span class="va">wta_df</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">both_long</span> <span class="op">&lt;-</span> <span class="va">both_df</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://tidyr.tidyverse.org/reference/pivot_longer.html">pivot_longer</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="va">winner_name</span>, <span class="va">loser_name</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co">## only keep players who have player over 50 matches</span></span>
+<span><span class="va">both_n50</span> <span class="op">&lt;-</span> <span class="va">both_long</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html">group_by</a></span><span class="op">(</span><span class="va">value</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/count.html">count</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="va">n</span> <span class="op">&gt;</span> <span class="fl">50</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co">## construct various statistics</span></span>
+<span><span class="va">major_tennis</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter-joins.html">semi_join</a></span><span class="op">(</span><span class="va">both_long</span>, <span class="va">both_n50</span>, by <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"value"</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">major_tennis</span> <span class="op">&lt;-</span> <span class="va">major_tennis</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span>w_svperc <span class="op">=</span> <span class="fl">100</span> <span class="op">*</span> <span class="va">w_1stIn</span> <span class="op">/</span> <span class="va">w_svpt</span>,</span>
+<span>                        l_svperc <span class="op">=</span> <span class="fl">100</span> <span class="op">*</span> <span class="va">l_1stIn</span> <span class="op">/</span> <span class="va">l_svpt</span>,</span>
+<span>                        w_firstwon <span class="op">=</span> <span class="fl">100</span> <span class="op">*</span> <span class="va">w_1stWon</span> <span class="op">/</span> <span class="va">w_1stIn</span>,</span>
+<span>                        l_firstwon <span class="op">=</span> <span class="fl">100</span> <span class="op">*</span> <span class="va">l_1stWon</span> <span class="op">/</span> <span class="va">l_1stIn</span>,</span>
+<span>                        w_secondwon <span class="op">=</span> <span class="fl">100</span> <span class="op">*</span> <span class="va">w_2ndWon</span> <span class="op">/</span> <span class="op">(</span><span class="va">w_svpt</span> <span class="op">-</span> <span class="va">w_1stIn</span><span class="op">)</span>,</span>
+<span>                        l_secondwon <span class="op">=</span> <span class="fl">100</span> <span class="op">*</span> <span class="va">l_2ndWon</span> <span class="op">/</span> <span class="op">(</span><span class="va">l_svpt</span> <span class="op">-</span> <span class="va">l_1stIn</span><span class="op">)</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>The next chunk of code is needed to put the various statistics into one column. This is an issue because, in <code>major_tennis</code>, there is a column for <code>w_ace</code> (aces for the winner) and <code>l_ace</code> (aces for the loser). We need those in one column, <code>aces</code>, that have the number of aces for the player. Looking back, this is not the most efficient way we could do this. If we were to do it again, we could do an <code><a href="https://dplyr.tidyverse.org/reference/across.html">across()</a></code> combined with <code><a href="https://dplyr.tidyverse.org/reference/if_else.html">if_else()</a></code> where the new variables would take the <code>w_....</code> values if the player was the winner and the <code>l_....</code> values if the player was the loser.</p>
+<div class="cell" data-appendix="true">
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">major_tennis_w</span> <span class="op">&lt;-</span> <span class="va">major_tennis</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="va">name</span> <span class="op">==</span> <span class="st">"winner_name"</span><span class="op">)</span></span>
+<span><span class="va">major_tennis_l</span> <span class="op">&lt;-</span> <span class="va">major_tennis</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="va">name</span> <span class="op">==</span> <span class="st">"loser_name"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">w_small</span> <span class="op">&lt;-</span> <span class="va">major_tennis_w</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="va">value</span>, <span class="va">winner_seed</span>, <span class="va">w_ace</span>, <span class="va">w_df</span>,</span>
+<span>                                    <span class="va">w_svperc</span>, <span class="va">w_firstwon</span>, <span class="va">w_secondwon</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/rename.html">rename</a></span><span class="op">(</span>seed <span class="op">=</span> <span class="va">winner_seed</span>, ace <span class="op">=</span> <span class="va">w_ace</span>, df <span class="op">=</span> <span class="va">w_df</span>, svperc <span class="op">=</span> <span class="va">w_svperc</span>,</span>
+<span>         firstwon <span class="op">=</span> <span class="va">w_firstwon</span>, secondwon <span class="op">=</span> <span class="va">w_secondwon</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">l_small</span> <span class="op">&lt;-</span> <span class="va">major_tennis_l</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="va">value</span>, <span class="va">loser_seed</span>, <span class="va">l_ace</span>, <span class="va">l_df</span>,</span>
+<span>                                    <span class="va">l_svperc</span>, <span class="va">l_firstwon</span>, <span class="va">l_secondwon</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/rename.html">rename</a></span><span class="op">(</span>seed <span class="op">=</span> <span class="va">loser_seed</span>, ace <span class="op">=</span> <span class="va">l_ace</span>, df <span class="op">=</span> <span class="va">l_df</span>, svperc <span class="op">=</span> <span class="va">l_svperc</span>,</span>
+<span>         firstwon <span class="op">=</span> <span class="va">l_firstwon</span>, secondwon <span class="op">=</span> <span class="va">l_secondwon</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/bind_rows.html">bind_rows</a></span><span class="op">(</span><span class="va">w_small</span>, <span class="va">l_small</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/rename.html">rename</a></span><span class="op">(</span>player <span class="op">=</span> <span class="st">"value"</span><span class="op">)</span></span>
+<span><span class="va">df</span></span>
+<span><span class="co">#&gt; # A tibble: 3,600 × 7</span></span>
+<span><span class="co">#&gt;   player             seed    ace    df svperc firstwon secondwon</span></span>
+<span><span class="co">#&gt;   &lt;chr&gt;              &lt;chr&gt; &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt;    &lt;dbl&gt;     &lt;dbl&gt;</span></span>
+<span><span class="co">#&gt; 1 Daniil Medvedev    4        10     1   63.5     84.8      73.7</span></span>
+<span><span class="co">#&gt; 2 Jo-Wilfried Tsonga &lt;NA&gt;     12     2   63.2     79.1      60  </span></span>
+<span><span class="co">#&gt; 3 Daniil Medvedev    4        12     3   64.8     70.6      67.6</span></span>
+<span><span class="co">#&gt; 4 Jeremy Chardy      &lt;NA&gt;     10     8   61.7     75.9      50  </span></span>
+<span><span class="co">#&gt; 5 Jo-Wilfried Tsonga &lt;NA&gt;     11     3   57.8     81.1      40.7</span></span>
+<span><span class="co">#&gt; 6 Alex De Minaur     7         1     1   77.6     76.3      72.7</span></span>
+<span><span class="co">#&gt; # ℹ 3,594 more rows</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Now, we have our five variables (<code>ace</code>, <code>df</code>, <code>svperc</code>, <code>firstwon</code>, and <code>secondwon</code>). We want an app that lets that user make a histogram of one of these variables for a player of their choosing.</p>
+<p>We will try to use a similar workflow for this problem as we did for the majors app.</p>
+<p><strong>Step 1</strong>: Make a histogram of <strong>one</strong> variable for <strong>one</strong> specific player.</p>
+<p><strong>Step 2</strong>: Set up our <code>shiny</code> app inputs. Before, we just had a single input. Now, we will have two: one for player and one for variable. Let’s focus on one at a time, doing <code>player</code> first. Type <code>shinyapp</code> and click on the <code>R Studio</code> snippet to bring up a base app.</p>
+<p><strong>Step 3</strong>: Now that we have one of our inputs in the UI, let’s work on the server. First, we will ignore the <code>input$</code> selector and put in our graph of aces for Medvedev. We again use the <code><a href="https://rdrr.io/pkg/shiny/man/plotOutput.html">plotOutput()</a></code>, <code>renderPlot({})</code> combination.</p>
+<p><strong>Step 4</strong>: Now we want to connect the <code>input</code> defined in the UI to the server so that the graph changes depending on which player we select.</p>
+<p><strong>Step 5</strong>: Now we repeat some of these steps for a second input: a variable that the user selects. We will use <code><a href="https://rdrr.io/pkg/shiny/man/radioButtons.html">radioButtons()</a></code> as the input in the UI.</p>
+<p>We will discuss why we need to take some extra steps to perform the “user can select a variable” operation in class. In particular, we will need to briefly discuss <a href="https://mastering-shiny.org/action-tidy.html" target="_blank">tidy evaluation</a> to use some of the <code>tidyverse</code> functions in <code>shiny</code>.</p>
+<p><strong>Step 6</strong>: Finally, we will add a third input that will let the user change the number of bins in the histogram.</p>
+<p><strong>Exercise 1</strong>. If we move the <code>output$name_of_histogram &lt;- ....</code> code to the very beginning of the server functino, do you think the app will still run? Give a reason.</p>
+<p><strong>Exercise 2</strong>. Draw the reactive graph for the Tennis app.</p>
+</section><section id="your-turn" class="level2" data-number="15.3"><h2 data-number="15.3" class="anchored" data-anchor-id="your-turn">
+<span class="header-section-number">15.3</span> Your Turn</h2>
+<p><strong>Exercise 1</strong>. In the tennis app, change the histogram input from a <code><a href="https://rdrr.io/pkg/shiny/man/sliderInput.html">sliderInput()</a></code> to a <code><a href="https://rdrr.io/pkg/shiny/man/numericInput.html">numericInput()</a></code>.</p>
+<p><strong>Exercise 2</strong>. In the tennis app, change the histogram input back to <code>sliderinput()</code>. Then, apply 2.2.8 Exercise 3 in the <em>Mastering Shiny</em> book to the tennis app slider.</p>
+<p><strong>Exercise 3</strong>. Add an additional input or output (or both!) to the Tennis App. You can decide what you want to add here!</p>
+<div class="cell">
+
+</div>
+<div class="cell">
+
+</div>
+<div class="cell">
+
+</div>
+<div class="cell">
+
+</div>
+<div class="cell">
+
+</div>
+<div class="cell">
+
+</div>
+<div class="cell">
+
+</div>
+<!-- ## A Final Example -->
+<!-- A data set on daily historical weather in Canton, NY was obtained from <http://visualcrossing.com>. The data set contains observations from December 2019 to now. There is a lot we could do with this data set, but we will first consider just one question: -->
+<!-- -   has the Winter of 2022 been colder than the winters of 2021 and 2020? -->
+<!-- To answer this question, we will consider looking at the **minimum temperature** for each day in January and February for each of the three years of interest. After we complete this, you will create a shiny app using this data set. -->
+<!-- To begin, download the data set from Sakai and use the following code to read in the data. -->
+<div class="cell">
+
+</div>
+</section><section id="other-useful-things-for-shiny" class="level2" data-number="15.4"><h2 data-number="15.4" class="anchored" data-anchor-id="other-useful-things-for-shiny">
+<span class="header-section-number">15.4</span> Other Useful Things for <code>shiny</code>
+</h2>
+<section id="glueglue" class="level3" data-number="15.4.1"><h3 data-number="15.4.1" class="anchored" data-anchor-id="glueglue">
+<span class="header-section-number">15.4.1</span> <code>glue::glue()</code>
+</h3>
+<p>The <code>glue()</code> function from the <code>glue</code> package is really useful for making plot titles, axis titles, etc. that depend on variables you have made. For example, you might want a title for <code>ggplot2</code> to change depending on which input a user selects.</p>
+<p>It’s a fairly simple function: you just put together text in <code>" "</code> and variable names, separated by commas.</p>
+<div class="cell">
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">poke_df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://readr.tidyverse.org/reference/read_delim.html">read_csv</a></span><span class="op">(</span><span class="st">"data/pokemon_full.csv"</span><span class="op">)</span></span>
+<span><span class="va">poke_long</span> <span class="op">&lt;-</span> <span class="va">poke_df</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://tidyr.tidyverse.org/reference/pivot_longer.html">pivot_longer</a></span><span class="op">(</span><span class="fl">4</span><span class="op">:</span><span class="fl">9</span>, values_to <span class="op">=</span> <span class="st">"value"</span>, </span>
+<span>                                      names_to <span class="op">=</span> <span class="st">"stat"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">poke_small</span> <span class="op">&lt;-</span> <span class="va">poke_long</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="va">Name</span> <span class="op">==</span> <span class="st">"Bulbasaur"</span> <span class="op">|</span> <span class="va">Name</span> <span class="op">==</span> <span class="st">"Ivysaur"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">poke_small</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">stat</span>, y <span class="op">=</span> <span class="va">value</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_bar.html">geom_col</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>fill <span class="op">=</span> <span class="va">Name</span><span class="op">)</span>, position <span class="op">=</span> <span class="st">"dodge"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="13-shiny-reactivity_files/figure-html/unnamed-chunk-12-1.png" class="img-fluid" width="672"></p>
+</div>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://shiny.rstudio.com/">shiny</a></span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">ui</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/fluidPage.html">fluidPage</a></span><span class="op">(</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/sidebarLayout.html">sidebarLayout</a></span><span class="op">(</span></span>
+<span>    <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/sidebarLayout.html">sidebarPanel</a></span><span class="op">(</span></span>
+<span>      <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/selectInput.html">selectizeInput</a></span><span class="op">(</span><span class="st">"pokechoose1"</span>, label <span class="op">=</span> <span class="st">"Choose Pokemon"</span>,</span>
+<span>                     choices <span class="op">=</span> <span class="va">poke_df</span><span class="op">$</span><span class="va">Name</span>, selected <span class="op">=</span> <span class="st">"Bulbasaur"</span><span class="op">)</span></span>
+<span>    <span class="op">)</span>,</span>
+<span>    <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/sidebarLayout.html">mainPanel</a></span><span class="op">(</span></span>
+<span>      <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/plotOutput.html">plotOutput</a></span><span class="op">(</span>outputId <span class="op">=</span> <span class="st">"pokegraph"</span><span class="op">)</span></span>
+<span>    <span class="op">)</span></span>
+<span>  <span class="op">)</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">server</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">input</span>, <span class="va">output</span>, <span class="va">session</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  </span>
+<span>  <span class="va">output</span><span class="op">$</span><span class="va">pokegraph</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/renderPlot.html">renderPlot</a></span><span class="op">(</span><span class="op">{</span></span>
+<span>    <span class="va">poke_react</span> <span class="op">&lt;-</span> <span class="va">poke_long</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="va">Name</span> <span class="op"><a href="https://rdrr.io/r/base/match.html">%in%</a></span> <span class="va">input</span><span class="op">$</span><span class="va">pokechoose1</span><span class="op">)</span></span>
+<span>    </span>
+<span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">poke_react</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">stat</span>, y <span class="op">=</span> <span class="va">value</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>      <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html">geom_point</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
+<span>      <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_segment.html">geom_segment</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>xend <span class="op">=</span> <span class="va">stat</span>, y <span class="op">=</span> <span class="fl">0</span>, yend <span class="op">=</span> <span class="va">value</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>      <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/coord_flip.html">coord_flip</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
+<span>      <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op">(</span>title <span class="op">=</span> <span class="fu">glue</span><span class="fu">::</span><span class="fu"><a href="https://glue.tidyverse.org/reference/glue.html">glue</a></span><span class="op">(</span><span class="st">"Graph of the Stats for"</span>, <span class="va">input</span><span class="op">$</span><span class="va">pokechoose1</span><span class="op">)</span><span class="op">)</span></span>
+<span>  <span class="op">}</span><span class="op">)</span></span>
+<span>  </span>
+<span><span class="op">}</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/shiny/man/shinyApp.html">shinyApp</a></span><span class="op">(</span><span class="va">ui</span>, <span class="va">server</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p></p>
+<div style="width: 100% ; height: 400px ; text-align: center; box-sizing: border-box; -moz-box-sizing: border-box; -webkit-box-sizing: border-box;" class="muted well">Shiny applications not supported in static R Markdown documents</div>
+</div>
+</div>
+</section><section id="action-button" class="level3" data-number="15.4.2"><h3 data-number="15.4.2" class="anchored" data-anchor-id="action-button">
+<span class="header-section-number">15.4.2</span> Action Button</h3>
+<p>An action button is useful if you do not want your plot to update until the user clicks the button. There are a couple of useful cases for an action button:</p>
+<ul>
+<li>the code in your Shiny app takes a long time to run (so you don’t want it updating each time the user changes an input).</li>
+<li>the output does not make sense unless the user changes multiple inputs (so again, you don’t want the shiny app to run each time the user changes an input).</li>
+</ul>
+<p>Take a look at this example for the Pokemon app:</p>
+<div class="cell">
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://shiny.rstudio.com/">shiny</a></span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">ui</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/fluidPage.html">fluidPage</a></span><span class="op">(</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/sidebarLayout.html">sidebarLayout</a></span><span class="op">(</span></span>
+<span>    <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/sidebarLayout.html">sidebarPanel</a></span><span class="op">(</span></span>
+<span>      <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/selectInput.html">selectizeInput</a></span><span class="op">(</span><span class="st">"pokechoose1"</span>, label <span class="op">=</span> <span class="st">"Choose Pokemon"</span>,</span>
+<span>                     choices <span class="op">=</span> <span class="va">poke_df</span><span class="op">$</span><span class="va">Name</span>, selected <span class="op">=</span> <span class="st">"Bulbasaur"</span>,</span>
+<span>                     multiple <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>,</span>
+<span>      <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/actionButton.html">actionButton</a></span><span class="op">(</span><span class="st">"runappbutton"</span>, label <span class="op">=</span> <span class="st">"Update Stats"</span><span class="op">)</span></span>
+<span>    <span class="op">)</span>,</span>
+<span>    <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/sidebarLayout.html">mainPanel</a></span><span class="op">(</span></span>
+<span>      <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/plotOutput.html">plotOutput</a></span><span class="op">(</span>outputId <span class="op">=</span> <span class="st">"pokegraph"</span><span class="op">)</span></span>
+<span>    <span class="op">)</span></span>
+<span>  <span class="op">)</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">server</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">input</span>, <span class="va">output</span>, <span class="va">session</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  </span>
+<span>  <span class="va">poke_react</span> <span class="op">&lt;-</span>  <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/observeEvent.html">eventReactive</a></span><span class="op">(</span><span class="va">input</span><span class="op">$</span><span class="va">runappbutton</span>, <span class="op">{</span></span>
+<span>    <span class="va">poke_long</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="va">Name</span> <span class="op"><a href="https://rdrr.io/r/base/match.html">%in%</a></span> <span class="va">input</span><span class="op">$</span><span class="va">pokechoose1</span><span class="op">)</span></span>
+<span>  <span class="op">}</span><span class="op">)</span></span>
+<span>  </span>
+<span>  <span class="va">output</span><span class="op">$</span><span class="va">pokegraph</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/renderPlot.html">renderPlot</a></span><span class="op">(</span><span class="op">{</span></span>
+<span>    </span>
+<span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span>data <span class="op">=</span> <span class="fu">poke_react</span><span class="op">(</span><span class="op">)</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">stat</span>, y <span class="op">=</span> <span class="va">value</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>      <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_bar.html">geom_col</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>fill <span class="op">=</span> <span class="va">Name</span><span class="op">)</span>, position <span class="op">=</span> <span class="st">"dodge"</span><span class="op">)</span> <span class="op">+</span></span>
+<span>      <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/coord_flip.html">coord_flip</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
+<span>      <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_viridis.html">scale_fill_viridis_d</a></span><span class="op">(</span><span class="op">)</span></span>
+<span>  <span class="op">}</span></span>
+<span>  <span class="op">)</span></span>
+<span>  </span>
+<span><span class="op">}</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/shiny/man/shinyApp.html">shinyApp</a></span><span class="op">(</span><span class="va">ui</span>, <span class="va">server</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p></p>
+<div style="width: 100% ; height: 400px ; text-align: center; box-sizing: border-box; -moz-box-sizing: border-box; -webkit-box-sizing: border-box;" class="muted well">Shiny applications not supported in static R Markdown documents</div>
+</div>
+</div>
+<p>You must often pair an <code>actionButton</code> with either <code><a href="https://rdrr.io/pkg/shiny/man/observeEvent.html">eventReactive()</a></code> or <code><a href="https://rdrr.io/pkg/shiny/man/observeEvent.html">observeEvent()</a></code>. The differences between the two are a little confusing but the primary difference is that <code><a href="https://rdrr.io/pkg/shiny/man/observeEvent.html">eventReactive()</a></code> is used to create a reactive expression when the action button is clicked while <code><a href="https://rdrr.io/pkg/shiny/man/observeEvent.html">observeEvent()</a></code> just runs some code when an action button is clicked.</p>
+</section><section id="using-if-and-else" class="level3" data-number="15.4.3"><h3 data-number="15.4.3" class="anchored" data-anchor-id="using-if-and-else">
+<span class="header-section-number">15.4.3</span> Using <code>if</code> and <code>else</code>
+</h3>
+<p>If we want our app do do something completely different when a user changes an input, we might consider using <code>if</code> and <code>else</code>. If we have time in class, we will do an example in <code>Shiny</code>: <code>if</code> an <code>input</code> is equal to some value, do something or make a certain plot; <code>else</code> make a different type of plot. Below is an example of the syntax in base <code>R</code>:</p>
+<div class="cell">
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fl">5</span></span>
+<span><span class="kw">if</span> <span class="op">(</span><span class="va">x</span> <span class="op">&lt;</span> <span class="fl">10</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="va">x</span> <span class="op">*</span> <span class="fl">2</span></span>
+<span><span class="op">}</span> <span class="kw">else</span> <span class="op">{</span></span>
+<span>  <span class="va">x</span> <span class="op">/</span> <span class="fl">2</span></span>
+<span><span class="op">}</span></span>
+<span><span class="co">#&gt; [1] 10</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section><section id="source-and-write_csv" class="level3" data-number="15.4.4"><h3 data-number="15.4.4" class="anchored" data-anchor-id="source-and-write_csv">
+<span class="header-section-number">15.4.4</span> <code>source()</code> and <code>write_csv()</code>
+</h3>
+<div class="callout-important callout callout-style-simple callout-captioned">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-caption-container flex-fill">
+Important
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>For <code>shiny</code> apps, if there is a lot of data preparation before the data is ready for the <code>shiny</code> app, it is generally best to put this data preparation in a different <code>R</code> script.</p>
+</div>
+</div>
+<p>You can then either <code><a href="https://rdrr.io/r/base/source.html">source()</a></code> the data preparation file (which runs all of the code in the file that is sourced) or you can use <code><a href="https://readr.tidyverse.org/reference/write_delim.html">write_csv()</a></code> to write the prepped data to its own .csv file. You would then use <code><a href="https://readr.tidyverse.org/reference/read_delim.html">read_csv()</a></code> on this new file in the <code>app.R</code> file with your <code>shiny</code> app.</p>
+<p><br></p>
+
+
+</section></section></main><!-- /main --><script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    target: function(trigger) {
+      return trigger.previousElementSibling;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    setTimeout(function() {
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      let href = ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const cites = ref.parentNode.getAttribute('data-cites').split(' ');
+    tippyHover(ref, function() {
+      var popup = window.document.createElement('div');
+      cites.forEach(function(cite) {
+        var citeDiv = window.document.createElement('div');
+        citeDiv.classList.add('hanging-indent');
+        citeDiv.classList.add('csl-entry');
+        var biblioDiv = window.document.getElementById('ref-' + cite);
+        if (biblioDiv) {
+          citeDiv.innerHTML = biblioDiv.innerHTML;
+        }
+        popup.appendChild(citeDiv);
+      });
+      return popup.innerHTML;
+    });
+  }
+});
+</script><nav class="page-navigation"><div class="nav-page nav-page-previous">
+      <a href="./12-shiny-intro.html" class="pagination-link">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Introduction to <code>Shiny</code></span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+  </div>
+</nav>
+</div> <!-- /content -->
+<footer class="footer"><div class="nav-footer">
+    <div class="nav-footer-left">Course Materials were written by Matt Higham for STAT/DATA 334 at St.&nbsp;Lawrence University.</div>   
+    <div class="nav-footer-right">This book was built with <a href="https://quarto.org/">Quarto</a>.</div>
+  </div>
+</footer>
+
+
+</body></html>

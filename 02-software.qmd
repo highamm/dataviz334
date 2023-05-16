@@ -1,0 +1,81 @@
+# Software {#software}
+
+```{r}
+#| results: "asis"
+#| echo: false
+source("_common.R")
+```
+
+In this section, we discuss two pieces of software that you will need to install on your laptop computer: `R` (and `R Studio`) and `Git`. We will begin with the far easier of the two: `R`.
+
+## Installing `R` and `R Studio` (Class Prep)
+
+If you had Professor Higham for STAT/DATA 234, you should already have `R` and `R Studio` installed on your laptop computer. You may also already have these installed from another course or an independent study. Even though you might already have these installed, it might be time for an update: if you have not reinstalled these in a year, updating would be a good idea.
+
+The following videos provide instructions on how to install `R` and `R Studio` to your laptop computer. It will be easiest if you complete all of these steps consecutively in one sitting. So, you should ideally have about 45 minutes to an hour of your time blocked off to complete the "getting started" process using the videos below.
+
+<input type="checkbox"> Watch and follow along with a <a href="https://www.youtube.com/watch?v=-WNEPGMpzns" target="_blank">video on installing R</a>. </input>
+
+<input type="checkbox"> Watch and follow along with a <a href="https://www.youtube.com/watch?v=urw6AMOzAUo" target="_blank">video on installing R Studio</a>. </input>
+
+<input type="checkbox"> Watch and follow along with a <a href="https://www.youtube.com/watch?v=IaONPkvjNZM" target="_blank">video on installing R packages and changing other options</a>. </input>
+
+After you install `R Studio`, create a new Quarto file, and answer the following questions. Render the file and submit the file to Canvas.
+
+a.  What is your name and what is your class year (first-year, sophomore, junior, senior)?
+
+b.  What is/are your major(s) and minor(s), either actual or intended?
+
+c.  Why did you decide to take this course?
+
+d.  In what semester and year did you take STAT/DATA 234?
+
+e.  Have you taken STAT 213? Have you taken CS 140?
+
+f.  Have you used Git before? If so, in what context?
+
+g.  Before this course, did you use `R Studio` on your desktop?
+
+h.  What is your hometown: city, state, country?
+
+i.  Do you play a sport on campus? If so, what sport? If not, what is an activity that you do on or off-campus?
+
+j.  What is your favorite TV show or movie or band/musical artist?
+
+k.  Tell me something about yourself.
+
+l.  What are your expectations for this class and/or what do you hope to gain from this class?
+
+
+
+## Installing `Git` and Using `GitHub` (Class Prep)
+
+::: {.callout-important}
+## Important
+
+Start this early, and, if you get stuck, try to troubleshoot for 5 minutes or so. If you are still stuck, to protect your own time, make an appointment for office hours so we can work through the issue.
+:::
+
+The following links and videos provide instructions on getting started with `Git` and `GitHub` for version control of projects (repositories). The videos assume that you already have `R` and `R Studio` installed on your laptop. It will be easiest if you complete all of these steps consecutively in one sitting. So, you should ideally have about 1.5 - 2 hours of your time blocked off to complete the "getting started" process using the videos below. It might also be helpful (but not necessary) to work through these with a partner or two in case either of you get stuck.
+
+<input type="checkbox"> Read Chapter 1 of Jenny Bryan's <a href="https://happygitwithr.com/big-picture.html" target="_blank">Happy Git and GitHub for the useR</a> book to get a brief overview of why we are using `Git` and `GitHub`. Note the quote "Is it going to hurt? Yes." </input>
+
+<input type="checkbox"> Watch and follow along with a <a href="https://www.youtube.com/watch?v=RgjDn2EmAaA" target="_blank">video on our overall purpose for using Git and GitHub</a>. </input>
+
+<input type="checkbox"> Install Git by following along with <a href="https://happygitwithr.com/install-git.html" target="_blank">Section 6 of Happy Git for the useR </a>. Note that I removed the video for this step because the directions are different depending on whether you are on Windows, MacOS, or Linux. Also note that you will need to access the Shell. You can do this from R Studiofrom the `Tools` option: `Tools -> Shell`. </input>
+
+<input type="checkbox"> Watch and follow along with a <a href="https://www.youtube.com/watch?v=DNgsDD23sVc" target="_blank">video on how to create a GitHub account</a>. </input>
+
+<input type="checkbox"> Watch and follow along with a <a href="https://www.youtube.com/watch?v=TfCY9_jag6w" target="_blank">video on how to link your GitHub account to your local Git and R Studio</a>. </input>
+
+<input type="checkbox"> Watch and follow along with a <a href="https://www.youtube.com/watch?v=RyPcuq6GAyo" target="_blank"> video on creating your first repository</a>. </input>
+
+<input type="checkbox"> Watch and follow along with a <a href="https://www.youtube.com/watch?v=9RuXy0s3T4U" target="_blank"> video on making commits, pushing, and pulling</a>. </input>
+
+After you are able to commit, push, and see that push show up on your remote GitHub site, you know that you have successfully set up this version control system!
+
+## Using Git and GitHub
+
+In class, we will discuss how to use `Git` and `GitHub` with `R Studio` as well as how we will use these tools to submit assignments in this course. By the end of the class in which we discuss `Git` and `GitHub`, at minimum you should be able to (1) locally commit a change to your files with a commit message, (2) push that local change to your remote GitHub repository, and (3) pull a change that someone else made to the remote GitHub repository.
+
+

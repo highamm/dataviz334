@@ -1,0 +1,285 @@
+# Choosing a Visualization {#chooseviz}
+
+<!-- day 1 -->
+
+In this section, we will review commonly used graphics, introduce a few new graphics, and articulate some of the benefits and drawbacks of various graphics. We will complete most of this with a pen-and-paper handout, but the code for many of the visualizations we will discuss is given here for reference. 
+
+## Why Visualize Data?
+
+Data visualization is important in many aspects of statistics and data science. Often, people can see patterns in data and understand the underlying data better with a visualization instead of numerical summary statistics.
+
+But, isn't it obvious how to create a "good" data visualization? Why should there be an entire course on the subject? Part of the answer is that there is some code that we need to learn to create flexible data visualizations. However, even if that were not the case, people are not necessarily good at constructing informative data visuals.
+
+Examine the <a href="https://www.reddit.com/r/dataisugly/" target="_blank">data is ugly subreddit</a> for a couple of minutes to see why this data visualization is **not** necessarily simply a natural talent for people.
+
+Throughout the rest of this section, we will use the `Salaries` data set from the `carData` package, which contains variables on the salaries of professors at a particular institution (not this institution though!), including the professor's `rank` (`AsstProf`, `AssocProf`, or `Prof`), `discipline` (`A` for theoretical and `B` for applied), `yrs.service`, the years of service, `sex` (treated as binary in this data set: `Male` or `Female`), and `salary` (in dollars).
+
+```{r}
+library(tidyverse)
+library(carData)
+Salaries <- Salaries |> as_tibble() |>
+  mutate(salary = salary / 1000)
+theme_set(theme_minimal())
+Salaries
+```
+
+We will use an accompanying handout to discuss benefits and drawbacks of different graphs for various settings. The code for each graph in the handout is below, but, at this point in the course, we are focusing less on the code and more on what makes different graphics "good" or "bad."
+
+## Graphs of One Variable
+
+### Quantitative
+
+The following are commonly used graphs for a single quantitative variable. In the handout, we will talk about whether we can clearly see the distribution center, distribution spread, distribution shape, and the sample size from each graph, as well as any relevant graphic parameters.
+
+```{r}
+ggplot(data = Salaries, aes(x = salary)) +
+  geom_histogram(colour = "black", fill = "white") +
+  labs(title = "Histogram")
+```
+
+<br>
+
+```{r}
+ggplot(data = Salaries, aes(x = salary)) +
+  geom_freqpoly() +
+  labs(title = "Frequency Plot")
+```
+
+<br>
+
+```{r}
+ggplot(data = Salaries, aes(y = salary)) +
+  geom_boxplot() +
+  theme(axis.text.x = element_blank(),
+        axis.ticks.x = element_blank()) +
+  labs(title = "Boxplot")
+```
+
+<br>
+
+```{r}
+ggplot(data = Salaries, aes(x = salary)) +
+  geom_density() +
+  labs(title = "Density Plot")
+```
+
+### Categorical
+
+The following are commonly used graphs for a single categorical variable. In the accompanying handout, we will discuss whether we can clearly see the overall distribution and the sample size from each graph.
+
+```{r}
+ggplot(data = Salaries, aes(x = rank)) +
+  geom_bar(colour = "mediumpurple4", fill = "mediumpurple1") +
+  labs(title = "Bar Plot")
+```
+
+<br>
+
+```{r}
+salaries_sum <- Salaries |> group_by(rank) |>
+  summarise(n = n()) |>
+  mutate(prop = n / sum(n))
+ggplot(data = salaries_sum, aes(x = rank, y = prop)) +
+  geom_col(colour = "mediumpurple4", fill = "mediumpurple1") +
+  labs(title = "Bar Plot of Proportions")
+```
+
+<br>
+
+```{r}
+ggplot(data = salaries_sum, aes(x = "", y = n, fill = rank)) +
+  geom_bar(stat = "identity", width = 1) +
+  coord_polar("y") + scale_fill_viridis_d() +
+  theme_void() +
+  labs(title = "Pie Chart")
+```
+
+## Graphs of Two Variables
+
+### Quantitative and Categorical
+
+The following are commonly used graphs for a quantitative variable and categorical variable. In the handout, we will talk about whether we can clearly compare the distribution centers, distribution spreads, distribution shapes, and the sample sizes in each level of the categorical variable.
+
+```{r}
+ggplot(data = Salaries, aes(x = discipline, y = salary)) +
+  geom_boxplot() +
+  labs(title = "Side-by-Side Boxplots")
+```
+
+<br>
+
+```{r}
+ggplot(data = Salaries, aes(x = discipline, y = salary)) +
+  geom_violin() +
+  labs(title = "Side-by-Side Violin Plots")
+```
+
+<br>
+
+```{r}
+ggplot(data = Salaries, aes(x = salary)) +
+  geom_freqpoly(aes(colour = discipline)) +
+  scale_colour_viridis_d() +
+  labs(title = "Coloured Frequency Plots")
+```
+
+<br>
+
+```{r}
+ggplot(data = Salaries, aes(x = salary)) +
+  geom_histogram(colour = "black", fill = "white") +
+  facet_wrap(~discipline, ncol = 1) +
+  labs(title = "Faceted Histograms")
+```
+
+<br>
+
+```{r}
+ggplot(data = Salaries, aes(x = salary)) +
+  geom_density(aes(fill = discipline, colour = discipline), alpha = 0.50) +
+  scale_fill_viridis_d() + scale_colour_viridis_d() +
+  labs(title = "Coloured Density Plots")
+```
+
+<br>
+
+```{r}
+ggplot(data = Salaries, aes(x = discipline, y = salary)) +
+  geom_jitter(width = 0.15) +
+  labs(title = "Strip Plot")
+```
+
+ <br>
+ 
+```{r}
+salary_med <- Salaries |> group_by(discipline) |>
+  summarise(med_sal = median(salary))
+## as discussed in handout, this is a horrible way to visualize this data!
+ggplot(salary_med, aes(x = discipline, y = med_sal)) +
+  geom_col(colour = "mediumpurple4", fill = "mediumpurple1") +
+  labs(title = "Bar Plot of Median", y = "Median Salary")
+```
+
+<br>
+
+```{r}
+library(ggbeeswarm)
+ggplot(data = Salaries, aes(x = discipline, y = salary)) +
+  geom_beeswarm() +
+  labs(title = "Beeswarm Plot")
+```
+
+### Two Categorical
+
+The following are commonly used graphs for two categorical variables. In the handout, we will talk about whether we can clearly assess whether there is any evidence of an association between the two variables as well as whether we can see the sample size for each combination of the levels of the two categorical variables.
+
+```{r}
+ggplot(data = Salaries, aes(x = discipline, fill = sex)) +
+  geom_bar() +
+  scale_fill_viridis_d() +
+  labs(title = "Stacked Bar Plot")
+```
+
+<br>
+
+```{r}
+ggplot(data = Salaries, aes(x = discipline, fill = sex)) +
+  geom_bar(position = "fill") +
+  scale_fill_viridis_d() +
+  labs(title = "Stacked Proportional Bar Plot")
+```
+
+<br>
+
+```{r}
+ggplot(data = Salaries, aes(x = discipline, fill = sex)) +
+  geom_bar(position = "dodge") +
+  scale_fill_viridis_d() +
+  labs(title = "Side-by-Side Bar Plot")
+```
+
+<br>
+
+```{r}
+salaries_heat <- Salaries |> group_by(discipline, sex) |>
+  summarise(n = n())
+ggplot(data = salaries_heat, aes(x = discipline, y = sex, fill = n)) +
+  geom_tile() + scale_fill_viridis_c() +
+  labs(title = "Heat Map")
+```
+
+### Two Quantitative
+
+The following are commonly used graphs for two quantitative variables. In the handout, we will talk about whether we can clearly assess trend and whether we can see the sample size in each graph.
+
+```{r}
+ggplot(data = Salaries, aes(x = yrs.service, y = salary)) +
+  geom_point() +
+  labs(title = "Scatterplot")
+```
+
+<br>
+
+```{r}
+ggplot(data = Salaries, aes(x = yrs.service, y = salary)) +
+  geom_point() +
+  geom_smooth(method = "lm") +
+  labs(title = "Scatterplot with Linear Regression")
+```
+
+<br>
+
+```{r}
+ggplot(data = Salaries, aes(x = yrs.service, y = salary)) +
+  geom_point() +
+  geom_smooth() +
+  labs(title = "Scatterplot with Smoother")
+```
+
+## Graphs of More Than Two Variables
+
+For more than two variables, we need to map the third variable to something on the plot other than the x-axis and the y-axis. The two most common ways to incorporate a third variable into a plot are:
+
+* use `colour` to colour by the third variable
+* facet by the third variable
+
+Below are a couple of examples. Next week, we will discuss benefits and drawbacks of using colour vs. faceting.
+
+### Two Quantitative and One Categorical
+
+```{r}
+ggplot(data = Salaries, aes(x = yrs.service, y = salary)) +
+  geom_point(aes(colour = sex)) +
+  geom_smooth(aes(colour = sex)) +
+  scale_colour_viridis_d() +
+  labs(title = "Colour by Third Variable")
+```
+
+<br>
+
+```{r}
+ggplot(data = Salaries, aes(x = yrs.service, y = salary)) +
+  geom_point() +
+  facet_wrap(~ sex) +
+  geom_smooth() +
+  labs(title = "Facet by Third Variable")
+```
+
+### Two Categorical and One Quantitative
+
+```{r}
+ggplot(data = Salaries, aes(x = salary)) +
+  geom_histogram(colour = "black", fill = "white") +
+  facet_grid(discipline ~ rank) +
+  labs(title = "Facet by Two Variables")
+```
+
+<br>
+
+```{r}
+ggplot(data = Salaries, aes(x = salary)) +
+  geom_freqpoly(aes(colour = discipline), bins = 15) +
+  facet_wrap(~ rank) +
+  scale_colour_viridis_d() +
+  labs(title = "Facet by One Variable, Colour by One Variable")
+```

@@ -1,0 +1,173 @@
+# STAT 213 Review {#stat213review}
+
+```{r}
+#| results: "asis"
+#| echo: false
+source("_common.R")
+```
+
+## STAT 213 with `broom` (Class Prep)
+
+In this section, we will focus more on a tidy approach to the models that you fit and interpreted in STAT 213. 
+
+::: {.callout-note}
+## Note
+
+You may or may not have completed STAT 213 using the functions from the `broom` package (`tidy()`, `augment()`, and `glance()`), but this section will assume that you have not used these functions. 
+:::
+
+The functions in the `broom` package return `tibble`s with model summary information that we can then use for further analysis, plotting, or presentation. The `broom` package consists of three primary functions: `tidy()`, `glance()`, and `augment()`, which are described below.
+
+We will use the `coffee_ratings` data set, which contains observations on ratings of various coffees throughout the world. The data was obtained from the Github account (<https://github.com/rfordatascience/tidytuesday/blob/master/data/2020/2020-07-07/readme.md>). 
+
+ A description of each variable in the data set is given below.
+
+* `total_cup_points`, the score of the coffee by a panel of experts (our response variable for this section)
+* `species`, the species of the coffee bean (Arabica or Robusta)
+* `aroma`, aroma (smell) grade
+* `flavor`, flavor grade
+* `aftertaste`, aftertaste grade
+* `acidity`, acidity grade
+* `body`, body grade
+* `balance`, balance grade
+* `uniformity`, uniformity grade
+* `clean_cup`, clean cup grade
+* `sweetness`, sweetness grade
+* `moisture`, moisture grade
+* `category_one_defects`, count of category one defects
+* `quakers`, quakers
+* `category_two_defects`, the number of category two defects
+
+In the examples below, we will consider the multiple linear regression model
+
+$$
+Y = \beta_0 + \beta_1 species + \beta_2 aroma + \beta_3 flavor + \beta_4 sweetness + \beta_5 moisture + \epsilon,
+$$
+
+where $Y$ is the rating of the coffee (`total_cup_points`), `species` is an indicator variable equal to `1` if the species is `Robusta` and a `0` if the species is `Arabica`, and $epsilon$ are the random errors, which follow the usual assumptions that they are independent and normally distributed with constant variance.
+
+### `tidy()`
+
+`tidy()` is analagous to `summary()` for a linear model object. Let's start by fitting a linear model with `lm()` with `total_cup_points` as the response and `species`, `aroma`, `flavor`, `sweetness`, and `moisture` as predictors.
+
+Read in the data, load the `broom` package (and install it with `install.packages("broom")`), and fit the model with
+
+```{r, appendix = TRUE}
+library(tidyverse)
+library(broom)
+library(here)
+coffee_df <- read_csv(here("data/coffee_ratings.csv"))
+coffee_mod <- lm(total_cup_points ~ species + aroma + flavor +
+                   sweetness + moisture,
+   data = coffee_df)
+```
+
+In STAT 213, you likely used `summary()` to look at the model output:
+
+```{r, appendix = TRUE}
+summary(coffee_mod)
+```
+
+However, there are a few inconveniences involving `summary()`. First, it's just not that nice to look at: the output isn't formatted in a way that is easy to look at. Second, it can be challenging to pull items from the summary output with code. For example, if you want to pull the p-value for `moisture`, you would need to write something like:
+
+```{r, appendix = TRUE}
+summary(coffee_mod)$coefficients["moisture", 4]
+```
+
+`tidy()` is an alternative that puts the model coefficients, standard errors, t-stats, and p-values in a tidy tibble:
+
+```{r, appendix = TRUE}
+tidy(coffee_mod)
+```
+
+The advantage of this format of output is that we can now use other `tidyverse` functions on the output. To pull the p-values,
+
+```{r, appendix = TRUE}
+tidy(coffee_mod) |> select(p.value)
+```
+
+or, to grab the output for a particular variable of interest:
+
+```{r, appendix = TRUE}
+tidy(coffee_mod) |> filter(term == "aroma")
+```
+
+### `glance()`
+
+`glance()` puts some model summary statistics into a tidy tibble. For example, if we run
+
+```{r, appendix = TRUE}
+glance(coffee_mod)
+```
+
+you should notice a lot of statistics that you are familiar with from STAT 213, including `r.squared`, `adj.r.squared`, `sigma` (the residual standard error), `statistic` (the overall F-statistic), `AIC`, and `BIC`. We are going to focus mainly on coefficient interpretation in this course, so there is no need to worry if you do not remember exactly what, for example, `BIC` is.
+
+### `augment()`
+
+`augment()` is my personal favourite of the three. The function returns a `tibble` that contains all of the variables used to fit the model appended with commonly used diagnostic statistics like the fitted values (`.fitted)`, cook's distance (`.cooksd)`, `.hat` values for leverage, and residuals (`.resid`).
+
+```{r, appendix = TRUE}
+augment(coffee_mod)
+```
+
+`augment()` the data set makes it really easy to do things like:
+
+* `filter()` the data set to examine values with high cook's distance that might be influential
+
+```{r, appendix = TRUE}
+augment_df <- augment(coffee_mod)
+augment_df |> filter(.cooksd > 1)
+```
+
+We see right away that there is a potentially influential observation with `0` `total_cup_points`. Examining this variable further, we see that it is probably a data entry error that can be removed from the data.
+
+```{r, appendix = TRUE}
+ggplot(data = coffee_df, aes(x = total_cup_points)) +
+  geom_histogram(bins = 15, fill = "white", colour = "black")
+```
+
+We could also find observations with high leverage
+
+```{r, appendix = TRUE}
+augment_df |> filter(.hat > 0.2)
+```
+
+or observations that are outliers:
+
+```{r, appendix = TRUE}
+augment_df |> filter(.std.resid > 3 | .std.resid < -3)
+```
+
+Finally, we can use our `ggplot2` skills to construct plots like a residuals versus fitted values plot (filtering out the outlying observation first):
+
+```{r, appendix = TRUE}
+ggplot(data = augment_df |> filter(.fitted > 25),
+       aes(x = .fitted, y = .resid)) +
+  geom_point() 
+```
+
+### Exercises
+
+__Exercise 1__. Examine the `penguins` data set in the `palmerpenguins` package:
+
+```{r}
+library(palmerpenguins)
+penguins
+```
+
+Fit a linear regression model with `body_mass_g` as the response variable and `species` and `bill_length_mm` as the predictors. Note that penguins with missing values for any of these three variables will be dropped from the analysis. 
+
+__Exercise 2__. Create a table of summary output, including coefficient estimates, standard errors, test statistics, and p-values, using one of the `broom` functions.
+
+__Exercise 3__. Use `glance()` to glance at some of the relevant model statistics.
+
+__Exercise 4__. Using `augment()`, create a plot of the residuals vs. the fitted values and evaluate the constant variance assumption.
+
+__Exercise 5__. Using `augment()`, check to see if there are any penguins that are influential. Use 0.75 as your cut-off value for Cook's distance.
+
+## Model Coefficient Interpretation
+
+The goal of this section is to review intercept and slope coefficient interpretations from STAT 213. Our ultimate goal, in the coming weeks, is to use visualization to make our model coefficient interpretation more clear. We will have a particular focus on interpreting model coefficients from relatively complex models (with interaction terms, for example) for an audience with little statistical background.
+
+We will use an accompanying handout and pen-and-paper to review model coefficient interpretation from STAT 213.
+

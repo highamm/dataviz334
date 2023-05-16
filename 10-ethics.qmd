@@ -1,0 +1,137 @@
+# Ethics {#ethics}
+
+```{r}
+#| results: "asis"
+#| echo: false
+source("_common.R")
+```
+
+## Visualization Ethics (Class Prep)
+
+Like in data science in general, we need to consider ethical implications of any data visualization. For some data sets, like a data set on Pokemon statistics, the consequences of misuse of the data or a poor visualization would be minor. However, for other data sets, like data on police killings in the United States or data on school shootings, misuse of the data or a poor visualization could have catastrophic consequences.
+
+In this section, we will consider general ethics principles that can be applied to almost any data visualization. We will then examine sensitive data on historical lynchings in the United States to discuss some principles of conscientious data visualization.
+
+### General Principles
+
+Read Sections 8.1 through 8.3 of *Modern Data Science with `R`*, found <a href="https://mdsr-book.github.io/mdsr2e/ch-ethics.html#" target="_blank">here</a>.
+
+**Exercise 1**. Pick **1** of the 3 examples (stand your ground, climate change, or covid cases), and summarize why that graphic is not ethical. Make sure to include the context that the graph was created in from Section 8.3 in your explanation.
+
+Read the short Section 8.5 of *Modern Data Science with `R`*, found <a href="https://mdsr-book.github.io/mdsr2e/ch-ethics.html#some-principles-to-guide-ethical-action" target="_blank">here</a>, stopping at Section 8.5.1.
+
+**Exercise 2**. Choose **2** of the 12 principles of ethical practice of data science and come up a (possibly hypothetical) scenario where each of your two chosen principles would come into play.
+
+<br>
+
+### Sensitive Data Visualizations
+
+::: {.callout-warning}
+## Warning
+
+The following section deals with sensitive data on lynchings in the United States. If, at any point, working through these examples is detrimental to your mental health, please stop immediately. You may request an alternative assignment with no explanation necessary.
+:::
+
+::: {.callout-important}
+## Important
+
+When visualizing sensitive data, we not only need to consider the context that the data came from, but also we need to critically examine the ramifications of producing the graphic. 
+:::
+
+In particular, if our data points are human beings that were killed, tortured, or mistreated, there is danger in "dehumanizing" these people to single data points.
+
+Consider the following two examples, both of which map lynchings in the United States.
+
+*Example 1*: First, <a href="https://lynchinginamerica.eji.org/explore" target="_blank"> this choropleth map</a> shows reported lynchings in the southern United States between 1877 and 1950. Take a few moments to zoom in and out of the map to get a sense about how the data is presented.
+
+*Example 2*: Second, <a href="https://plaintalkhistory.com/monroeandflorencework/explore/map2/#3.5/38/-97.5" target="_blank"> this map</a> shows similar data but the data is presented as individual points instead of on a chloropleth map. Take a few moments to zoom in and out of the map to get a sense about how the data is presented.
+
+**Exercise 3**. Which of the two visualizations better humanizes the victims of lynching? Why?
+
+**Exercise 4**. Suppose that you want to humanize the victims more in a static, non-interactive graph. Brainstorm ways that you could achieve this.
+
+**Exercise 5**. A deeper discussion of these sites appears in <a href="https://www.proquest.com/docview/2555196579?pq-origsite=gscholar&fromopenview=true" target="_blank"> this paper</a>. Read the Introduction section on TayTweets and write **3** major takeaways from this section.
+
+**Exercise 6**. The authors of the book <a href="https://data-feminism.mitpress.mit.edu/pub/5evfe9yd/release/5" target="_blank"> Data Feminism</a> argue that "leveraging emotion" might help us better communicate with data. Read the first four paragraphs of Chapter 3 of the <a href="https://data-feminism.mitpress.mit.edu/pub/5evfe9yd/release/5" target="_blank"> Data Feminism book</a>. One example the authors use pertains to deaths from gun violence in the United States. Examine <a href="https://guns.periscopic.com/" target="_blank"> this animated chart</a>. Explain how the chart uses emotion to convey the losses due to gun violence better than, for example, a statement that 11,356 people were killed from gun violence in 2018.
+
+<br>
+
+## Challenger Case Study
+
+In this section, we will look at an example from the *Challenger* space shuttle launch. One of the more important things to take away from this section is that, if you choose to exclude data in a data visualization, then
+
+1.  You should have a good reason and
+
+2.  You should explicitly state that you excluded certain data points and state your reason for doing so.
+
+A description of the problem follows:
+
+On January 28, 1986, the NASA space shuttle program launched its 25th shuttle flight from Kennedy Space Center in Florida. Seventy-three seconds into the flight, the external fuel tank collapsed and spilled liquid oxygen and hydrogen. These chemicals ignited, destroying the space shuttle Challenger and killing all seven crew members (including Ronald E. McNair, for whom the McNair program is named, and Christa McAuliffe, a school teacher).
+
+::: {.callout-warning}
+## Warning
+
+Watching the Youtube video linked below is completely optional. This was live coverage of the failed launch that can be difficult to watch, <a href="https://www.youtube.com/watch?v=AfnvFnzs91s" target="_blank">linked here</a>.
+:::
+
+::: {.callout-note}
+## Note
+
+There is also a Netflix documentary special called *Challenger: The Final Flight* that covers some of the following issues.
+:::
+
+Investigations showed that an O-ring seal in the right solid rocket booster failed to isolate the fuel supply. Because of their size, the rocket boosters were built and shipped in separate sections. A forward, center, and aft field joint connected the sections. Two O-rings (one primary and one secondary), which resemble giant rubber bands 0.28 inches thick, but 37 feet in diameter, were used to seal the field joints between each of the sections.
+
+The O-ring seals were intended to stop the gases inside the solid rocket booster from escaping. However, the cold outside air temperature caused the O-rings to become brittle and fail to seal properly. Gases at 5800 degrees F escaped and burned a hole through the side of the rocket booster. Could this disaster have been avoided? The problem with the O-rings was recognized by the engineers who designed them. One day before the flight, the predicted temperature for the launch was 26 degrees to 29 degrees F. The actual launch temperature was 31 degrees F. Concerned that the O-rings would not seal at these temperatures, the engineers opposed the launching of the Challenger and tried to convince officials not to launch the shuttle. Even though they understood the severity of the problem, the engineers were unable to properly communicate their evidence to officials.
+
+A very poor data visualization contributed to the miscommunication. The graph that was used to make the decision to launch **excluded** data from launches without any incidents. You can examine the graph used <a href="http://homepage.cs.uiowa.edu/~jian/S101/Notes/challenger-jasa.pdf" target="_blank">on page 5 of this link</a>. The y-axis is O-ring damage while the x-axis is temperature.
+
+However, when all of the data points are used, from both flights with an incident and without incidents, a trend becomes much more clear.
+
+<!-- , as you can see from <a href="https://stats.libretexts.org/Bookshelves/Introductory_Statistics/Book%3A_Statistical_Thinking_for_the_21st_Century_(Poldrack)/06%3A__Data_Visualization" target="_blank">the bottom of this link</a>. -->
+
+__Exercise 1__. Read in the `Challenger.csv` data file, which contains the variables `Temperature` (the temperature of the launch in Farenheit) and `SuccessfulLaunch` (a `1` if the launch had no O-ring damage and a `0` if the launch was did have some O-ring damage). Note that, even with some O-ring damage, a launch would not necessarily fail. Each row corresponds to a test launch of the shuttle.
+
+```{r}
+library(tidyverse)
+challenger_df <- read_csv("data/Challenger.csv")
+```
+
+__Exercise 2__. Fit a logistic regression model with `SuccessfulLaunch` as the response variable and `Temperature` as the predictor. Interpret the resulting coefficient for `Temperature` in terms of either the log-odds of a successful launch or in terms of the odds of a successful launch.
+
+__Exercise 3__. Using `modelr`, construct a visualization of the fitted regression model on the probability scale (so not on the odds or log-odds scale). Note that, because this model only has one predictor, you can make this plot fairly easily without `modelr`. However, for practice, use `modelr` to make the plot (make the grid of predictor values, use `gather_predictions()`, etc.).
+
+```{r}
+#| echo: false
+#| eval: false
+mod <- glm(SuccessfulLaunch ~ Temperature, data = challenger_df) 
+
+library(modelr)
+grid <- challenger_df |>
+  data_grid(
+    Temperature = seq_range(Temperature, 50)
+  ) 
+grid
+
+model_df <- grid |>
+  modelr::gather_predictions(mod) |>
+  mutate(pred = exp(pred) / (1 + exp(pred)))
+ggplot(data = model_df, aes(x = Temperature, y = pred)) +
+  geom_line() +
+  theme_minimal() +
+  ylim(c(0, 1)) +
+  geom_vline(aes(xintercept = 31)) +
+  geom_jitter(data = challenger_df, aes(y = SuccessfulLaunch),
+              height = 0.05) 
+```
+
+__Exercise 4__: To your plot, add a vertical line at 31 degrees Farenheit, which was the temperature at the time of the actual launch.
+
+__Exercise 5__. Write a memo urging NASA to consider postponing the flight. Consider what would be more helpful in your memo: the regression coefficient interpretation or the visualization.
+
+## Your Turn
+
+__Exercise 1__. There were analysis mistakes that likely contributed to the Challenger tragedy, but, would you consider the negligence of including data points __unethical__. Give a reason for your choice.
+
+__Exercise 2__. Suppose that you complete an analysis but you make a mistake in the process. As a result, there is some harm to a person or a group of people. Would you consider this an ethical violation? What else might you want to know about this situation before making a decision on whether your mistake was a violation of ethics?
+

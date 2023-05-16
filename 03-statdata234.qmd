@@ -1,0 +1,264 @@
+# DATA/STAT 234 Review {#stat234review}
+
+```{r}
+#| results: "asis"
+#| echo: false
+source("_common.R")
+```
+
+The primary purpose of this section is to review the most important components of STAT/DATA 234 for this course. In particular, we will focus on `ggplot2` and `dplyr`. However, throughout the course (and even sometimes in this section), we will encounter many of the other `tidyverse` packages like `forcats`, `tidyr`, `lubridate`, and `tibble`.
+
+::: {.callout-note}
+## Note
+
+This section does **not** describe all of the `dplyr` and other `tidyverse` functions we will need in detail. For a more thorough review of `dplyr`, use <a href="https://highamm.github.io/datascience234/dplyr.html" target="_blank">the STAT 234 course materials</a>.
+:::
+
+## Review with HPI Data (Class Prep)
+
+The data set that we will use is the Happy Planet Index: you may have encountered this data set before, but we are using it again here because (1) it's really cool and (2) it has a lot of nice properties for basic data visualization (variables to colour by and facet by, ways to label points that make sense, etc.).
+
+The Happy Planet Index (HPI) is a measure of how efficiently a country uses its ecological resources to give its citizens long "happy" lives. You can read more about this data <a href="https://static1.squarespace.com/static/5735c421e321402778ee0ce9/t/578dec7837c58157b929b3d6/1468918904805/Methods+paper_2016.pdf" target="_blank">here</a>.
+
+The basic idea is that the HPI is a metric that computes how happy and healthy a country's citizens are, but adjusts that by that country's ecological footprint (how much "damage" the country does to planet Earth). Variables in the data set are:
+
+-   `HPIRank`, the rank of the country's Happy Planet Index (lower is better)
+-   `Country`, the name of the country
+-   `LifeExpectancy`, the average life expectancy of a citizen (in years)
+-   `Wellbeing`, the average well being score (on a scale from 1 - 10). See the ladder question in the documentation for how this was calculated.
+-   `HappyLifeYears`, a combination of `LifeExpectancy` and `Wellbeing`
+-   `Footprint`, the ecological footprint per person (higher footprint means the average person in the country is less ecologically friendly)
+-   `Population`, the population size of the country
+-   `GDPcapita`, the Gross Domestic Product per population
+-   `Region`, the region the country is in
+
+Make sure the `hpi-tidy.csv` data set is in a `/data` folder in your current `R Project` directory. Run the code in the following chunk to read in the data:
+
+```{r, appendix = TRUE}
+library(tidyverse)
+hpi_df <- read_csv("data/hpi-tidy.csv")
+hpi_df
+```
+
+### Making a Scatterplot and Labeling Points
+
+In making visualizations, we sometimes want to either highlight, by using a unique colour, size, or shape, a specific observation or we might want to label a specific observation. The observation might be an outlying point, or it might just be a point of particular interest to your audience. For example, if you're writing an article primarily for a United States reader audience using the `hpi_df` data set, you might want to label the United States because your readers presumably have an interest in the country that they live in.
+
+Let's start by making a scatterplot of `Footprint` on the x-axis and `Wellbeing` on the y-axis to examine the relationship between countries' carbon footprints and reported wellbeing of its citizens.
+
+```{r, appendix = TRUE}
+ggplot(data = hpi_df, aes(x = Footprint, y = Wellbeing)) +
+  geom_point()
+```
+
+There can be a few reasons we might want to label a point. We might be interested in a country out of personal interest or we might want to label any interesting outliers. For this example, let's label the United States. First, we need to make a new data set that **only** has the `United States of America` observation. We can do this using `filter()` in the `dplyr` package, which only keeps certain rows, based on a condition that we provide.
+
+```{r, appendix = TRUE}
+hpi_us <- hpi_df |> filter(Country == "United States of America")
+hpi_us
+```
+
+Now that we have this new data set, we can use it within `geom_label()`. Recall that the `data =` argument in `ggplot()` carries on through **all** `geom`s **unless** we specify otherwise. Now is our chance to "specify otherwise" by including another `data =` argument within `geom_label()`:
+
+```{r, appendix = TRUE}
+ggplot(data = hpi_df, aes(x = Footprint, y = Wellbeing)) +
+  geom_point() +
+  geom_label(data = hpi_us, aes(label = Country)) ## specify
+## data = hpi_us so geom_label only uses the observation in hpi_us
+```
+
+But, it's not that clear which of the points is actual the United States. A trick used in the *R for Data Science* book is to surround the points that are being labeled with an open circle using an extra `geom_point()` function to distinguish them and to use `geom_label_repel()` in the `ggrepel` library instead of `geom_label()` to "repel" the label away from the point that it's labeling.
+
+```{r, appendix = TRUE}
+## install.packages("ggrepel")
+library(ggrepel)
+ggplot(data = hpi_df, aes(x = Footprint, y = Wellbeing)) +
+  geom_point() +
+  geom_label_repel(data = hpi_us, aes(label = Country)) +
+  geom_point(data = hpi_us, size = 3, shape = 1) ## create a second point that is an open circle (shape = 1) with a larger size (size = 3) to surround the United States point on the scatterplot
+```
+
+### Themes and Labels
+
+To change labels and add titles to our `ggplot` graph, we can add `+ labs()` to change various labels and titles throughout the plot:
+
+```{r, appendix = TRUE}
+ggplot(data = hpi_df, aes(x = Footprint, y = Wellbeing)) +
+  geom_point() +
+  geom_label_repel(data = hpi_us, aes(label = Country)) +
+  geom_point(data = hpi_us, size = 3, shape = 1) +
+  labs(title = "Countries with a Higher Ecological Footprint Tend to Have Citizens with Higher Wellbeing", ## add title
+    subtitle = "Wellbeing is on a 1-10 scale", ## add subtitle (smaller text size than the title)
+    caption = "Data Source: http://happyplanetindex.org/countries", ## add caption to the bottom of the figure
+    x = "Ecological Footprint", ## change x axis label
+    y = "Wellbeing") ## change y axis label
+```
+
+Most labels can be changed through the a `labs()` layer addition.
+
+To change a base theme of a plot, simply add `+ theme_name-of-theme()` to your plot. Themes are listed at <a href="https://ggplot2.tidyverse.org/reference/ggtheme.html" target="_blank">https://ggplot2.tidyverse.org/reference/ggtheme.html</a>.
+
+::: {.callout-note}
+## Note
+
+Which theme is best partially comes down to personal taste. My go-to is `theme_minimal()`: I love the clean look!
+:::
+
+The purpose of the following set of exercises is for you to start reviewing some basic non-`ggplot2` `tidyverse` functions from STAT/DATA 234. I will provide the sections that these functions were introduced in from my STAT/DATA 234 course, but feel free to use other sources! The link that I will reference is
+
+<a href="https://highamm.github.io/ds234_quarto/03-dplyr.html" target="_blank">https://highamm.github.io/ds234_quarto/03-dplyr.html</a>
+
+**Exercise 1**: For each of the core `dplyr` functions `mutate()`, `arrange()`, `select()`, `slice()`, `filter()`, `group_by()`, and `summarise()`, write a one sentence summary of the overall purpose of the function.
+
+**Exercise 2**: Review `mutate()`. Create a new variable in `hpi_df` that is equal to `Wellbeing / Footprint`.
+
+**Exercise 3**: Review `mutate()` and `case_when()`. Create a new variable in `hpi_df` that is equal to `"80s"` if `LifeExp` is in the 80's, `"70s"` if `LifeExp` is in the 70s, and `"Below 70"` if `LifeExp` is less than 70.
+
+**Exercise 4**. Review `arrange()`. Sort the `hpi_df` data so that the country with the highest `LifeExp` is in the first row and the country with the lowest `LifeExp` is in the last row.
+
+**Exercise 5**. Review `select()`. Make a data frame from `hpi_df` that only has the variables `Country` and `LifeExp`.
+
+**Exercise 6**. Review `slice()`. Make a data frame from `hpi_df` that only has the first 5 rows.
+
+**Exercise 7**. Review `filter()`. Make a data frame from `hpi_df` that only has countries in the `"Western World"` `Region`.
+
+**Exercise 8**. Review `filter()`. Make a data frame from `hpi_df` that only has countries with a `LifeExp` less than 55.
+
+**Exercise 9**. Review `group_by()` and `summarise()`. Make a table of the number of countries in each `Region`. (Hint: recall that the `n()` function is the counting function in `dplyr`).
+
+**Exercise 10**. Review `group_by()` and `summarise()`. Make a table with the maximum `LifeExp` in each `Region`.
+
+Again, we will see non-`dplyr` functions as well throughout the course, but we will try to review them as they come along. As long as you have a solid `dplyr` base (and, of course a good `ggplot2` base), you should be good to go!
+
+## More Review with Billboard Hot 100
+
+Consider a data set from the `billboard` `R` package, called `wiki_hot_100s`. To access the data set, we first need to install the `billboard` package:
+
+```{r, appendix = TRUE}
+## install.packages("billboard")
+library(billboard)
+head(wiki_hot_100s)
+tail(wiki_hot_100s)
+```
+
+The data set only contains a few variables:
+
+-   `no`, the number on the billboard year end Top 100 (1 - 100)
+-   `title`, the title of the song
+-   `artist`, the artist of the song
+-   `year`, the year of the song
+
+Our first goal with this data set is to create a visualization that shows the most popular artists in the 2000s decade (2000 - 2009). We will use the number of songs the artist had that were in the top 100 throughout the decade as our metric for "popularity."
+
+::: {.callout-important}
+## Important
+
+In creating a more complex data visualization, it is often most helpful to begin by drawing a sketch of the visualization that we want to end up with.
+:::
+
+We will make a sketch as a class and then use our `dplyr`, `ggplot2`, and `forcats` knowledge to make the visualization in `R`.
+
+We will complete this exercise as a class, so make sure to check out the Missed Class GitHub page if you miss class this day.
+
+**Exercise 1**. Sketch out a visualization to show the most popular artists of the decade.
+
+**Exercise 2**. Use `dplyr`, `ggplot2`, `forcats`, and other code to make this plot.
+
+**Exercise 3**. There is a minor flaw in the way that we counted up the number of hits for each artist. Examine the 2nd to last row of the original data set with `tail()` to look at this potential flaw. What is this flaw?
+
+**Exercise 4**. Fix the issue in the previous exercise.
+
+```{r, echo = FALSE, eval = FALSE, results = "hide"}
+wiki_hot_100s |> mutate(artist2 = str_remove(artist, "featuring .*")) |> tail()
+```
+
+**Exercise 5**. Use <a href="https://www.r-graph-gallery.com/301-custom-lollipop-chart.html" target="_blank">this website</a> to customize the end points of your lollipop chart. If you have time, you can explore the other customization options. Make it look fancy!
+
+<br>
+
+## Your Turn
+
+The 2000s is the decade of popular music that I am most familiar with, as it coincided with my middle school and high school years. However, many of you might be more interested in making this plot for the 2010s decade (2010 - 2019). But, note that the author of the `billboard` `R` package has not kept this data set up to date:
+
+```{r, appendix = TRUE}
+max(wiki_hot_100s$year)
+```
+
+Therefore, to make this plot, we need a way to get the data from 2017, 2018, and 2019. Let's first get the billboard hot 100 for a single year<a href="https://en.wikipedia.org/wiki/Billboard_Year-End_Hot_100_singles_of_2017" target="_blank"> from Wikipedia </a>: recall that we can use the `rvest` package to scrape a data table from a website into `R`. See <a href="https://highamm.github.io/datascience234/reprexes-and-import.html#data-scraping-with-rvest" target="_blank">the STAT 234 course materials</a> for a refresher, though data scraping is not the most important topic at this point in the course. The following scrapes the billboard data from 2017 onward using an iterative approach with `purrr`.
+
+::: {.callout-note}
+## Note
+
+You are not responsible for this code, but I left it in here in case you are interested (and, you will need to copy the code and run it to complete the exercise).
+:::
+
+```{r, appendix = TRUE}
+library(rvest)
+library(tidyverse)
+
+## function to scrape data from wikipedia for a particular year
+get_wiki_100 <- function(year) {
+  
+  ## same code as before, replacing 2017 with year.
+  url <- paste0("https://en.wikipedia.org/wiki/Billboard_Year-End_Hot_100_singles_of_", year)
+  
+  h <- read_html(url)
+  
+  tab <- h |> html_nodes("table")
+  df <- tab[[1]] |> html_table() |>
+    mutate(year = year)
+  
+  ## tell our function to return the dataframe `df`
+  return(df) 
+}
+
+## apply the function to the following years
+library(purrr)
+year_list <- list(2017, 2018, 2019, 2020, 2021)
+
+df_all <- purrr::map(year_list, get_wiki_100)
+
+## combine the data frames
+df_2017_present <- bind_rows(df_all)
+df_2017_present <- df_2017_present |>
+  mutate(Title = str_remove_all(Title, pattern = "\"")) |> ## get rid of \ in title
+  rename(no = No., 
+         title = Title, 
+         artist = `Artist(s)`) ## make column names match with billboard package
+
+wiki_tibble <- as_tibble(wiki_hot_100s) |> ## convert billboard data to tibble
+  mutate(year = as.numeric(year),
+         no = as.integer(no)) ## change variable types to match with scraped data
+
+hot100_df <- bind_rows(wiki_tibble, df_2017_present)
+hot100_df
+```
+
+**Exercise 1**. Use the `hot100_df` to make either a lollipop chart of the most popular artists of the 2010s (2010 through 2019). **Important**: It is easy to make this plot by copy-pasting the code we used in class and just changing the years used. However, for a better review, you should try to make this plot **without** looking back at the code for the 2000s plot until you get stuck.
+
+```{r, fig.keep = "none", results = "hide", eval = FALSE, echo = FALSE}
+## Billboard Hot 100 Solution:
+
+df_2000s <- wiki_hot_100s |> as_tibble() |> filter(year >= 2000 & year <= 2009)
+
+## df_2000s |> 
+## mutate(artist2 = str_remove(artist, pattern = " featuring[^.]*$"))
+df_2000s_sum <- df_2000s |> group_by(artist) |>
+  summarise(n = n()) |>
+  arrange(desc(n)) |>
+  slice(1:20) |>
+  mutate(artist = fct_reorder(artist, n))
+
+ggplot(df_2000s_sum, aes(x = artist, y = n)) +
+  geom_col() +
+  coord_flip() +
+  labs(x = "Artist Name", 
+       y = "Number of Songs in Top 100")
+
+ggplot(data = df_2000s_sum, aes(x = artist, y = n)) +
+  geom_point() + 
+  geom_segment(aes(x = artist, xend = artist, y = 0, yend = n)) +
+  coord_flip() +
+  labs(x = "Artist Name", 
+       y = "Number of Songs in Top 100")
+```

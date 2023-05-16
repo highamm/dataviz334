@@ -1,0 +1,227 @@
+# Logistic Model Visualization {#logmodviz}
+
+```{r}
+#| results: "asis"
+#| echo: false
+source("_common.R")
+```
+
+The purpose of this section is to use visualization to give better model interpretations in the context of logistic regression. We will again use the `modelr` package and will again use the overall strategy of model interpretation that we used in the previous section. 
+
+## Logistic Regression Review (Class Prep)
+
+Recall that, if the response variable is categorical with only two levels, then we can fit a logistic regression model. Interpreting the coefficients of a logistic regression model, however, is more challenging than interpreting the fitted coefficients in a standard linear regression model. The interpretations rely on a statement about the multiplicative change in odds, which is generally not very intuitive. 
+
+In this section, we will review the overall logistic regression model, the interpretations of the fitted regression coefficients, and how to fit a logistic regression model in `R`. 
+
+We will use the `titanic` data set, obtained from Kaggle: <https://www.kaggle.com/c/titanic/data>. Each row of the data set is a passenger on the Titanic ship. The columns include:
+
+* `Survived`, a variable that is a `1` if the passenger survived the titanic shipwreck and a `0` if the passenger did not survive.
+* `Pclass`, either `1st`, `2nd`, or `3rd` for the class of the passenger's ticket
+* `Sex`, binary variable for sex of the passenger (`male` or `female`)
+* `Age`, age of the passenger (in years).
+
+```{r}
+library(tidyverse)
+library(here)
+library(broom)
+titanic_df <- read_csv(here("data/titanic.csv"),
+                       col_types = list(Pclass = col_factor())) |>
+  mutate(Pclass = fct_recode(Pclass,
+                             "1st" = "1",
+                             "2nd" = "2",
+                             "3rd" = "3"))
+titanic_df
+```
+
+### Review of Model
+
+We will first consider a model with `Survived` as the response variable and `Age` as the predictor variable. The fact that `Survived` is a binary categorical variable means that standard linear regression would not be appropriate. Recall that, in logistic regression, we model the __log-odds__ of survival:
+
+$$
+log\left(\frac{\pi}{1 - \pi}\right) = \beta_0 + \beta_1 Age,
+$$
+
+where $\pi$ is the probability that the passenger survived. Also, recall that the __odds__ of survival are equal to $\frac{\pi}{(1 - \pi)}$ so that odds are on a scale from 0 to Infinity. We can algebraically solve for $\pi$ as:
+
+$$
+\pi = \frac{\text{exp}(\beta_0 + \beta_1 Age)}{1 + \text{exp}(\beta_0 + \beta_1 Age)},
+$$
+
+
+### Fitting the Model
+
+We can fit the model in `R` with the `glm()` function, which is very similar to `lm()`, except that there is an extra argument `family` to specify that we want to use the `"binomial"` to fit a logistic regression model.
+
+```{r}
+titanic_mod <- glm(Survived ~ Age, data = titanic_df, family = "binomial")
+titanic_mod
+```
+
+The `broom` package functions `augment()`, `tidy()`, and `glance()` can also be used on models fit with `glm()`:
+
+```{r}
+titanic_mod |> tidy()
+```
+
+We can also make a plot of the fitted model (without `modelr`) by using `geom_smooth()` with `method = "glm"`:
+
+```{r}
+ggplot(data = titanic_df, aes(x = Age, y = Survived)) +
+  geom_jitter(height = 0.05) +
+  geom_smooth(method = "glm", method.args = list(family = "binomial")) +
+  theme_minimal()
+```
+
+::: {.callout-warning}
+## Warning
+
+We get a warning that 177 rows have been removed because we do not have `Age` data for 177 of the passengers.
+:::
+
+We also see that the model predicts that older passengers tended to have a lower survival probability.
+
+### Interpreting Coefficients
+
+We next interpret the coefficients from this simple logistic regression model. Because our interpretations involve explanations about odds, these coefficient interpretations are not particularly useful, especially to the general public who use the words "probability" and "odds" somewhat interchangeably (for statisticians, these are different things though!).
+
+```{r}
+titanic_mod |> tidy()
+```
+
+Because this model was linear on the log-odds scale, the interpretation of the `-0.00261` value is linear on the log-odds scale: The model predicts that a one year increase in age is associated with a 0.00261 decrease in the log-odds of survival. 
+
+This interpretation is practically useless: what does it mean to have that amount decrease in log-odds of survival? If we take $e^{-0.00261} = 0.997$, we can interpret the resulting value on the odds scale as a multiplicative change in odds. You likely discussed why you can do this in STAT 213 but we won't focus on it again here. The resulting interpretation is something like "The model predicts that a one year increase in age is associated with a multiplicative change in the odds of survival of 0.997 times." In other words, the model predicts that, for a one year increase in age, odds of survival are the predicted odds of survival of the previous year times 0.997. 
+
+Again, this interpretation is not particularly useful or effective. And, we are in the simplest possible case of logistic regression: a model with just one predictor! Interpretations are even more challenging when there are multiple predictors, interactions, squared terms, etc. The goal of the next section is to use visualization to help communicate model results from logistic regression.
+
+__Exercise 1__. Fit a logistic regression model with `Fare` as a predictor. Obtain summary output with `tidy()` and use `ggplot2` to construct a plot of the model.
+
+__Exercise 2__. Fit a logistic regression model with `Sex` as the predictor. Make an attempt at interpreting the resulting fitted coefficient for `Sex` on either the log-odds scale or the odds scale (keeping in mind that `Sex` is categorical so your interpretation should be comparing odds of survival of female and male passengers).
+
+## Visualizing Logistic Regression Models
+
+To help communicate what a fitted logistic regression model means, in terms of predicted probability (as opposed to predicted odds or log-odds), we will again make use of the `modelr` package. We will use the same overall strategy as the previous section on using `modelr` to visualize models from standard linear regression models. 
+
+Our basic strategy for visualizing models is to
+
+1. fit the model with `glm()`
+
+2. construct a grid of predictor values with the `data_grid()` function from the `modelr` package. 
+
+3. Use the `gather_predictions()` function from the `modelr` package to obtain predicted probabilities according to the model for each row in the grid.
+
+4. Use `ggplot2` to construct a meaningful plot with the predicted probabilities.
+
+::: {.callout-important}
+## Important
+
+The only difference here compared to our strategy for standard linear models is that we want to make a plot of the __predicted probability__ in logistic regression.
+:::
+
+Suppose we fit a logistic regression model with `Survived` as the response variable and `Age`, `Sex`, and `Pclass` as predictor variables:
+
+```{r}
+titanic_large <- glm(Survived ~ Age + Sex + Pclass, data = titanic_df,
+                     family = "binomial")
+titanic_large |> tidy()
+```
+
+
+::: {.callout-note}
+## Note
+
+Let's take a moment to appreciate that interpreting these coefficients in terms of a multiplicative change in odds of survival would be challenging and not that informative. 
+:::
+
+We next use `modelr` to create a grid of predictors that we want to make predictions for and then gather these predictions using the `titanic_large` model:
+
+```{r}
+library(modelr)
+grid <- titanic_df |>
+  data_grid(
+    Age = seq_range(Age, 10),
+    Sex = c("female", "male"),
+    Pclass = c("1st", "2nd", "3rd")
+  ) 
+grid
+```
+
+```{r}
+model_df <- grid |>
+  modelr::gather_predictions(titanic_large) 
+model_df
+```
+
+We will complete the rest of this exercise as a class.
+
+__Exercise 1__. Examine the `pred` column in `model_df`. What are these values? Why are they not between `0` and `1`?
+
+__Exercise 2__. Make a plot of the values of `pred` (without modifying them).
+
+```{r, eval = FALSE, echo = FALSE}
+ggplot(data = model_df, aes(x = Age, y = pred, colour = Sex, group = Sex)) +
+  geom_line(size = 1.5) +
+  facet_wrap(~Pclass) +
+  theme_minimal() +
+  scale_colour_viridis_d()
+```
+
+__Exercise 3__. Convert `pred` to predicted probabilities $\hat{\pi}$ with the following formula. Note that `exp(3.2)` is `R` code from $e^{3.2}$
+
+$$
+\hat{\pi} = \frac{e^{pred}}{(1 + e^{pred})}
+$$
+
+__Exercise 4__: Make the plot again, using predicted probabilities instead of `pred` values.
+
+## Your Turn
+
+__Exercise 1__. Add an `Sex:Pclass` interaction term to the previous model and fit the model with `glm()`.
+
+__Exercise 2__. Use `modelr` to obtain model predictions for both the previous model (without the interaction) and the new model (with the interaction). Convert the resulting `pred` column to predicted probabilities.
+
+__Exercise 3__. Construct a graphic that shows how the two models differ.
+
+
+```{r, echo = FALSE, eval = FALSE}
+grid <- titanic_df |>
+  data_grid(
+    Age = seq_range(Age, 10),
+    Sex = c("female", "male"),
+    Pclass = c("1st", "2nd", "3rd")
+  ) %>% 
+  modelr::gather_predictions(titanic_large) |>
+  mutate(pred_back = exp(pred) / (1 + exp(pred)))
+## get predictions from each model
+
+ggplot(data = grid, aes(x = Age, y = pred_back, colour = Sex, group = Sex)) +
+  
+  geom_line(size = 1.5) +
+  facet_wrap(~ Pclass) +
+  theme_minimal() +
+  scale_colour_viridis_d() +
+  geom_jitter(data = titanic_df, aes(y = Survived, colour = Sex),
+              height = 0.05)
+
+titanic_mod_int <- glm(Survived ~ Age + Sex + Pclass + Sex:Pclass,
+                       data = titanic_df, family = "binomial")
+
+grid <- titanic_df %>% 
+  data_grid(
+    Age = seq_range(Age, 10),
+    Sex = c("female", "male"),
+    Pclass = c("1st", "2nd", "3rd")
+  ) %>% 
+  modelr::gather_predictions(titanic_large, titanic_mod_int) |>
+  mutate(pred_back = exp(pred) / (1 + exp(pred)))
+## get predictions from each model
+
+ggplot(data = grid, aes(x = Age, y = pred_back, colour = Sex, group = Sex)) +
+  
+  geom_line(size = 1.5) +
+  facet_grid(model ~ Pclass) +
+  theme_minimal() +
+  scale_colour_viridis_d() +
+  geom_jitter(data = titanic_df, aes(y = Survived), height = 0.05)
+```

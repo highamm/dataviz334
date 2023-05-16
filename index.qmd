@@ -1,0 +1,193 @@
+# Syllabus and Course Information {.unnumbered}
+
+## General Information
+
+### Instructor Information
+
+* Professor: Matt Higham
+* Office: Bewkes 123
+* Email: mhigham@stlawu.edu
+* Office Hours: 
+    + Office Hours: 15 minute slots bookable at <a href="https://calendly.com/mhigham/prof-higham-office-hours" target="_blank">my calendly page</a>.
+* Sections:
+    + MW 8:50 - 10:20
+
+### Course Materials
+
+* laptop capable of installing `R`, `R Studio`, and `Git`.
+* <a href="" target="_blank">our course website</a> will be the primary source of materials. You can bookmark the site for easy access throughout the semester.
+* we will also use various online resources throughout the semester
+    * we will occasionally use <a href="https://highamm.github.io/ds234_quarto/" target="_blank">these course materials from my STAT/DATA 234 course </a> as a reference.
+    * we will use <a href="https://socviz.co/lookatdata.html" target="_blank">this data visualization book</a> by Kieran Healy a couple of times.
+    * <a href="https://github.com/highamm/dataviz_notes" target="_blank">https://github.com/highamm/dataviz_notes</a> is a GitHub repository that will contain code from class. 
+    
+***
+***
+
+## Course Information
+
+Welcome to DATA/STAT 334: Data Visualization! In this course, we will expand upon DATA/STAT 234 and STAT 213 to focus more on visualizing data and visualizing models. In the 9-10 weeks of the course, we will build a foundation for a more broad, conceptual understanding of data viz and its usefulness. In the final 4-5 weeks of the course, you will focus in-depth on visualizing one or more data sets in an extensive project. 
+
+### General Course Outcomes
+
+1. Explain why it is useful to visualize data in a variety of contexts.
+
+2. Explain what makes a data graphic "good" and what makes a data graphic "poor."
+
+3. Discuss the ethics of various data visualizations.
+
+4. Use `R` and `R Studio` to construct various data visualizations for a variety of data sets.
+
+5. Use visualization to convey the meaning of fitted regression coefficients in statistical models.
+
+6. Use `Git` and `GitHub` for version control and as a way to easily share with others your code and project.
+
+7. Create a larger-scale final project that showcases an in-depth visual analysis of one or more data sets.
+
+### Use of `RStudio` and `GitHub`
+
+We will use the statistical software `R` and the `R Studio` IDE throughout the course for a few reasons:
+
+* `R` and `RStudio` are both free to use.
+* One pre-requisite for this course is DATA/STAT 234, meaning that everyone in this course has some background already with using `R`.
+* `R Studio` has a nice `Git` interface.
+
+In addition to `R Studio`, we will use `Git` and `GitHub` for version control. GitHub will also be the location where you can obtain materials from missing class <a href="https://github.com/highamm/dataviz_notes" target="_blank">link to GitHub repository </a>. We will discuss what these are and why they are useful more in class.
+
+***
+***
+
+## How You Will Be Assessed
+
+There are 1000 total points that can be earned in this course. The primary purpose of the first two-thirds of the course is to give you _breadth_ of knowledge in the topic of data visualization while the primary purpose for the last third of the course is to give you an opportunity to work on a visualization project of interest in sufficient _depth_. The specific components that you will be assessed on are described next.
+
+<br>
+
+### Exercises and GitHub Pushes
+
+There will be __22__ sets of exercises and GitHub pushes, each worth 10 points, with 2 sets dropped for a total of __200 points__. Prior to the project, there will be 14 exercise sets that consist of completing some of our course materials (in the sections called "Class Prep") before class. In the last third of the class, there will be 8 sets of GitHub pushes, where you will submit work on your final project. Exercise sets and project pushes are assessed on completion only, and collaboration on exercise sets is permitted (unless otherwise specified). 
+
+### Class Participation
+
+During the pre-project portion of the class, you will twice fill out a 25 point participation rubric for yourself. The rubric will be shared at the beginning of the semester.
+
+During the eight class sessions in the project portion of the class, you will meet with one or two other students during each class to provide feedback on the current version of your projects, turning in a short form with your feedback. The eight feedback forms are worth 7 points each, with one of them being dropped (so that you're able to miss class for one of these eight classes).
+
+The two 25-point participation rubrics and the seven 7-point feedback forms make up the __100 points__ for class participation (with one free point given to everyone).
+
+### Major, Moderate, and Minor Tests
+
+There will be two minor tests of visualization, each worth __50 points__, one moderate test of visualization woth __100 points__, and two major tests of visualization, each worth __150 points__. Each of these will either be an in-class exam, a take-home exam, or some combination of both. The total number of points for these  is __500 points__. More information will be provided in class.
+
+### Final Project
+
+Finally, there are __200 points__ for the final project. These points will be split amongst a few different components of the final project: details will be provided later in the semester.
+
+### Point Breakdown
+
+Therefore, based on the information above, the point breakdown for the course is:
+
+* 200 points for exercises and project pushes 
+* 100 points for class participation
+* 500 points for assessments 
+* 200 points for final project
+
+Points add up to 1000 so your grade at the end of the semester will be the number of points you've earned across all categories divided by 1000.
+
+## Grading Scale
+
+The following is a _rough_ grading scale. I reserve the right to make any changes to the scale if necessary.
+
+| Grade | 4.0 | 3.75 | 3.5 | 3.25 | 3.0 | 2.75 | 2.5 | 2.25 | 2.0 | 1.75 | 1.5 | 1.25 | 1.0 | 0.0 |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Points | 950-1000 | 920-949 | 890-919 | 860-889 | 830-859 | 810-829 | 770-809 | 750-769 | 720-749 | 700-719 | 670-699 | 640-669 | 600-639 | 0-599 |
+
+***
+***
+
+## Collaboration, Diversity, Accessibility, and Academic Integrity
+
+### Rules for Collaboration
+
+Collaboration with your classmates on the exercises is encouraged, but you must follow these guidelines:
+
+* you must state the name(s) of who you collaborated with at the top of each exercise set.
+* all work must be your own. This means that you should __never__ send someone your code via email or let someone directly type code off of your screen. Instead, you can talk about strategies for solving problems and help or ask someone about a coding error.
+* you may use the Internet and StackExchange, but you also should not copy paste code directly from the website, without citing that you did so.
+
+***
+***
+
+### Diversity Statement
+
+Diversity encompasses differences in age, colour, ethnicity, national origin, gender, physical or mental ability, religion, socioeconomic background, veteran status, sexual orientation, and marginalized groups. The interaction of different human characteristics brings about a positive learning environment. Diversity is both respected and valued in this classroom.
+
+***
+***
+
+### Accessibility Statement
+
+If you have a specific learning profile, medical and or mental health condition and need accommodations, please be sure to contact the Student Accessibility Services Office right away so they can help you get the accommodations you require. If you need to use any accommodations in this class, please meet with your instructor early and provide them with your Individualized Educational Accommodation Plan (IEAP) letter so you can have the best possible experience this semester.
+ 
+Although not required, your instructor would like to know of any accommodations that are needed at least 10 days before a quiz or test. Please be proactive and set up an appointment to meet with someone from the Student Accessibility Services Office.
+ 
+__Color-Vision Deficiency:__ If you are Color-Vision Deficient, the Student Accessibility Services office has on loan glasses for students who are color vision deficient.  Please contact the office to make an appointment.
+ 
+For more specific information about setting up an appointment with Student Accessibility Services please see the listed options below:
+ 
+* Telephone: 315.229.5537
+* Email: studentaccessibility@stlawu.edu 
+
+For further information about Student Accessibility Services you can check the website at: <https://www.stlawu.edu/student-accessibility-services>
+ 
+***
+***
+
+### Academic Dishonesty
+
+Academic dishonesty will not be tolerated. Any specific policies for this course are supplementary to the
+
+Honor Code. According to the St. Lawrence University Academic Honor Policy,
+
+1. It is assumed that all work is done by the student unless the instructor/mentor/employer gives specific permission for collaboration.
+2. Cheating on examinations and tests consists of knowingly giving or using or attempting to use unauthorized assistance during examinations or tests.
+3. Dishonesty in work outside of examinations and tests consists of handing in or presenting as original work which is not original, where originality is required.
+
+*Claims of ignorance and academic or personal pressure are unacceptable as excuses for academic dishonesty.* Students must learn what constitutes one&#39;s own work and how the work of others must be acknowledged.
+
+For more information, refer to [www.stlawu.edu/acadaffairs/](../../C:%5CUsers%5Ciramler%5CAppData%5CLocal%5CTemp%5Cwww.stlawu.edu%5Cacadaffairs%5Cacademic_honor_policy.pdf)[**academic**](../../C:%5CUsers%5Ciramler%5CAppData%5CLocal%5CTemp%5Cwww.stlawu.edu%5Cacadaffairs%5Cacademic_honor_policy.pdf)[\_](../../C:%5CUsers%5Ciramler%5CAppData%5CLocal%5CTemp%5Cwww.stlawu.edu%5Cacadaffairs%5Cacademic_honor_policy.pdf)[**honor**](../../C:%5CUsers%5Ciramler%5CAppData%5CLocal%5CTemp%5Cwww.stlawu.edu%5Cacadaffairs%5Cacademic_honor_policy.pdf)[\_policy.pdf](../../C:%5CUsers%5Ciramler%5CAppData%5CLocal%5CTemp%5Cwww.stlawu.edu%5Cacadaffairs%5Cacademic_honor_policy.pdf).
+
+To avoid academic dishonesty, it is important that you follow all directions and collaboration rules and ask for clarification if you have any questions about what is acceptable for a particular assignment or exam.  If I suspect academic dishonesty, a score of zero will be given for the entire assignment in which the academic dishonesty occurred **for all individuals involved** and Academic Honor Council will be notified. If a pattern of academic dishonesty is found to have occurred, a grade of 0.0 for the entire course can be given.
+
+It is important to work in a way that maximizes your learning. Be aware that students who rely too much on others for the homework and projects tend to do poorly on the quizzes and exams.
+
+_Please note that in addition the above, any assignments in which your score is reduced due to academic dishonesty will not be dropped according to the quiz policy e.g., if you receive a zero on a quiz because of academic dishonesty, it will not be dropped from your grade._
+
+***
+***
+
+## Tentative Schedule
+
+| Week | Date | Topics |
+| ---- | ----------- | ----------------------------------------- |
+| 0 | 1/17  | Core Concepts |
+| 1 | 1/22 | Core Concepts and Introduction to Git and GitHub |
+| 2 | 1/29 | DATA/STAT 234 Review and Minor Assessment |
+| 3 | 2/5 | Mapping and Expressing Uncertainty |
+| 4 | 2/12 | Other Topics and Major Assessment |
+| 5 | 2/19| STAT 213 Review and Model Visualization |
+| 6 | 2/26 | Logistic Regression and Minor Assessment|
+| 7 | 3/4 | Ethics and Interactivity |
+| 8 | 3/11 | Project Introduction and Major Assessment|
+||||
+|  | 3/18 | Spring Break |
+||||
+| 9 | 3/25 | Shiny Introduction |
+| 10 | 4/2 | Shiny Reactivity and Moderate Assessment |
+| 11 | 4/9 | Project |
+| 12 | 4/16 | Project |
+| 13 | 4/23 | Project |
+| 14 | 4/30 | Project |
+||||
+
+* There will be no Final Exam, but keep your schedule open at our Final Exam time in case we decide to use it for something. 

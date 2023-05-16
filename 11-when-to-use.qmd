@@ -1,0 +1,180 @@
+# Introduction to Interactivity {#interactintro}
+
+```{r}
+#| results: "asis"
+#| echo: false
+source("_common.R")
+```
+
+## Leaflet (Class Prep)
+
+Leaflet is a useful tool to make interactive maps. It is powered by JavaScript but the `R` package `leaflet` lets us take advantage of many of its features. The purpose of this section is to show what kinds of interactive maps we can make with `leaflet`, but we will not learn all of the details or the customization options of the `leaflet` package.
+
+The following code is slightly modified from <a href="https://www.linearfragility.com/post/2021-04-09-mapping-breweries-in-us-with-leaflet-in-r/" target="_blank">a blog called Linear Fragility</a>. The goal is to make a map of breweries across the United States that appear in <https://thebeermonthclub.com/>. The data comes <a href="https://www.kaggle.com/brkurzawa/us-breweries" target="_blank">from Kaggle</a> and contains information on 2497 breweries across the United States.
+
+Before we proceed to making the map, we note that, in the blog post, the writer mentions that he uses an `R` package on his GitHub site. 
+
+::: {.callout-important}
+## Important
+
+Not all `R` packages are submitted to CRAN and are readily installable. But anyone can write their own `R` package and **not** submit it to CRAN, which is where packages are stored that can be installed with `install.packages()`. 
+:::
+
+
+A popular place to store such a package is a GitHub site: <https://github.com/li-wen-li/uszipcodes>. Packages on GitHub are not checked by anyone, so they may or may not actually work, but many are still reliable.
+
+To install a package from GitHub, we can use the `devtools` package. The `name_of_package::name_of_function()` is syntax used when we want to denote the package that a particular function comes from. For example, we might use `dplyr::filter()` to let the reader of our code know that the `filter()` function is in the `dplyr` package.
+
+```{r, appendix = TRUE}
+## install.packages("devtools")
+library(devtools)
+## devtools::install_github("li-wen-li/uszipcodes")
+library(uszipcodes)
+```
+
+Next, we can read in the beer data set:
+
+```{r, appendix = TRUE}
+library(tidyverse)
+beers <- read_csv("data/breweries.csv") 
+```
+
+Variables include the `brewery_name`, `type`, `address`, and `state`. But, you'll notice that the `beers` data set does not include any spatial coordinates that give the locations of the breweries. There is, however, a variable called `address`: we will use the `uszipcodes` package to extract the zip code from the `address` variable so that we can map a brewery to its zip code.
+
+```{r, appendix = TRUE}
+raw_zip <- uszipcodes::get_zip(beers$address)
+beers$Zip <- as.integer(uszipcodes::clean_zip(raw_zip))
+```
+
+When you run the code to add the variable `Zip` to the `beers` data set, you'll notice that you'll get a warning that there are some `NA` values that were introduced. The functions are not perfect: there are some zip codes that were not properly extracted from the address. 
+
+Finally, we join the zip codes, along with their latitudes and longitudes, to the `beers` data:
+
+```{r}
+## only keep zip, lat, and long
+zip_tab <- zip_table |> dplyr::select(Zip, Latitude, Longitude)
+beer_location <- inner_join(beers, zip_tab)
+beer_location
+```
+
+The next part of the code makes the `content` data set, which adds a variable called `popup` that contains the brewery website and name. This variable eventually contains the values the "pop up" on the map when we hover over a data point.
+
+```{r, appendix = TRUE}
+content <- beer_location |>
+  mutate(popup = paste0('<a href =', beer_location$website, '>',
+                        beer_location$brewery_name, '</a>'))
+```
+
+The remaining code comes from the `leaflet` package. As usual, it is helpful to run the code "pipe by pipe" to see what each piece is doing.
+
+```{r, appendix = TRUE}
+library(leaflet)
+
+beer_map <- leaflet(beer_location) |>
+  setView(lng = -98.583, lat = 39.833, zoom = 4) |>
+  addTiles() |>
+  addProviderTiles(providers$Wikimedia) |>
+  addMarkers(lng = beer_location$Longitude, lat = beer_location$Latitude,
+             clusterOptions = markerClusterOptions(),
+             popup = content$popup)
+```
+
+```{r}
+beer_map
+```
+
+**Exercise 1**. Why is `inner_join()` the most appropriate join function to use here in this example? What observations will an `inner_join()` get rid of from `beers`? from `zip_tab`?
+
+__Exercise 2a__. Run `leaflet(beer_location) |> setView(lng = -98.583, lat = 39.833, zoom = 4)` and explain what the `setView()` function does.
+
+__Exercise 2b__.  Run `leaflet(beer_location) |> setView(lng = -98.583, lat = 39.833, zoom = 4) |> addTiles()` and explain what the `addTiles()` function does.
+
+__Exercise 2c__. Run `leaflet(beer_location) |> setView(lng = -98.583, lat = 39.833, zoom = 4) |> addTiles() |> addProviderTiles(providers$Wikimedia)` and explain what the `addProviderTiles()` function does. You may also want to check out the help `?addProviderTiles`.
+
+__Exercise 2d__. Run `leaflet(beer_location) |> setView(lng = -98.583, lat = 39.833, zoom = 4) |> addTiles() |> addProviderTiles(providers$Wikimedia) |> addMarkers(lng = beer_location$Longitude, lat = beer_location$Latitude)` and explain what the `addMarkders()` function does.
+
+__Exercise 2e__. Run the code in Exercise 2d, but add `clusterOptions = markerClusterOptions()` as an argument to `addMarkers()`. Explain what adding this argument does to the map.
+
+__Exercise 2f__. Finally, run the code in Exercise 2e but add `popup = content$popup` as an argument to `addMarkers()`. Explain what adding this argument does to the map.
+
+**Exercise 3**. Examine <a href="http://leaflet-extras.github.io/leaflet-providers/preview/" target="_blank">this link\></a> to look at various "provider" tiles (in the scroll bar on the right-hand side of the page). Choose one to change from Wikimedia and explain how the resulting map looks different.
+
+## `plotly` Introduction
+
+The `plotly` `R` package lets us modify a static (non-interactive) graph to become interactive. This is useful if we **don't** have any one particular point that we want to highlight or label but we **do** want to allow the user to explore data that cannot be easily communicated on the plot. Like `leaflet`, `plotly` can be used in other software (Python, Julia, etc.) and can be used to make almost any plot interactive in this way.
+
+To use `plotly`, we need to first install the package and load it (along with `tidyverse`) into our current `R` session:
+
+```{r, appendix = TRUE}
+## install.packages("plotly")
+library(plotly)
+library(tidyverse)
+```
+
+Recall the Happy Planet Index data set, where we constructed a scatterplot of `Wellbeing` vs. carbon `Footprint`:
+
+```{r}
+hpi_df <- read_csv("data/hpi-tidy.csv")
+ggplot(data = hpi_df, aes(x = Footprint, y = Wellbeing)) +
+  geom_point() +
+  theme_minimal()
+```
+
+If we were interested in labeling __1__ particular country, then we can do so with `geom_label()` or `geom_label_repel()`. But, if we want the user to be able to hover over any point in the scatterplot to see the name of the country, we can use `plotly`.
+
+First, we assign out plot a name so that we can reference it with a plotly function. In this example, we name our plot `plot1`.
+
+```{r, appendix = TRUE}
+plot1 <- ggplot(data = hpi_df, aes(x = Footprint, y = Wellbeing)) +
+  geom_point() +
+  theme_minimal()
+```
+
+Then, we can use the `ggplotly()` function on our plot to make it interactive.
+
+```{r, appendix = TRUE}
+ggplotly(plot1)
+```
+
+Simple! However, by default, plotly labels the points with their x and y values, not by another variable in the data set. We need to add a `label` `aes()` to our plot and then use the `tooltip` argument in `ggplotly()` to specify that points should be labeled by what we specified in the `label` aesthetic.
+
+```{r, appendix = TRUE}
+plot1 <- ggplot(data = hpi_df, aes(x = Footprint, y = Wellbeing,
+                                   label = Country)) +
+  geom_point() +
+  theme_minimal()
+```
+
+```{r, appendix = TRUE}
+ggplotly(plot1, tooltip = "label")
+```
+
+Your plot should now be interactive and label the points by their country: sick! The syntax for `ggplotly()` might seem kind of odd now, but, because it's consistent for all types of plots (specifying a label aesthetic and then using `tooltip = "label"`), it's actually a pretty simple package to use!
+
+**Exercise 1**. Use the `ggplotly()` function on any bar plot that we've made so far in the course.
+
+**Exercise 2**. Use the `ggplotly()` function on any side-by-side box plots that we've made so far in the course.
+
+**Exercise 3**. Use the `ggplotly()` function on any faceted plot that we've made so far in the course.
+
+**Exercise 4**. Use the `ggplotly()` function on any plot of your choice that we've made so far in the course. For this exercise, really try to think about a plot that would benefit from becoming interactive.
+
+__Exercise 5__. You can also remove hover info for particular items with the `style()` function. In particular, specifying `hoverinfo == "none"` for particular `traces` removes the hover info for those `traces`. Modify one of the following examples so that hover info is __only__ displayed for the points (and not for the smoother or the standard error bar for the smoother).
+
+```{r}
+plot_test <- ggplot(hpi_df, aes(x = Footprint, y = Wellbeing)) +
+  geom_point() +
+  geom_smooth()
+
+
+ggplotly(plot_test) |>
+  style(hoverinfo = "none", traces = c(1, 2, 3)) ## remove hover info for all three traces
+
+ggplotly(plot_test) |>
+  style(hoverinfo = "none", traces = c(3)) ## remove hover info for se line
+```
+
+## Your Turn
+
+**Exercise 1**. What are some advantages of making a plot more interactive? What are some disadvantages of making a plot more interactive?
+

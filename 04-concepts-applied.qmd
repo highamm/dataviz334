@@ -1,0 +1,300 @@
+# Applied Concepts {#intro}
+
+```{r}
+#| results: "asis"
+#| echo: false
+source("_common.R")
+```
+
+The purpose of this section is to apply some of the concepts from the Healy reading to graphs that we make in R. The code for each visualization is given here, but the code is not the focus for this particular section. Before we look at some visualizations in `R`, we will finish up the first chapter of the Healy book to introduce more fundamental visualization concepts.
+
+## More Data Visualization Concepts (Class Prep)
+
+Read Sections 1.3 - 1.7 of Kearen Healy's *Data Visualization: A Practical Introduction*, found <a href="https://socviz.co/lookatdata.html" target="_blank">here</a>. As you read, answer the following questions in just 1 to 2 sentences.
+
+1.  What is the difference between a colour's hue and a colour's intensity?
+
+<br>
+
+2.  Think of an example where you would want to use a sequential colour scale that's different from the one given in the text. Then, think of examples where you would use a diverging colour scale and an unordered colour scale.
+
+<br>
+
+3.  Some gestalt inferences take priority over others. Using Figure 1.21, give an example of a gestalt inference that takes priority over another one.
+
+<br>
+
+4.  "Bar charts are better than Pie charts for visualizing a single categorical variable." Explain how results shown in Figure 1.23 support this claim.
+
+<br>
+
+5.  Suppose you have a scatterplot of height on the y-axis vs. weight on the x-axis for people born in Canada, Mexico, and the United States. You now want to explore whether the relationship is different for people born in the United States, people born in Canada, and people born in Mexico. Should you use different shapes to distinguish the three countries or should you use different colours? Explain using either Figure 1.24 or 1.25.
+
+<br>
+
+6.  When might you use the left-side of Figure 1.27 to show the law school data? When might you use the right-side of Figure 1.27 to show the law school data?
+
+<br>
+
+7.  Summary: What are two takeaways from Sections 1.3-1.7?
+
+8.  What is one question that you have about the reading?
+
+## Examples
+
+We will examine pairs of visualizations. For each pair, we will (1) decide if there is a superior visualization for that context and (2) relate our decision, as much as possible, to the concepts from the Healy reading. These situations are certainly not meant to cover all scenarios you will run into while visualizing data. Instead, they cover a few common situations.
+
+We will use the `penguins` data set from the `palmerpenguins` package. Each row corresponds to a particular penguin. Categorical variables measured on each penguin include `species`, `island`, `sex`, and `year`. Quantitative variables include `bill_length_mm`, `bill_depth_mm`, and `body_mass_g`.
+
+__Example 1__: Examine the following plots, which attempt to explore how many different penguins were measured in each year of the study for each species. 
+
+```{r}
+library(tidyverse)
+library(palmerpenguins)
+penguins_sum <- penguins |> group_by(species, year) |>
+  summarise(n_penguins = n()) |>
+  mutate(year = factor(year))
+
+ggplot(data = penguins_sum, aes(x = year, fill = species)) +
+  geom_col(aes(y = n_penguins)) +
+  theme_minimal() +
+  scale_fill_viridis_d()
+
+ggplot(data = penguins_sum, aes(x = year, y = n_penguins,
+                                colour = species, group = species)) +
+  geom_line() +
+  theme_minimal() +
+  scale_colour_viridis_d()
+```
+
+Which plot is preferable? Can you relate your choice to a concept in the reading?
+
+<br>
+
+__Example 2__: The following plots examine the number of penguins in each species in the data set. 
+
+```{r}
+ggplot(data = penguins, aes(x = species)) +
+  geom_bar(fill = "darkslategray4") +
+  theme_minimal()
+
+ggplot(data = penguins, aes(x = species)) +
+  geom_bar(fill = "darkslategray4") +
+  coord_cartesian(ylim = c(50, 160)) +
+  theme_minimal()
+```
+
+Which plot is preferable? Can you relate your choice to a concept in the reading?
+
+<br>
+
+__Example 3__: The following plots examine the distribution of `body_mass_g` for each `species` of penguin.
+
+```{r}
+library(ggbeeswarm)
+ggplot(data = penguins, aes(x = species, y = body_mass_g)) +
+  geom_beeswarm(alpha = 0.7) +
+  theme_minimal()
+
+ggplot(data = penguins, aes(x = species, y = body_mass_g)) +
+  geom_beeswarm(alpha = 0.7) +
+  theme_minimal() +
+  ylim(c(0, 6500))
+```
+
+Which plot is preferable? Can you relate your choice to a concept in the reading?
+
+<br>
+
+__Example 4__: The following plots explore whether to use `colour` or faceting to explore three (or more) variables in a data set. 
+
+::: {.callout-tip}
+## Tip
+
+Whether you want to use colour or use faceting often depends on two things:
+
+-   how many categories are there? The more categories, the better faceting is, in general.
+-   how clumped are points within one category? If each category has nicely clumped points, colour works better, but, if there is a lot of overlap across categories, faceting generally works better.
+:::
+
+__Pair 1__. These plots are meant to explore the relationship between bill depth and bill length for each species of penguin.
+
+```{r, appendix = TRUE}
+ggplot(data = penguins, aes(x = bill_length_mm, y = bill_depth_mm)) +
+  geom_point(aes(colour = species)) +
+  scale_colour_viridis_d() +
+  theme_minimal()
+
+ggplot(data = penguins, aes(x = bill_length_mm, y = bill_depth_mm)) +
+  geom_point() +
+  facet_wrap( ~ species) +
+  theme_minimal() 
+```
+
+Which plot is preferable? Why?
+
+<br>
+
+__Pair 2__: These plots are meant to explore the relationship between bill length and bill depth for each species-island-sex combination. 
+
+```{r}
+penguins <- penguins |> mutate(species_island_sex = interaction(species, 
+                                                                island,
+                                                                sex))
+ggplot(data = penguins |>
+         filter(!is.na(sex)), aes(x = bill_length_mm, y = bill_depth_mm)) +
+  geom_point(aes(colour = species_island_sex)) +
+  scale_colour_viridis_d() +
+  theme_minimal()
+
+ggplot(data = penguins |> filter(!is.na(sex)), 
+                                 aes(x = bill_length_mm, y = bill_depth_mm)) +
+  geom_point() +
+  facet_wrap(~ species_island_sex) +
+  theme_minimal()
+```
+
+Both plots can be improved upon but which plot is preferable? Why?
+
+On a sheet of paper, sketch out an improved plot to investigate these variables.
+
+```{r}
+#| echo: false
+#| eval: false
+ggplot(data = penguins |> filter(!is.na(sex)), 
+                                 aes(x = bill_length_mm, y = bill_depth_mm)) +
+  geom_point(aes(colour = sex)) +
+  facet_grid(species ~ island) +
+  theme_minimal() +
+  scale_colour_viridis_d()
+```
+
+<br>
+
+__Example 5__: The following plots look at the distribution of `island`.
+
+```{r}
+ggplot(data = penguins, aes(x = island)) +
+  geom_bar(fill = "darkslategray4") +
+  theme_minimal()
+
+penguins_island <- penguins |> count(island)
+ggplot(penguins_island, aes(x = "", y = n, fill = island)) +
+  geom_bar(stat = "identity", width = 1, colour = "white") +
+  coord_polar("y", start = 0) +
+  
+  theme_void() +
+  scale_fill_viridis_d()
+```
+
+Which plot is preferable? Can you relate your choice to a concept in the reading?
+
+<br>
+
+__Example 6__: The following plot uses the Happy Planet Index data to show the top 10 and bottom 10 countries for the `HappyPlanetIndex` variable, a variable that is meant to measure how "happy" its citizens while taking into account how the average citizen from that country affects our planet. 
+
+```{r}
+library(tidyverse)
+hpi_df <- read_csv("data/hpi-tidy.csv")
+hpi_extreme <- hpi_df |>
+  arrange(desc(HappyPlanetIndex)) |>
+  slice(1:10, (nrow(hpi_df) - 9):nrow(hpi_df)) |>
+  mutate(Country = fct_reorder(Country, HappyPlanetIndex))
+
+ggplot(data = hpi_extreme, aes(x = Country, y = HappyPlanetIndex,
+                               fill = Region)) +
+  geom_col() +
+  scale_fill_viridis_d() +
+  coord_flip() +
+  theme_minimal()
+
+ggplot(data = hpi_extreme, aes(x = Country, y = HappyPlanetIndex,
+                               colour = Region)) +
+  geom_point() +
+  geom_segment(aes(xend = Country, y = 0, yend = HappyPlanetIndex)) +
+  scale_colour_viridis_d() +
+  coord_flip() +
+  theme_minimal()
+```
+
+Which plot is preferable? Can you relate your choice to a concept in the reading?
+
+<br>
+
+__Example 7__: The final few examples discuss the choice of colour palettes when using colour in visualizations. We want to use our graphics to communicate with others as clearly as possible. We also want to be as inclusive as possible in our communications. This means that, if we choose to use colour, our graphics should be made so that a colour-vision-deficient (CVD) person can read our graphs. 
+
+::: {.callout-note}
+## Note
+
+About 4.5% of people are colour-vision-deficient, so it's actually quite likely that a CVD person will view the graphics that you make (depending on how many people you share it with) <a href="http://www.colourblindawareness.org/colour-blindness/#:~:text=What%20is%20colour%20blindness%3F,most%20of%20whom%20are%20male" target="_blank">reference here</a>.
+:::
+
+The colour scales from `R Colour Brewer` are readable for common types of CVD. A list of scales can be found <a href="https://www.datanovia.com/en/wp-content/uploads/dn-tutorials/ggplot2/figures/0101-rcolorbrewer-palette-rcolorbrewer-palettes-1.png" target="_blank">here</a>.
+
+You've already read about different types of colour ordering in our course reading. We see some scales for each of the three categories (sequential, diverging, and unordered) in `R Colour Brewer`. You would typically use the top scales if the variable you are colouring by is ordered sequentially (called `seq` for sequential), the bottom scales if the variable is diverging (called `div` for diverging, like Republican / Democrat lean so that the middle is colourless), and the middle set of scales if the variable is not unordered and is categorical (called `qual` for qualitative like the names of different treatment drugs for a medical experiment).
+
+```{r}
+ggplot(data = penguins, aes(x = bill_length_mm, y = bill_depth_mm)) +
+  geom_point(aes(colour = species)) +
+  theme_minimal() +
+  scale_colour_brewer(type = "seq")
+
+ggplot(data = penguins, aes(x = bill_length_mm, y = bill_depth_mm)) +
+  geom_point(aes(colour = species)) +
+  theme_minimal() +
+  scale_colour_brewer(type = "div")
+
+ggplot(data = penguins, aes(x = bill_length_mm, y = bill_depth_mm)) +
+  geom_point(aes(colour = species)) +
+  theme_minimal() +
+  scale_colour_brewer(type = "qual")
+```
+
+For this example, which scale makes the most sense: `seq`, `div`, or `qual`? Why?
+
+Another colour and fill scale package is the `viridis` package. The base `viridis` functions automatically load with `ggplot2` so there's no need to call the package with `library(viridis)`. The `viridis` colour scales were made to be both aesthetically pleasing, CVD-friendly, and visible when printed to black-and-white. We've used the viridis colour scale in many examples already but another example is given below, in which the default `option` argument is changed to another scale called `"plasma"`. The `viridis` colour scales can either be used as sequential colour scales or qualitative colour scales, but I do not believe they have any colour scales that would work well for diverging colours.
+
+```{r, appendix = TRUE}
+ggplot(data = hpi_df, aes(x = Footprint, y = HappyLifeYears,
+                          colour = Region)) +
+  geom_point() +
+  scale_colour_viridis_d(option = "plasma") +
+  theme_minimal()
+```
+
+## Your Turn
+
+__Exercise 1__. Consider a data set on Covid 19 cases in counties across the United States. For each county, we have the following variables:
+
+* number of cases
+* change in the number of cases from the previous week of the year (negative if cases have decreased, positive if cases have increased)
+* whether the county voted Republican or Democrat in the most recent presidential election
+* population population change in the last decade (a 1.2% change would indicate that the population in the county increased by 1.2%)
+
+Now suppose that you want to construct map of the counties, filling the area of the county with one of the variables. 
+
+a. For the number of cases variable, would you use a sequential, diverging, or qualitative fill colour scale?
+
+b. For the change in the number of cases variable, would you use a sequential, diverging, or qualitative fill colour scale?
+
+c. For the political party variable, would you use a sequential, diverging, or qualitative fill colour scale?
+
+d. For the percent population change variable, would you use a sequential, diverging, or qualitative fill colour scale?
+
+<br>
+
+**Exercise 2**. Read the examples section of the Help file for `?scale_colour_viridis_d` and examine the difference between `scale_colour_viridis_d()`, `?scale_colour_viridis_c()`, and `scale_colour_viridis_b()`. Explain what the difference is between the three functions.
+
+__Exercise 3__ We can also specialize the plot's **theme**. There are a ton of options with the `theme()` function to really specialise your plot. 
+
+Consider the coloured scatterplot of the Happy Planet Index data:
+
+```{r, appendix = TRUE}
+ggplot(data = hpi_df, aes(x = Footprint, y = Wellbeing, colour = Region)) +
+  geom_point()
+```
+
+Using only options in `theme()` or options to change colours (`scale_colour_manual()`), shapes, sizes, etc., create the ugliest possible `ggplot2` graph that you can make. You may not change the underlying data for this graph, and the final version of the graph must still be interpretable (e.g. you can't get rid of or obstruct the points so much that you can no longer see the pattern). The goal here is to investigate some of the options given in `theme()` and the other `scales`, and to have a brief refresher on the structure and syntax of `ggplot()`.
+
+You can examine all of the theme options here: <a href="https://ggplot2.tidyverse.org/reference/theme.html" target="_blank">https://ggplot2.tidyverse.org/reference/theme.html</a>. Note that there are examples at the very bottom of the page that might be helpful to take a look at.
+

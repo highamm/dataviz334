@@ -1,0 +1,229 @@
+# Expressing Variability/Uncertainty {#uncertainty}
+
+```{r}
+#| results: "asis"
+#| echo: false
+source("_common.R")
+```
+
+Expressing variability is usually important to do in visualizations. In this section, we will explore why graphs that express variability are generally better than graphs that do not using a couple of examples.
+
+## Are Bar Plots Bad? (Class Prep)
+
+Read <a href="https://www.nature.com/articles/520589f" target="_blank">this short article</a> from the *Nature* scientific journal, arguing that bar charts "should be purged from much of the scientific literature."
+
+But, we've constructed a few bar plots (and lollipop plots) throughout this course. Have we been making a major mistake?
+
+In some contexts, bar plots **are** very bad. In general, when they are used to represent summary statistics from continuous variables (like a plot of the sample mean for each level of a categorical variable), they can obscure a lot of the underlying data's relevant features, including the distribution shape and the sample size. But perhaps most importantly, they obscure any **variability** in the data. We will see some examples of this in the examples below.
+
+We have used bar plots or lollipop plots to graph counts of categorical variables. In general, using bar plots to represent counts or proportions is still perfectly fine!
+
+I would be remiss if I did not include the Pokemon data set at least once in this course. So, here it is! Suppose that we want to compare heights of a few different types of pokemon: `Bug`, `Electric`, `Fighting`, `Flying`, `Grass`, and `Steel` pokemon. To do so, we will make a bar plot of the average height of each type with the code below:
+
+```{r, appendix = TRUE}
+library(tidyverse)
+pokemon_df <- read_csv("data/pokemon_full.csv")
+pokemon_height <- pokemon_df |> 
+  filter(Type %in% c("Bug", "Electric", "Fighting", "Flying",
+                     "Grass", "Steel")) |>
+  group_by(Type) |>
+  summarise(avg_height = mean(height)) |>
+  mutate(Type = fct_reorder(Type, avg_height))
+
+ggplot(data = pokemon_height, aes(x = Type, y = avg_height)) +
+  geom_col() +
+  coord_flip()
+```
+
+From this graph, it might be tempting to conclude that, on average, `Steel` type pokemon are the tallest while the other types have approximately equal average height. In particular, it looks like `Steel` type Pokemon have **twice** the height of `Bug` type Pokemon, on average.
+
+**Exercise 1**. What **can't** we see from this graphic that would be useful?
+
+**Exercise 2**. Make a different plot that shows more relevant features about the distribution of the `height` variable in each Pokemon type.
+
+This issue is very **easy** to find in other real data sets. As a second example, consider a baseball data set that graphs the median number of homeruns for each player position from a set of Major League Baseball players in the year 2018.
+
+```{r, appendix = TRUE}
+## install.packages("openintro")
+library(openintro)
+data(mlb_players_18)
+mlb_sum <- mlb_players_18 |> group_by(position) |>
+  summarise(med_hr = median(HR)) |>
+  mutate(position = fct_reorder(position, med_hr))
+ggplot(data = mlb_sum, aes(x = position, y = med_hr)) +
+  geom_col() +
+  coord_flip()
+```
+
+**Exercise 3**. "Fix" the previous plot to show the underlying variability in the number of homeruns for each player position by making a set of boxplots.
+
+**Exercise 4**.
+
+Consider a news channel covering a developing hurricane. Which of these types of graphs would better help the general public with the potential variability of the hurricane's path?
+
+<a href="https://s.abcnews.com/images/US/dorian-spagh-01-as-ht-190831_hpEmbed_16x9_992.jpg" target="_blank">Option 1</a>
+
+OR
+
+<a href="https://www.gannett-cdn.com/presto/2020/08/22/PNDN/0dc22b42-a96f-48e5-9427-49026950ff05-205347.png?width=660&height=542&fit=crop&format=pjpg&auto=webp" target="_blank">Option 2</a>
+
+**Exercise 5**.
+
+Next, consider fivethirtyeight.com's coverage of the 2020 presidential election. Much of their <a href="https://projects.fivethirtyeight.com/2020-election-forecast/" target="_blank">forecast given on this page</a> can be simply summarised by saying they predict Biden to win the election with 89% probability. So, why make the supplementary graphics that say the same thing but use a lot more space?
+
+<br>
+
+## STAT 113 Survey
+
+You may recall from taking STAT 113 that you completed a survey at the beginning of the semester. Responses from the survey were then used in some examples throughout the semester. We will explore some of these surveys from the past few years, examining different trends in some of the variables through time. For this example, we will also pay particular attention to making sure that our graphics show the underlying variability in the data.
+
+To begin, read in the data set:
+
+```{r, appendix = TRUE}
+statsurvey_df <- read_csv("data/stat113_survey.csv")
+```
+
+The data set has many variables. Some that we will use are:
+
+-   `time_both`, the semester and year the survey was taken
+-   `GPA`, the current GPA of the student
+-   `Tattoo`, whether or not the student has a Tattoo
+-   `TV`, the amount of time spent watching TV per week
+-   `Facebook`, the number of Facebook friends
+
+Using this data set, we answer some interesting questions. First, is there evidence of grade inflation at SLU? That is, is there evidence that student GPAs have increased over time?
+
+```{r, echo = FALSE, results = "hide", fig.keep = "none"}
+ggplot(data = statsurvey_df, aes(x = time_both, fill = Tattoo)) +
+  geom_bar(position = "fill")
+
+statsurvey_df <- statsurvey_df |> arrange(time_year, desc(time_semester)) |>
+  mutate(time_both = fct_inorder(time_both))
+```
+
+```{r, echo = FALSE, results = "hide", fig.keep = "none"}
+gpa_means <- statsurvey_df |> group_by(time_both) |>
+  filter(!is.na(GPA)) |>
+  summarise(meanGPA = mean(GPA, na.rm = TRUE),
+            nstudent = n(),
+            sdGPA = sd(GPA, na.rm = TRUE)) |>
+  mutate(se = sdGPA / sqrt(nstudent),
+         l_se = meanGPA - se,
+         u_se = meanGPA + se)
+ggplot(data = statsurvey_df |> filter(GPA <= 4.0), aes(x = time_both, y = GPA)) +
+  geom_point(alpha = 0.1) +
+  geom_point(data = gpa_means, aes(x = time_both, y = meanGPA), colour = "red") +
+  geom_errorbar(data = gpa_means, aes(y = meanGPA, ymin = l_se, ymax = u_se))
+```
+
+## Your Turn
+
+__Exercise 1__. Is there evidence from the STAT 113 survey that tattoos have become more or less common (at least among SLU students)? Construct a plot that shows the proportion of students who have a Tattoo in each semester from the STAT 113 survey, along with standard error bars for the estimate in each semester (calculated using the formula $SE  = \sqrt{\frac{\hat{p}(1 - \hat{p})}{n}}$).
+
+```{r, echo = FALSE, eval = FALSE}
+ggplot(data = statsurvey_df, aes(x = time_both, fill = Tattoo)) +
+  geom_bar(position = "fill")
+
+statsurvey_nomiss <- statsurvey_df |> filter(!is.na(Tattoo))
+
+tattoo_sum <- statsurvey_nomiss |> group_by(time_both, Tattoo) |>
+  summarise(nstudents = n()) |>
+  ungroup() |>
+  group_by(time_both) |>
+  mutate(totalstudents = sum(nstudents)) |>
+  ungroup() |> filter(Tattoo == "Yes") |>
+  mutate(prop_tattoo = nstudents / totalstudents) |>
+  mutate(se = sqrt(prop_tattoo * (1 - prop_tattoo) / totalstudents),
+         l_se = prop_tattoo - se,
+         u_se = prop_tattoo + se)
+
+ggplot(data = tattoo_sum, aes(x = time_both, y = prop_tattoo)) +
+  geom_point() +
+  geom_errorbar(aes(ymin = l_se, ymax = u_se))
+```
+
+::: {.callout-note collapse="true"}
+## Note
+
+It was not actually trivial making this data set from the years of STAT 113 surveys. Some questions are added or tweaked over the years so automating the combination of the different STAT 113 surveys is tricky. Below is the code that was used to create the data set: note that you cannot run the code because you do not have access to the folder of the STAT 113 surveys. But it may give you an idea of what you can do with `purrr`.
+:::
+
+```{r, eval = FALSE}
+library(purrr)
+
+dir_list <- list.files("data/firstsurvey", full.names = TRUE)
+
+df_list <- purrr::map(dir_list, read_csv)
+
+df_vars <- purrr::map(df_list, ~ (.x |> select(Year, Hgt, Wgt,
+                                         Smoke, Hand, Sibs, Birth,
+                                         Exercise, Greek, Sport,
+                                         TV, GPA, Award, Pulse, Pierces,
+                                         Tattoo, Facebook, 3)))
+
+newnames <- names(df_vars[[17]])
+
+df_samename <- purrr::map(df_vars, setNames, newnames)
+
+df_fixed <- purrr::map(df_samename, ~ (.x |> mutate(Hgt = as.numeric(Hgt),
+                                     Wgt = as.numeric(Wgt),
+                                     Exercise = as.numeric(Exercise),
+                                     Year = as.numeric(Year),
+                                     TV = as.numeric(TV),
+                                     Pierces = as.numeric(Pierces),
+                                     Pulse = as.numeric(Pulse),
+                                     Facebook = as.numeric(Facebook),
+                                     GPA = as.numeric(GPA))))
+
+semesters <- str_sub(dir_list, start = -8, end = -6)
+names(df_fixed) <- semesters
+df_full <- bind_rows(df_fixed, .id = "semester")
+
+dir_list_old <- list.files("data/firstsurvey_old", full.names = TRUE)
+
+df_list_old <- purrr::map(dir_list_old, read_csv)
+
+df_vars_old <- purrr::map(df_list_old, ~ (.x |> select(Year, Hgt, Wgt,
+                                         Smoke, Hand, Sibs, Birth,
+                                         Exercise, Greek,
+                                         TV, GPA, Award, Pulse, Pierces, 3)))
+
+newnames_old <- names(df_vars_old[[27]])
+
+df_samename_old <- purrr::map(df_vars_old, setNames, newnames_old)
+
+df_fixed_old <- purrr::map(df_samename_old,
+                           ~ (.x |> mutate(Hgt = as.numeric(Hgt),
+                                            Wgt = as.numeric(Wgt),
+                                            Exercise = as.numeric(Exercise),
+                                            Year = as.numeric(Year),
+                                            TV = as.numeric(TV),
+                                            Pierces = as.numeric(Pierces),
+                                            Pulse = as.numeric(Pulse),
+                                            GPA = as.numeric(GPA))))
+
+semesters_old <- str_sub(dir_list_old, start = -8, end = -6)
+names(df_fixed_old) <- semesters_old
+df_full_old <- bind_rows(df_fixed_old, .id = "semester")
+
+df_clean <- df_full |> 
+  separate(semester, into = c("time_semester", "time_year"), 1) |> 
+  arrange(time_year, desc(time_semester)) |>
+  unite(col = "time_both", c("time_semester", "time_year"),
+        sep = "", remove = FALSE) |>
+  mutate(time_both = fct_inorder(time_both))
+
+df_clean_old <- df_full_old |> 
+  separate(semester, into = c("time_semester", "time_year"), 1) |> 
+  arrange(time_year, desc(time_semester)) |>
+  unite(col = "time_both", c("time_semester", "time_year"),
+        sep = "", remove = FALSE) |>
+  mutate(time_both = fct_inorder(time_both))
+
+df_clean_old
+df_clean
+df_final <- full_join(df_clean_old, df_clean) 
+
+## write_csv(df_final, "data/stat113_survey.csv")
+```
+

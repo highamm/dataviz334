@@ -1,0 +1,241 @@
+# Introduction to `Shiny` {#shinyintro}
+
+```{r}
+#| results: "asis"
+#| echo: false
+source("_common.R")
+```
+
+## What is `Shiny`? (Class Prep)
+
+In this section, we will introduce `Shiny`, an `R` package used to make interactive web apps. Unlike other `R` packages, the `shiny` package has a more specialized syntax and can take some more work to learn. In particular, the concept of **reactivity** presents some challenges to coding and debugging that we have not yet seen in this course.
+
+The purpose of the following exercises is to give an idea about the types of apps that are possible with `shiny`.
+
+__Exercise 1__. Many students and faculty at St. Lawrence have used `Shiny` for some really cool projects! Some of these are stored at <a href="https://stlawu.shinyapps.io/index/" target="_blank">https://stlawu.shinyapps.io/index/</a>. Choose an app from either the tab for SYE projects or the tab for Summer Research projects and answer the following questions.
+
+a. What makes the app interactive? In other words, what is a user allowed to change in the app?
+
+b. What are the outputs of the app? In other words, what in the app updates when you change some of the things you described in part (a).
+
+c.  Write a short one paragraph description describing the app you selected, what makes it interactive, and something interesting that you found while exploring the app.
+
+__Exercise 2__. Choose another app from the SYE or the summer research tab at <a href="https://stlawu.shinyapps.io/index/" target="_blank">https://stlawu.shinyapps.io/index/</a>. Answer the following questions.
+
+a. What makes the app interactive? In other words, what is a user allowed to change in the app?
+
+b. What are the outputs of the app? In other words, what in the app updates when you change some of the things you described in part (a).
+
+Next, to introduce yourself to some basic `Shiny` code syntax, read Chapter 1 of the _Mastering Shiny_ textbook by Wickham: <a href="https://mastering-shiny.org/basic-app.html" target="_blank">https://mastering-shiny.org/basic-app.html</a>. Make sure that you can run the code in this section as you are reading along.
+
+__Exercise 3__. At the end of the section, complete the following exercises in 1.8 Exercises: Exercise 2, Exercise 3, and Exercise 4 (for this exercise, you should actually make the reactive expression that helps reduce the code duplication).  
+
+## Our First App: SLU Majors
+
+We will use the SLU majors data set to build our very first `shiny` app. Recall that we made a graph that showed the "other" majors of graduating SLU `STAT` majors from the past 5 years. However, what if we wanted to allow a user to visually explore this type of graph for **any** major at SLU?
+
+To accomplish this task, we might consider using `shiny` to build a web app. A usual starting point would be to make the graph for a single major, which we have already done:
+
+```{r, appendix = TRUE}
+library(tidyverse)
+library(readxl)
+df <- read_excel("data/slu_graduates_17_21.xlsx")
+
+## fixes error in the data
+df <- df |> mutate(across(everything(),
+                           .fns = ~replace(., . ==  "STATS" , "STAT")))
+
+df_long <- df |> pivot_longer(3:8, names_to = "type",
+                              values_to = "discipline")
+df_major <- df_long |>
+  filter(type == "major1" | type == "major2" | type == "major3")
+
+df_stat <- df_major |> filter(discipline == "STAT") 
+df_statfull <- semi_join(df_long, df_stat, by = "adm_id") |>
+  filter(type == "major1" |
+           type == "major2" | 
+           type == "major3")
+
+df_nostat <- df_statfull |> filter(discipline != "STAT" &
+                              !is.na(discipline)) |>
+  group_by(discipline) |>
+  summarise(nstudent = n()) |>
+  mutate(discipline = fct_reorder(discipline, nstudent))
+ggplot(data = df_nostat, aes(x = discipline, y = nstudent)) +
+  geom_col() +
+  coord_flip() +
+  theme_minimal()
+```
+
+Now, we need to use `shiny` syntax to make the app. First, install the `shiny` package:
+
+```{r, appendix = TRUE}
+## install.packages("shiny")
+library(shiny)
+```
+
+A nice shortcut to creating the "bones" of a `shiny` app is to type `shinyapp` in an `R` chunk and clicking on the `shinyapp` snippet option that pops up. Doing so should create:
+
+```{r, appendix = TRUE, eval = FALSE}
+library(shiny)
+
+ui <- fluidPage(
+  
+)
+
+server <- function(input, output, session) {
+  
+}
+
+shinyApp(ui, server)
+```
+
+We see a couple of components: a `ui` component, a `server` function, and a line that will eventually run the app with the `shinyApp()` function. Go ahead and run each line of code here. After running `shinyApp(ui, server)`, a blank webpage should pull up. This is blank because we haven't put anything in our `shiny` app yet!
+
+Once you're done gazing at the blank page, you can return to `R Studio` and click the red **STOP** button in the upper-right corner of the console window. Doing so will cause the shiny app to terminate and will allow you to run regular `R` code again.
+
+Now that we know a little more about the basic components of `shiny`, we can start to think about how to build up our app. I find `shiny` quite challenging to get started with, but the <a href="https://shiny.rstudio.com/images/shiny-cheatsheet.pdf" target="_blank">shiny cheatsheet</a>, along with good old StackExchange and StackOverflow can help.
+
+To get us started, we will build this SLU majors App as a class. The SLU Majors app will cover a very common case of interaction: allowing the user to choose a value of a variable to `filter()` by. Note that the course materials site does not support `Shiny` apps so you will need to run all of the code yourself to view all of the app output.
+
+::: {.callout-important}
+## Important
+
+The following gives a loose outline of how I would proceed to construct the SLU majors app. Note that, because debugging is more challenging in `shiny`, I find that making the app in a slow step-by-step fashion to be the best strategy.
+:::
+
+**Step 1**: Build a static version of the app you want to create. Typically, to do this, you'll have to choose particular values for what you want the user of the app to eventually be able to change. We have already completed this step by making the graph for `STAT` majors.
+
+**Step 2**: Decide on and set up an input for the User Interface, UI. We will do this as a class.
+
+**Step 3**: Put the static graph (or table) in the server function.
+
+**Step 4**: Connect the UI selection `input` to the server, possibly creating a reactive value. Anything that is reactive must go inside a reactive({}) expression, or a `render_({})` expression.
+
+## Your Turn
+
+**Exercise 1**. Look at <a href="https://mastering-shiny.org/basic-ui.html#limited-choices" target="_blank">the limited choices section of the UI Chapter of Mastering Shiny</a>. In the SLU majors app, change the major input to `radioButtons()` so that the user can only select mathematics, statistics, computer science, or data science as the major.
+
+**Exercise 2**. Look at <a href="https://mastering-shiny.org/basic-ui.html?q=datatable#tables" target="_blank">the tables section of the UI Chapter of Mastering Shiny</a>. In the SLU majors app, add an output table with `tableOutput()` and `renderTable()` below the plot that shows the number of Female majors and the number of Male majors for a major that the user selects.
+
+__Exercise 3__. Look at <a href="https://mastering-shiny.org/basic-ui.html?q=datatable#tables" target="_blank">the tables section of the UI Chapter of Mastering Shiny</a>. In the SLU majors app, add a "searchable" data table of the original raw data `df` with the `dataTableOutput()` and `renderDataTable()` functions.
+
+__Exercise 4__. Add an additional input and output of your choice to the majors app. 
+
+
+```{r, eval = FALSE, echo = FALSE}
+## step 2: input
+library(shiny)
+
+df_nomiss <- df_major %>% filter(!is.na(discipline)) %>%
+  mutate(discipline = factor(discipline))
+majors <- levels(df_nomiss$discipline)
+
+ui <- fluidPage(
+  sidebarLayout(
+    sidebarPanel(selectInput("majorchoice", label = "Choose a Major",
+                             choices = majors)),
+    mainPanel()
+  )
+)
+
+server <- function(input, output, session) {
+  
+}
+
+shinyApp(ui, server)
+```
+
+```{r, eval = FALSE, echo = FALSE}
+## step 3: static graph
+df_nomiss <- df_major %>% filter(!is.na(discipline)) %>%
+  mutate(discipline = factor(discipline))
+majors <- levels(df_nomiss$discipline)
+
+ui <- fluidPage(
+  sidebarLayout(
+    sidebarPanel(selectInput("majorchoice", label = "Choose a Major",
+                             choices = majors)),
+    mainPanel(plotOutput("m_plot"))
+  )
+)
+
+server <- function(input, output, session) {
+  
+  df_stat <- df_major %>% filter(discipline == "STAT") 
+  df_statfull <- semi_join(df_long, df_stat, by = "adm_id") %>%
+    filter(type == "major1" |
+             type == "major2" | 
+             type == "major3")
+  
+  df_nostat <- df_statfull %>% filter(discipline != "STAT" &
+                                        !is.na(discipline)) %>%
+    group_by(discipline) %>%
+    summarise(nstudent = n()) %>%
+    mutate(discipline = fct_reorder(discipline, nstudent))
+  
+  
+  major_plot <- ggplot(data = df_nostat, aes(x = discipline, y = nstudent)) +
+    geom_col() +
+    coord_flip()
+  
+  output$m_plot <- renderPlot({
+    major_plot
+  })
+}
+
+shinyApp(ui, server)
+```
+
+```{r, eval = FALSE, echo = FALSE}
+## step 4: connect UI selection to server, creating a reactive value
+## anything that is reactive must go inside a reactive({}) expression
+
+df_nomiss <- df_major %>% filter(!is.na(discipline)) %>%
+  mutate(discipline = factor(discipline))
+majors <- levels(df_nomiss$discipline)
+
+ui <- fluidPage(
+  sidebarLayout(
+    sidebarPanel(selectInput("majorchoice", label = "Choose a Major",
+                             choices = majors)),
+    mainPanel(plotOutput("m_plot"))
+  )
+)
+
+server <- function(input, output, session) {
+  
+  
+  major_reactive_df <- reactive({
+    
+    df_stat <- df_major %>% filter(discipline == input$majorchoice) 
+  df_statfull <- semi_join(df_long, df_stat, by = "adm_id") %>%
+    filter(type == "major1" |
+             type == "major2" | 
+             type == "major3")
+  
+  df_nostat <- df_statfull %>% filter(discipline != input$majorchoice &
+                                        !is.na(discipline)) %>%
+    group_by(discipline) %>%
+    summarise(nstudent = n()) %>%
+    mutate(discipline = fct_reorder(discipline, nstudent))
+  })
+  
+  
+  
+  major_plot <- reactive({
+    ggplot(data = major_reactive_df(), aes(x = discipline, y = nstudent)) +
+    geom_col() +
+    coord_flip()
+  })
+  
+  output$m_plot <- renderPlot({
+    major_plot()
+  })
+}
+
+shinyApp(ui, server)
+```
+
+
+
