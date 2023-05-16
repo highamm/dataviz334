@@ -1,0 +1,758 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.0.36">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+<title>DATA / STAT 334 - 8&nbsp; Other Topics</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+span.underline{text-decoration: underline;}
+div.column{display: inline-block; vertical-align: top; width: 50%;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<link href="./07-stat213.html" rel="next">
+<link href="./05-uncertainty.html" rel="prev">
+<script src="site_libs/quarto-html/quarto.js"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light"><script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit"
+  }
+}</script><script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+</head>
+<body class="nav-sidebar floating">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top"><nav class="quarto-secondary-nav" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }"><div class="container-fluid d-flex justify-content-between">
+      <h1 class="quarto-secondary-nav-title"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Other Topics</span></h1>
+      <button type="button" class="quarto-btn-toggle btn" aria-label="Show secondary navigation">
+        <i class="bi bi-chevron-right"></i>
+      </button>
+    </div>
+  </nav></header><!-- content --><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse sidebar-navigation floating overflow-auto"><div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="./">DATA / STAT 334</a> 
+        <div class="sidebar-tools-main">
+  <a href="" class="quarto-reader-toggle sidebar-tool" onclick="window.quartoToggleReader(); return false;" title="Toggle reader mode">
+  <div class="quarto-reader-toggle-btn">
+  <i class="bi"></i>
+  </div>
+</a>
+</div>
+    </div>
+      </div>
+      <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+      </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+<li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link">Syllabus and Course Information</a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true">Getting Started</a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">
+<li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./00-choose-viz.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Choosing a Visualization</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./01-concepts.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Core Viz Concepts</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./04-concepts-applied.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Applied Concepts</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./02-software.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Software</span></a>
+  </div>
+</li>
+      </ul>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true">Visualization in R</a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">
+<li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./03-statdata234.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">DATA/STAT 234 Review</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./06-mapping.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Mapping Data</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./05-uncertainty.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Expressing Variability/Uncertainty</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./14-other-topics.html" class="sidebar-item-text sidebar-link active"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Other Topics</span></a>
+  </div>
+</li>
+      </ul>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true">Model Visualization</a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">
+<li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./07-stat213.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">STAT 213 Review</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./08-model-interactions.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Linear Model Visualization</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./09-logistic.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Logistic Model Visualization</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./10-ethics.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Ethics</span></a>
+  </div>
+</li>
+      </ul>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="true">Interactive Visualization</a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="true">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">
+<li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./11-when-to-use.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Introduction to Interactivity</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./12-shiny-intro.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Introduction to <code>Shiny</code></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./13-shiny-reactivity.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Shiny Reactivity</span></a>
+  </div>
+</li>
+      </ul>
+</li>
+    </ul>
+</div>
+</nav><!-- margin-sidebar --><div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc"><h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+<li>
+<a href="#outliers-and-area-plots-class-prep" id="toc-outliers-and-area-plots-class-prep" class="nav-link active" data-scroll-target="#outliers-and-area-plots-class-prep"> <span class="header-section-number">8.1</span> Outliers and Area Plots (Class Prep)</a>
+  <ul class="collapse">
+<li><a href="#outliers" id="toc-outliers" class="nav-link" data-scroll-target="#outliers"> <span class="header-section-number">8.1.1</span> Outliers</a></li>
+  <li><a href="#line-plots-and-area-plots" id="toc-line-plots-and-area-plots" class="nav-link" data-scroll-target="#line-plots-and-area-plots"> <span class="header-section-number">8.1.2</span> Line Plots and Area Plots</a></li>
+  </ul>
+</li>
+  <li>
+<a href="#visualizing-large-data-sets" id="toc-visualizing-large-data-sets" class="nav-link" data-scroll-target="#visualizing-large-data-sets"> <span class="header-section-number">8.2</span> Visualizing “Large” Data Sets</a>
+  <ul class="collapse">
+<li><a href="#large-n" id="toc-large-n" class="nav-link" data-scroll-target="#large-n"> <span class="header-section-number">8.2.1</span> Large n</a></li>
+  <li><a href="#really-large-n" id="toc-really-large-n" class="nav-link" data-scroll-target="#really-large-n"> <span class="header-section-number">8.2.2</span> Really Large n</a></li>
+  <li><a href="#large-p" id="toc-large-p" class="nav-link" data-scroll-target="#large-p"> <span class="header-section-number">8.2.3</span> Large p</a></li>
+  </ul>
+</li>
+  <li><a href="#your-turn" id="toc-your-turn" class="nav-link" data-scroll-target="#your-turn"> <span class="header-section-number">8.3</span> Your Turn</a></li>
+  </ul></nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block default"><div class="quarto-title">
+<h1 class="title"><span id="othertopics" class="quarto-section-identifier d-none d-lg-block"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Other Topics</span></span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+    
+  </div>
+  
+
+</header><p>The purpose of this section is to discuss a few common issues with visualizing data that have not come up in previous examples. The section is not a “catch-all” for all visualization topics; instead, the purpose is to discuss a few topics that come up relatively frequently.</p>
+<section id="outliers-and-area-plots-class-prep" class="level2" data-number="8.1"><h2 data-number="8.1" class="anchored" data-anchor-id="outliers-and-area-plots-class-prep">
+<span class="header-section-number">8.1</span> Outliers and Area Plots (Class Prep)</h2>
+<section id="outliers" class="level3" data-number="8.1.1"><h3 data-number="8.1.1" class="anchored" data-anchor-id="outliers">
+<span class="header-section-number">8.1.1</span> Outliers</h3>
+<p>Visualizations when there are large outliers present can be challenging. On the one hand, removing an outlier from a visualization for no reason besides “it’s an outlier” eliminates an otherwise perfectly valid data point. On the other hand, including the outlier can make the visualization essentially meaningless for all of the other points.</p>
+<p>Let’s look at this issue with an example. You may have worked with the <code>mammals</code> data set (or something similar) in STAT 213 to investigate statistical transformations for modeling. A scatterplot of mammal <code>brain</code> weight vs.&nbsp;mammal <code>body</code> weight is given below. The outliers here are two species of elephants included in the data set.</p>
+<div class="cell">
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="http://www.stats.ox.ac.uk/pub/MASS4/">MASS</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://tidyverse.tidyverse.org">tidyverse</a></span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">mammals</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">body</span>, y <span class="op">=</span> <span class="va">brain</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html">geom_point</a></span><span class="op">(</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="14-other-topics_files/figure-html/unnamed-chunk-2-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>We can see the issue: the visualization tells us that there are two large outliers, but that’s about it. We can’t distinguish the values for most of the other mammals in the data set.</p>
+<p>There are a few strategies to deal with such outliers. First, you could remove them and state in a figure caption that you removed them.</p>
+<div class="cell">
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">mammals</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="va">body</span> <span class="op">&lt;=</span> <span class="fl">600</span><span class="op">)</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">body</span>, y <span class="op">=</span> <span class="va">brain</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html">geom_point</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op">(</span>caption <span class="op">=</span> <span class="st">"Two species of elephant in the data were removed before constructing this plot."</span>,</span>
+<span>       title <span class="op">=</span> <span class="st">"Option 1"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="14-other-topics_files/figure-html/unnamed-chunk-3-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>Second, you could use use <strong>axis breaks</strong>:</p>
+<div class="cell">
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co">## install.packages("ggbreak")</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/YuLab-SMU/ggbreak">ggbreak</a></span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">mammals</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">body</span>, y <span class="op">=</span> <span class="va">brain</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html">geom_point</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/pkg/ggbreak/man/scale_break.html">scale_x_break</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">750</span>, <span class="fl">2500</span>, <span class="fl">2700</span>, <span class="fl">6400</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op">(</span>title <span class="op">=</span> <span class="st">"Option 2"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="14-other-topics_files/figure-html/unnamed-chunk-4-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>You could do some things to make this plot look a little nicer, but I personally do not like scale breaks. I think they make the plot look confusing and potentially misleading as the reader has to pay really close attention to the x-axis to interpret the plot correctly.</p>
+<p>A third option is to do exactly what you would have done in STAT 213: perform a statistical transformation of the data. This has exactly the same benefits and drawbacks as it did in modeling: your model/plot works a lot better at the cost of interpretation. The following uses the <code><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html">scale_x_log10()</a></code> and <code><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html">scale_y_log10()</a></code> to plot a log-log transformation of <code>brain</code> vs.&nbsp;<code>body</code> weight.</p>
+<div class="cell">
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="http://www.stats.ox.ac.uk/pub/MASS4/">MASS</a></span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">mammals</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">body</span>, y <span class="op">=</span> <span class="va">brain</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html">geom_point</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html">scale_x_log10</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html">scale_y_log10</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op">(</span>title <span class="op">=</span> <span class="st">"Option 3"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="14-other-topics_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<div class="callout-note callout callout-style-simple callout-captioned">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-caption-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>The scales on the x and y-axis now increase multiplicatively. So, they are in general a bit harder for any reader to interpret.</p>
+</div>
+</div>
+<p>We can also figure out how to display a natural log transformation (like you probably would have done in STAT 213), but that is a fair bit of work. When making this graph, this stack overflow post helped me out: <a href="https://stackoverflow.com/questions/43702945/making-an-axis-give-natural-log-instead-of-log10-when-log-y-in-r-plot" class="uri">https://stackoverflow.com/questions/43702945/making-an-axis-give-natural-log-instead-of-log10-when-log-y-in-r-plot</a></p>
+<div class="cell">
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://scales.r-lib.org">scales</a></span><span class="op">)</span> </span>
+<span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">mammals</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">body</span>, y <span class="op">=</span> <span class="va">brain</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html">geom_point</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
+<span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html">scale_y_continuous</a></span><span class="op">(</span>trans <span class="op">=</span> <span class="fu"><a href="https://scales.r-lib.org/reference/log_trans.html">log_trans</a></span><span class="op">(</span><span class="op">)</span>, </span>
+<span>                         breaks <span class="op">=</span> <span class="fu"><a href="https://scales.r-lib.org/reference/trans_breaks.html">trans_breaks</a></span><span class="op">(</span><span class="st">"log"</span>, <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/base/Log.html">exp</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">)</span>,</span>
+<span>                         labels <span class="op">=</span> <span class="fu"><a href="https://scales.r-lib.org/reference/trans_format.html">trans_format</a></span><span class="op">(</span><span class="st">"log"</span>, <span class="fu"><a href="https://scales.r-lib.org/reference/parse_format.html">math_format</a></span><span class="op">(</span><span class="va">e</span> <span class="op">^</span> <span class="va">.x</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html">scale_x_continuous</a></span><span class="op">(</span>trans <span class="op">=</span> <span class="fu"><a href="https://scales.r-lib.org/reference/log_trans.html">log_trans</a></span><span class="op">(</span><span class="op">)</span>, </span>
+<span>                         breaks <span class="op">=</span> <span class="fu"><a href="https://scales.r-lib.org/reference/trans_breaks.html">trans_breaks</a></span><span class="op">(</span><span class="st">"log"</span>, <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/base/Log.html">exp</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">)</span>,</span>
+<span>                         labels <span class="op">=</span> <span class="fu"><a href="https://scales.r-lib.org/reference/trans_format.html">trans_format</a></span><span class="op">(</span><span class="st">"log"</span>, <span class="fu"><a href="https://scales.r-lib.org/reference/parse_format.html">math_format</a></span><span class="op">(</span><span class="va">e</span> <span class="op">^</span> <span class="va">.x</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="14-other-topics_files/figure-html/unnamed-chunk-6-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+</section><section id="line-plots-and-area-plots" class="level3" data-number="8.1.2"><h3 data-number="8.1.2" class="anchored" data-anchor-id="line-plots-and-area-plots">
+<span class="header-section-number">8.1.2</span> Line Plots and Area Plots</h3>
+<p>Line plots are useful when you are interested in exploring the relationship between two quantitative variables and the quantitative variable on the x-axis only has <strong>one y value for each x value</strong> (or, if also graphing a categorical variable, one y value for each x value in for each level of the categorical variable). One instance where this commonly arises is for an x-axis variable of some measure of time.</p>
+<p>For example, in the <code>babynames</code> data set from the <code>babynames</code> <code>R</code> package, there are variables <code>year</code>, <code>sex</code>, <code>name</code>, and <code>n</code> (number of babies). In each row, the <code>n</code> value is the number of births of babies with that particular <code>name</code> of that <code>sex</code> in that <code>year</code>.</p>
+<div class="cell">
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/hadley/babynames">babynames</a></span><span class="op">)</span></span>
+<span><span class="va">babynames</span></span>
+<span><span class="co">#&gt; # A tibble: 1,924,665 × 5</span></span>
+<span><span class="co">#&gt;    year sex   name          n   prop</span></span>
+<span><span class="co">#&gt;   &lt;dbl&gt; &lt;chr&gt; &lt;chr&gt;     &lt;int&gt;  &lt;dbl&gt;</span></span>
+<span><span class="co">#&gt; 1  1880 F     Mary       7065 0.0724</span></span>
+<span><span class="co">#&gt; 2  1880 F     Anna       2604 0.0267</span></span>
+<span><span class="co">#&gt; 3  1880 F     Emma       2003 0.0205</span></span>
+<span><span class="co">#&gt; 4  1880 F     Elizabeth  1939 0.0199</span></span>
+<span><span class="co">#&gt; 5  1880 F     Minnie     1746 0.0179</span></span>
+<span><span class="co">#&gt; 6  1880 F     Margaret   1578 0.0162</span></span>
+<span><span class="co">#&gt; # ℹ 1,924,659 more rows</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>If we want to plot the number of births (<code>n</code>) for a particular name, we might consider a line plot instead of a point plot:</p>
+<div class="cell">
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">baby_matt</span> <span class="op">&lt;-</span> <span class="va">babynames</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/stats/filter.html">filter</a></span><span class="op">(</span><span class="va">name</span> <span class="op">==</span> <span class="st">"Matthew"</span> <span class="op">&amp;</span> <span class="va">sex</span> <span class="op">==</span> <span class="st">"M"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">baby_matt</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">year</span>, y <span class="op">=</span> <span class="va">n</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html">geom_line</a></span><span class="op">(</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="14-other-topics_files/figure-html/unnamed-chunk-8-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>The <code>baby_matt</code> data set has one y value (one <code>n</code> value) for each x value (<code>year</code>), so a line plot makes sense. We can also construct a line plot with different colours for different names. Again, for each level of <code>name</code>, there is only one y-value for each x-value so a line plot makes sense.</p>
+<div class="cell">
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">baby_friends</span> <span class="op">&lt;-</span> <span class="va">babynames</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/stats/filter.html">filter</a></span><span class="op">(</span><span class="va">name</span> <span class="op">==</span> <span class="st">"Monica"</span> <span class="op">&amp;</span> <span class="va">sex</span> <span class="op">==</span> <span class="st">"F"</span> <span class="op">|</span></span>
+<span>                                    <span class="va">name</span> <span class="op">==</span> <span class="st">"Phoebe"</span> <span class="op">&amp;</span> <span class="va">sex</span> <span class="op">==</span> <span class="st">"F"</span> <span class="op">|</span></span>
+<span>                                    <span class="va">name</span> <span class="op">==</span> <span class="st">"Rachel"</span> <span class="op">&amp;</span> <span class="va">sex</span> <span class="op">==</span> <span class="st">"F"</span> <span class="op">|</span></span>
+<span>                                    <span class="va">name</span> <span class="op">==</span> <span class="st">"Ross"</span> <span class="op">&amp;</span> <span class="va">sex</span> <span class="op">==</span> <span class="st">"M"</span> <span class="op">|</span></span>
+<span>                                    <span class="va">name</span> <span class="op">==</span> <span class="st">"Joseph"</span> <span class="op">&amp;</span> <span class="va">sex</span> <span class="op">==</span> <span class="st">"M"</span> <span class="op">|</span></span>
+<span>                                    <span class="va">name</span> <span class="op">==</span> <span class="st">"Chandler"</span> <span class="op">&amp;</span> <span class="va">sex</span> <span class="op">==</span> <span class="st">"M"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">baby_friends</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">year</span>, y <span class="op">=</span> <span class="va">n</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html">geom_line</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>colour <span class="op">=</span> <span class="va">name</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_brewer.html">scale_colour_brewer</a></span><span class="op">(</span>palette <span class="op">=</span> <span class="st">"Accent"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="14-other-topics_files/figure-html/unnamed-chunk-9-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p><br></p>
+<p>Area plots are an alternative to line plots, most often used for time series data. Like line plots, they are useful when you have a single <span class="math inline">\(y\)</span> per unit of <span class="math inline">\(x\)</span> (as is often the case with time) and when you want to examine the trend of <span class="math inline">\(y\)</span> through <span class="math inline">\(x\)</span> (again <span class="math inline">\(x\)</span> is often time).</p>
+<div class="callout-important callout callout-style-simple callout-captioned">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-2-contents" aria-controls="callout-2" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-caption-container flex-fill">
+Important
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-2" class="callout-2-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>Area plots should <strong>only</strong> be used when there is a meaningful relationship to <strong>0</strong> for the response, <span class="math inline">\(y\)</span>, because the area between <span class="math inline">\(y\)</span> and <span class="math inline">\(0\)</span> will be shaded.</p>
+</div>
+</div>
+</div>
+<p>Because of this shading, area charts can be used to emphasize absolute gains and losses in the response. One common place where they would get used is to display a stock price through time.</p>
+<p>The following code plots the now infamous GameStop stock through time by scraping stock data with the <code>quantmod</code> package:</p>
+<div class="cell">
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="http://www.quantmod.com">quantmod</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://lubridate.tidyverse.org">lubridate</a></span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">start</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://lubridate.tidyverse.org/reference/ymd.html">ymd</a></span><span class="op">(</span><span class="st">"2011-01-01"</span><span class="op">)</span></span>
+<span><span class="va">end</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://lubridate.tidyverse.org/reference/ymd.html">ymd</a></span><span class="op">(</span><span class="st">"2022-3-17"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/quantmod/man/getSymbols.html">getSymbols</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"GME"</span>, <span class="st">"SPY"</span><span class="op">)</span>, src <span class="op">=</span> <span class="st">"yahoo"</span>,</span>
+<span>           from <span class="op">=</span> <span class="va">start</span>, to <span class="op">=</span> <span class="va">end</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] "GME" "SPY"</span></span>
+<span></span>
+<span><span class="va">date_tib</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://tibble.tidyverse.org/reference/as_tibble.html">as_tibble</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/zoo/man/index.html">index</a></span><span class="op">(</span><span class="va">GME</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/rename.html">rename</a></span><span class="op">(</span>start_date <span class="op">=</span> <span class="va">value</span><span class="op">)</span></span>
+<span><span class="va">gme_tib</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://tibble.tidyverse.org/reference/as_tibble.html">as_tibble</a></span><span class="op">(</span><span class="va">GME</span><span class="op">)</span></span>
+<span><span class="va">spy_tib</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://tibble.tidyverse.org/reference/as_tibble.html">as_tibble</a></span><span class="op">(</span><span class="va">SPY</span><span class="op">)</span></span>
+<span><span class="va">all_stocks</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/bind_cols.html">bind_cols</a></span><span class="op">(</span><span class="va">date_tib</span>, <span class="va">gme_tib</span>, <span class="va">spy_tib</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">stocks_long</span> <span class="op">&lt;-</span> <span class="va">all_stocks</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="va">start_date</span>, <span class="va">GME.Adjusted</span>, <span class="va">SPY.Adjusted</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://tidyr.tidyverse.org/reference/pivot_longer.html">pivot_longer</a></span><span class="op">(</span><span class="fl">2</span><span class="op">:</span><span class="fl">3</span>, names_to <span class="op">=</span> <span class="st">"Stock_Type"</span>, values_to <span class="op">=</span> <span class="st">"Price"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span>Stock_Type <span class="op">=</span> <span class="fu"><a href="https://forcats.tidyverse.org/reference/fct_recode.html">fct_recode</a></span><span class="op">(</span><span class="va">Stock_Type</span>,</span>
+<span>                                 GameStop <span class="op">=</span> <span class="st">"GME.Adjusted"</span>,</span>
+<span>                                 `S &amp; P 500` <span class="op">=</span> <span class="st">"SPY.Adjusted"</span></span>
+<span>                                 <span class="op">)</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Compare the line and area charts for the Gamestop stock. Note the common trick to use the same colour and fill for <code><a href="https://ggplot2.tidyverse.org/reference/geom_path.html">geom_line()</a></code> and <code><a href="https://ggplot2.tidyverse.org/reference/geom_ribbon.html">geom_area()</a></code>, but to decrease the transparency for <code><a href="https://ggplot2.tidyverse.org/reference/geom_ribbon.html">geom_area()</a></code>.</p>
+<div class="cell">
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">stocks_gme</span> <span class="op">&lt;-</span> <span class="va">stocks_long</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/stats/filter.html">filter</a></span><span class="op">(</span><span class="va">Stock_Type</span> <span class="op">==</span> <span class="st">"GameStop"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">stocks_gme</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">start_date</span>, y <span class="op">=</span> <span class="va">Price</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html">geom_line</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html">theme_minimal</a></span><span class="op">(</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="14-other-topics_files/figure-html/unnamed-chunk-11-1.png" class="img-fluid" width="672"></p>
+</div>
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span></span>
+<span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">stocks_gme</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">start_date</span>, y <span class="op">=</span> <span class="va">Price</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html">geom_line</a></span><span class="op">(</span>colour <span class="op">=</span> <span class="st">"blueviolet"</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_ribbon.html">geom_area</a></span><span class="op">(</span>fill <span class="op">=</span> <span class="st">"blueviolet"</span>, alpha <span class="op">=</span> <span class="fl">0.3</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html">theme_minimal</a></span><span class="op">(</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="14-other-topics_files/figure-html/unnamed-chunk-11-2.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>And for the S and P 500:</p>
+<div class="cell">
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">stocks_spy</span> <span class="op">&lt;-</span> <span class="va">stocks_long</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/stats/filter.html">filter</a></span><span class="op">(</span><span class="va">Stock_Type</span> <span class="op">==</span> <span class="st">"S &amp; P 500"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">stocks_spy</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">start_date</span>, y <span class="op">=</span> <span class="va">Price</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html">geom_line</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html">theme_minimal</a></span><span class="op">(</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="14-other-topics_files/figure-html/unnamed-chunk-12-1.png" class="img-fluid" width="672"></p>
+</div>
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span></span>
+<span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">stocks_spy</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">start_date</span>, y <span class="op">=</span> <span class="va">Price</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html">geom_line</a></span><span class="op">(</span>colour <span class="op">=</span> <span class="st">"green4"</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_ribbon.html">geom_area</a></span><span class="op">(</span>fill <span class="op">=</span> <span class="st">"green4"</span>, alpha <span class="op">=</span> <span class="fl">0.3</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html">theme_minimal</a></span><span class="op">(</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="14-other-topics_files/figure-html/unnamed-chunk-12-2.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p><strong>Exercise 1</strong>. For the three options for graphing outliers (removal, axis breaks, transforming the data), which do you think is best for the mammal data set? Give a one sentence reason.</p>
+<p><strong>Exercise 2</strong>. Choose your own names to visualize in the <code>babynames</code> data set. Construct the line plot.</p>
+<p><strong>Exercise 3</strong>. In your <code><a href="https://dplyr.tidyverse.org/reference/filter.html">filter()</a></code> step for your <code>babynames</code> visualization, remove the <code>sex == "F"</code> or <code>sex == "M"</code> for one of the names. Why is a line plot no longer a good way to visualize the new data set.</p>
+<p><strong>Exercise 4</strong>. Construct an area plot that shows both the Gamestop stock price and the S and P 500 stock price, using different <code>colour</code>s and <code>fill</code>s for the two stocks. Why might a line plot be a better visualization for this example?</p>
+</section></section><section id="visualizing-large-data-sets" class="level2" data-number="8.2"><h2 data-number="8.2" class="anchored" data-anchor-id="visualizing-large-data-sets">
+<span class="header-section-number">8.2</span> Visualizing “Large” Data Sets</h2>
+<p>A data set could be “large” if it has a very large number of observations (large n), if it has a very large number of variables (large p), or both. Let’s start by looking at a data set with a somewhat large number of observations, the <code>diamonds</code> data set in the <code>ggplot2</code> package. The <code>diamonds</code> data set contains variables on characteristics of diamonds, like the diamond’s price, cut, clarity, carat, etc.</p>
+<section id="large-n" class="level3" data-number="8.2.1"><h3 data-number="8.2.1" class="anchored" data-anchor-id="large-n">
+<span class="header-section-number">8.2.1</span> Large n</h3>
+<p>Let’s first check how many observations are actually in the data set:</p>
+<div class="cell">
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://tidyverse.tidyverse.org">tidyverse</a></span><span class="op">)</span></span>
+<span><span class="va">diamonds</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/base/nrow.html">nrow</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] 53940</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>So, there are 53940 diamonds in the data set. If we try to make a basic scatterplot of <code>price</code> vs.&nbsp;<code>carat</code>, it doesn’t look so great, and, it takes a few seconds for <code>r</code> to actually plot all of the individual points.</p>
+<div class="cell">
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">diamonds</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">carat</span>, y <span class="op">=</span> <span class="va">price</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html">geom_point</a></span><span class="op">(</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="14-other-topics_files/figure-html/unnamed-chunk-14-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>We’ve talked about controlling the point transparency (<code>alpha</code>) as one method to make the plot look a little more aesthetically pleasing but there are other options. Another solution is to use <code><a href="https://ggplot2.tidyverse.org/reference/geom_hex.html">geom_hex()</a></code> to get a cleaner look at the data:</p>
+<div class="cell">
+<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">diamonds</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">carat</span>, y <span class="op">=</span> <span class="va">price</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_hex.html">geom_hex</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_viridis.html">scale_fill_viridis_c</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html">theme_minimal</a></span><span class="op">(</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="14-other-topics_files/figure-html/unnamed-chunk-15-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p><code><a href="https://ggplot2.tidyverse.org/reference/geom_hex.html">geom_hex()</a></code> automatically maps the number of points in each <code>hexbin</code> to a count <code>fill</code> aesthetic. We can more easily see from this plot that the large majority of diamonds in the data set are smaller diamonds with a lower price, while still seeing the general increasing price - carat trend.</p>
+</section><section id="really-large-n" class="level3" data-number="8.2.2"><h3 data-number="8.2.2" class="anchored" data-anchor-id="really-large-n">
+<span class="header-section-number">8.2.2</span> Really Large n</h3>
+<p>But what if your sample size was <strong>really</strong> large. Suppose n was <code>10,000,000</code>. Using a <code>geom</code> that maps one point to each row will cause <code>R</code> to crash. Other <code>geom</code>’s, like <code><a href="https://ggplot2.tidyverse.org/reference/geom_hex.html">geom_hex()</a></code> can still work okay after a few seconds.</p>
+<div class="cell">
+<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://tidyverse.tidyverse.org">tidyverse</a></span><span class="op">)</span></span>
+<span><span class="va">n</span> <span class="op">&lt;-</span> <span class="fl">10000000</span></span>
+<span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html">rnorm</a></span><span class="op">(</span><span class="va">n</span>, <span class="fl">0</span>, <span class="fl">1</span><span class="op">)</span></span>
+<span><span class="va">y</span> <span class="op">&lt;-</span> <span class="va">x</span> <span class="op">*</span> <span class="fu"><a href="https://rdrr.io/r/stats/GammaDist.html">rgamma</a></span><span class="op">(</span><span class="va">n</span>, <span class="fl">3</span>, <span class="fl">2</span><span class="op">)</span></span>
+<span><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html">tibble</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">x</span>, y <span class="op">=</span> <span class="va">y</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co">## if you run this next line, R will probably crash!</span></span>
+<span><span class="co">## ggplot(data = df, aes(x = x, y = y)) +</span></span>
+<span><span class="co">##  geom_point()</span></span>
+<span></span>
+<span><span class="co"># ggplot(data = df, aes(x = x, y = y)) +</span></span>
+<span><span class="co">#   geom_hex() +</span></span>
+<span><span class="co">#   scale_fill_viridis_c()</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Another option though, is to sample your data before plotting. Do you really need all 10,000,000 observations to see the patterns in your data? Probably not (though we will discuss this more in an exercise). So, you can use the <code><a href="https://dplyr.tidyverse.org/reference/sample_n.html">sample_n()</a></code> function to choose some observations to plot, especially in the initial stages of your exploration:</p>
+<div class="cell">
+<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">df_small</span> <span class="op">&lt;-</span> <span class="va">df</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/sample_n.html">sample_n</a></span><span class="op">(</span>size <span class="op">=</span> <span class="fl">10000</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">df_small</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">x</span>, y <span class="op">=</span> <span class="va">y</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html">geom_point</a></span><span class="op">(</span>alpha <span class="op">=</span> <span class="fl">0.2</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_smooth.html">geom_smooth</a></span><span class="op">(</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="14-other-topics_files/figure-html/unnamed-chunk-17-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+</section><section id="large-p" class="level3" data-number="8.2.3"><h3 data-number="8.2.3" class="anchored" data-anchor-id="large-p">
+<span class="header-section-number">8.2.3</span> Large p</h3>
+<p>Another way in which a data set can be “large” is if there are a large number of variables that you’re interested in. Let’s look at some batting statistics from a data set on Major League Baseball players in the <code>openintro</code> <code>R</code> package.</p>
+<div class="cell">
+<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co">## install.packages("openintro")</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="http://openintrostat.github.io/openintro/">openintro</a></span><span class="op">)</span></span>
+<span><span class="va">mlb_small</span> <span class="op">&lt;-</span> <span class="va">mlb_players_18</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="va">games</span> <span class="op">&gt;</span> <span class="fl">50</span> <span class="op">&amp;</span> <span class="va">position</span> <span class="op">!=</span> <span class="st">"P"</span><span class="op">)</span> <span class="co">## only look at players </span></span>
+<span><span class="co">## who play at least 50 games in the season and are not pitchers</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>There are a lot of statistics here pertaining to batting: <code>AB</code>, <code>R</code>, <code>H</code>, <code>doubles</code>, <code>triples</code>, <code>HR</code>, <code>RBI</code>, <code>walks</code>, <code>strike_outs</code>, <code>stolen_bases</code>, <code>caught_stealing_base</code>, <code>AVG</code>, <code>OBP</code>, <code>SLG</code>, and <code>OPS</code>. We can’t reasonably make a scatterplot of each pair of variables, but we can do have some other options. One that we have used in <code>STAT 213</code> and <code>STAT 234</code> is the <code><a href="https://ggobi.github.io/ggally/reference/ggpairs.html">ggpairs()</a></code> function from the <code>GGally</code> package. However, <code><a href="https://ggobi.github.io/ggally/reference/ggpairs.html">ggpairs()</a></code> cannot take that many variables, so we will only use 7 variables in this example:</p>
+<div class="cell">
+<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://ggobi.github.io/ggally/">GGally</a></span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://ggobi.github.io/ggally/reference/ggpairs.html">ggpairs</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">mlb_small</span>, columns <span class="op">=</span> <span class="fl">6</span><span class="op">:</span><span class="fl">11</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="14-other-topics_files/figure-html/unnamed-chunk-19-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>If we wanted to quickly look at the correlations between each pair of variables, the <code>GGally</code> package has a <code><a href="https://ggobi.github.io/ggally/reference/ggcorr.html">ggcorr()</a></code> function:</p>
+<div class="cell">
+<div class="sourceCode" id="cb21"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://ggobi.github.io/ggally/reference/ggcorr.html">ggcorr</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">mlb_small</span> <span class="op">|&gt;</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="fl">4</span><span class="op">:</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html">ncol</a></span><span class="op">(</span><span class="va">mlb_small</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="14-other-topics_files/figure-html/unnamed-chunk-20-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<div class="callout-warning callout callout-style-simple callout-captioned">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-caption-container flex-fill">
+Warning
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>There is a bit of danger here: a correlation coefficient assumes a <strong>linear</strong> relationship so, if the relationship between two variables is non-linear, it would not be properly captured by such a plot.</p>
+</div>
+</div>
+<p>We are also not able to see outliers from this plot, so, while it is a useful starting point, it should not be an ending point. Such a plot might have been useful when exploring the data set for your k-nearest-neighbors prediction final project from STAT 234 (if you had that) or for your multiple linear regression prediction project from STAT 213 (if you had that).</p>
+<p><strong>Exercise 1</strong>. In the example where we sampled from the very large data set to construct a graphic, can you think of some possible flaws in this approach?</p>
+</section></section><section id="your-turn" class="level2" data-number="8.3"><h2 data-number="8.3" class="anchored" data-anchor-id="your-turn">
+<span class="header-section-number">8.3</span> Your Turn</h2>
+<p>The purpose of the following exercises is to emphasize that the approach of only looking at a correlation plot is flawed. The correlation plot might be a useful starting point for exploration, but it should not be the end point.</p>
+<p><strong>Exercise 1</strong>. Examine the following correlation plot from simulated data. Based on the correlation plot alone, does it look like there is any relationship between <code>x1</code> and <code>y</code>? Does it look like there is any relationship between <code>x2</code> and <code>y</code>?</p>
+<div class="cell">
+<div class="sourceCode" id="cb22"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span><span class="op">(</span><span class="fl">1414111</span><span class="op">)</span></span>
+<span><span class="va">x1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html">rnorm</a></span><span class="op">(</span><span class="fl">100</span>, <span class="fl">0</span>, <span class="fl">1</span><span class="op">)</span></span>
+<span><span class="va">x2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span><span class="op">(</span><span class="op">-</span><span class="fl">1</span>, <span class="fl">1</span>, length.out <span class="op">=</span> <span class="fl">100</span><span class="op">)</span></span>
+<span><span class="va">y</span> <span class="op">&lt;-</span> <span class="fl">4</span> <span class="op">+</span> <span class="fl">0</span> <span class="op">*</span> <span class="va">x1</span> <span class="op">+</span> <span class="fl">1</span> <span class="op">*</span> <span class="va">x2</span><span class="op">^</span><span class="fl">2</span> <span class="op">+</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html">rnorm</a></span><span class="op">(</span><span class="fl">100</span>, <span class="fl">0</span>, <span class="fl">0.1</span><span class="op">)</span></span>
+<span><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html">tibble</a></span><span class="op">(</span>x1 <span class="op">=</span> <span class="va">x1</span>, x2 <span class="op">=</span> <span class="va">x2</span>, y <span class="op">=</span> <span class="va">y</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://ggobi.github.io/ggally/reference/ggcorr.html">ggcorr</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">df</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="14-other-topics_files/figure-html/unnamed-chunk-21-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p><strong>Exercise 2</strong>. Construct a simple scatterplot of <code>y</code> vs.&nbsp;<code>x1</code>. Then, construct a simple scatterplot of <code>y</code> vs.&nbsp;<code>x2</code>. Does it look like there is a relationship between <code>y</code> and <code>x1</code>? Between <code>y</code> and <code>x2</code>?</p>
+<p><strong>Exercise 3</strong>. Using what you saw from the previous two exercises, explain why it is flawed to only look at a correlation plot to assess the relationship between variables.</p>
+<!-- __Exercise 4__. The idea that summary statistics are often inferior to a plot of the data is shown in a "famous" example called Anscombe's quartet. Anscombe's quartet is a series of four plots where the x variables all have the same mean and spread, the y variables all have the same mean and spread, and the correlation between the y variable and the x variable is the same in all 4 plots. Using the `anscombe` data in the `datasets` package, construct the 4 plots `y1` vs. `x1`, `y2` vs. `x2`, etc. Fit a linear regression line on each plot. -->
+<div class="cell">
+
+</div>
+<!-- * two y-axes: when is that appropriate? -->
+<!-- * introduction to `sf` package -->
+<!-- ## Visual Model Building with fat data set-->
+<!-- `modelr` modeling of residuals over and over again. -->
+<!-- * animation with `gganimate` -->
+<!-- * visualizations to check model assumptions -->
+<!-- * network diagrams -->
+<!-- ## Round Robin Generator -->
+<!-- This is not anything specific to data visualization, but it was harder to think through how to write code to randomly assign partners for each class (to talk about your projects with) than I initially thought. If we want to ensure that you chat with a different person each time, then we can use strategies from developing a round robin tournament in sports. I borrowed some code from StackOverFlow to create a schedule: <https://stackoverflow.com/questions/46357278/create-round-robin-schedule-for-10-teams-and-6-rounds> -->
+<div class="cell">
+
+</div>
+
+
+</section></main><!-- /main --><script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    target: function(trigger) {
+      return trigger.previousElementSibling;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    setTimeout(function() {
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      let href = ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const cites = ref.parentNode.getAttribute('data-cites').split(' ');
+    tippyHover(ref, function() {
+      var popup = window.document.createElement('div');
+      cites.forEach(function(cite) {
+        var citeDiv = window.document.createElement('div');
+        citeDiv.classList.add('hanging-indent');
+        citeDiv.classList.add('csl-entry');
+        var biblioDiv = window.document.getElementById('ref-' + cite);
+        if (biblioDiv) {
+          citeDiv.innerHTML = biblioDiv.innerHTML;
+        }
+        popup.appendChild(citeDiv);
+      });
+      return popup.innerHTML;
+    });
+  }
+});
+</script><nav class="page-navigation"><div class="nav-page nav-page-previous">
+      <a href="./05-uncertainty.html" class="pagination-link">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Expressing Variability/Uncertainty</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="./07-stat213.html" class="pagination-link">
+        <span class="nav-page-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">STAT 213 Review</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+<footer class="footer"><div class="nav-footer">
+    <div class="nav-footer-left">Course Materials were written by Matt Higham for STAT/DATA 334 at St.&nbsp;Lawrence University.</div>   
+    <div class="nav-footer-right">This book was built with <a href="https://quarto.org/">Quarto</a>.</div>
+  </div>
+</footer>
+
+
+</body></html>
