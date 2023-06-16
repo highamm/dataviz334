@@ -1,0 +1,15 @@
+---
+title: "DATA/STAT 334: Blog Rubric"
+format: pdf
+---
+
+The following is a rubric used to grade your blog posts.
+
+
+| Category | Excellent (5) | Good (3) | Poor (0) |
+| --------- | ------------------- | ------------------ | -------------------- |
+| Correctness | The visualization is appropriate for the question being asked. | The visualization is somewhat appropriate but another type of visualization would be better. | The visualization is not very appropriate for the question being asked. |
+| Level of Question | The level of the question being asked is appropriate for this time of the course. | The question is a little too easy to answer for this time of the course. | The question is too easy to answer for this time of the course. |
+| Presentability | The visualization, the code, and the write-up are all easy to read and understand and are aesthetically pleasing. | The visualization, code, and write-up are mostly easy to understand but there are minor issues and the post could be more professional. | The post is hard to follow because of issues in the visualization, code, or write-up. |
+| Connection to Class Ideas | A written description connecting the visualization to class concepts is present and clear. | A written description is present but is somewhat lacking in the connection to class. | A written description is either absent or does not correctly apply visualization concepts to what was discussed in class. |
+| Visualization Interpretation | Visualization is interpreted clearly and correctly | Visualization is interpreted somewhat clearly and correctly but there is a minor error or two. | There are major flaws in the visualization interpretation. |

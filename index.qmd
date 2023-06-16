@@ -77,11 +77,11 @@ The two 25-point participation rubrics and the seven 7-point feedback forms make
 
 ### Major, Moderate, and Minor Tests
 
-There will be two minor tests of visualization, each worth __50 points__, one moderate test of visualization woth __100 points__, and two major tests of visualization, each worth __150 points__. Each of these will either be an in-class exam, a take-home exam, or some combination of both. The total number of points for these  is __500 points__. More information will be provided in class.
+There will be two minor tests of visualization, each worth __75 points__, one moderate test of visualization worth __100 points__, and two major tests of visualization, each worth __150 points__. All but one of these will consist of a combination of an in-class exam and a 25-point take-home blog post. The total number of points for these is __550 points__. More information will be provided in class.
 
 ### Final Project
 
-Finally, there are __200 points__ for the final project. These points will be split amongst a few different components of the final project: details will be provided later in the semester.
+Finally, there are __150 points__ for the final project, which will be a large blog post visualizing one or more data sets of your choosing. These points will be split amongst a few different components of the final project: details will be provided later in the semester.
 
 ### Point Breakdown
 
@@ -89,8 +89,8 @@ Therefore, based on the information above, the point breakdown for the course is
 
 * 200 points for exercises and project pushes 
 * 100 points for class participation
-* 500 points for assessments 
-* 200 points for final project
+* 550 points for assessments 
+* 150 points for final project
 
 Points add up to 1000 so your grade at the end of the semester will be the number of points you've earned across all categories divided by 1000.
 
