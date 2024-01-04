@@ -36,6 +36,8 @@ Next, we can read in the beer data set:
 
 ```{r, appendix = TRUE}
 library(tidyverse)
+theme_set(theme_minimal())
+
 beers <- read_csv("data/breweries.csv") 
 ```
 

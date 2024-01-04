@@ -94,12 +94,13 @@ __Exercise 1__. Read in the `Challenger.csv` data file, which contains the varia
 
 ```{r}
 library(tidyverse)
+theme_set(theme_minimal())
 challenger_df <- read_csv("data/Challenger.csv")
 ```
 
 __Exercise 2__. Fit a logistic regression model with `SuccessfulLaunch` as the response variable and `Temperature` as the predictor. Interpret the resulting coefficient for `Temperature` in terms of either the log-odds of a successful launch or in terms of the odds of a successful launch.
 
-__Exercise 3__. Using `modelr`, construct a visualization of the fitted regression model on the probability scale (so not on the odds or log-odds scale). Note that, because this model only has one predictor, you can make this plot fairly easily without `modelr`. However, for practice, use `modelr` to make the plot (make the grid of predictor values, use `gather_predictions()`, etc.).
+__Exercise 3__. Construct a visualization of the fitted regression model on the probability scale (so not on the odds or log-odds scale). 
 
 ```{r}
 #| echo: false

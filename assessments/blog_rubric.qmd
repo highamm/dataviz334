@@ -6,7 +6,7 @@ format: pdf
 The following is a rubric used to grade your blog posts.
 
 
-| Category | Excellent (5) | Good (3) | Poor (0) |
+| Category | Excellent (6) | Good (3) | Poor (0) |
 | --------- | ------------------- | ------------------ | -------------------- |
 | Correctness | The visualization is appropriate for the question being asked. | The visualization is somewhat appropriate but another type of visualization would be better. | The visualization is not very appropriate for the question being asked. |
 | Level of Question | The level of the question being asked is appropriate for this time of the course. | The question is a little too easy to answer for this time of the course. | The question is too easy to answer for this time of the course. |

@@ -1,4 +1,4 @@
-# Other Topics {#othertopics}
+# Other Topics and Models {#othertopics}
 
 ```{r}
 #| results: "asis"
@@ -19,6 +19,8 @@ Let's look at this issue with an example. You may have worked with the `mammals`
 ```{r, message = FALSE}
 library(MASS)
 library(tidyverse)
+theme_set(theme_minimal())
+
 ggplot(data = mammals, aes(x = body, y = brain)) +
   geom_point()
 ```
@@ -236,10 +238,10 @@ df <- tibble(x = x, y = y)
 #   scale_fill_viridis_c()
 ```
 
-Another option though, is to sample your data before plotting. Do you really need all 10,000,000 observations to see the patterns in your data? Probably not (though we will discuss this more in an exercise). So, you can use the `sample_n()` function to choose some observations to plot, especially in the initial stages of your exploration:
+Another option though, is to sample your data before plotting. Do you really need all 10,000,000 observations to see the patterns in your data? Probably not (though we will discuss this more in an exercise). So, you can use the `slice_sample()` function to choose some observations to plot, especially in the initial stages of your exploration:
 
 ```{r}
-df_small <- df |> sample_n(size = 10000)
+df_small <- df |> slice_sample(n = 10000)
 ggplot(data = df_small, aes(x = x, y = y)) +
   geom_point(alpha = 0.2) +
   geom_smooth()
@@ -275,9 +277,46 @@ ggcorr(data = mlb_small |> dplyr::select(4:ncol(mlb_small)))
 There is a bit of danger here: a correlation coefficient assumes a __linear__ relationship so, if the relationship between two variables is non-linear, it would not be properly captured by such a plot. 
 :::
 
-We are also not able to see outliers from this plot, so, while it is a useful starting point, it should not be an ending point. Such a plot might have been useful when exploring the data set for your k-nearest-neighbors prediction final project from STAT 234 (if you had that) or for your multiple linear regression prediction project from STAT 213 (if you had that).
+We are also not able to see outliers from this plot, so, while it is a useful starting point, it should not be an ending point. Correlation plots and pairs plots are both useful for exploratory analysis before creating a model or before using a statistical learning method. They can also be used to help detect multicollinearity among potential predictors in the data set.
 
 __Exercise 1__. In the example where we sampled from the very large data set to construct a graphic, can you think of some possible flaws in this approach? 
+
+## Statistical Learning Models
+
+Some of you have enrolled in, are enrolled in, or will enroll in CS/DATA/STAT 352: Statistical and Machine Learning. We can use visualization to better communicate the results of each of the statistical learning methods you learn about, including k-nearest-neighbors, clustering algorithms, linear discriminant analysis, principal components analysis, decision trees, random forests, lasso regression, etc.
+
+However, because the course is neither a pre-requisite nor a co-requisite for this course, we will just give a short example. If you decide to use a statistical learning method for your final project, you should be able to use a search engine to help you see how others have visualized that particular method. Usually, someone will have written a package that can be used to help with the visualization.
+
+For a short example here, a quick google search on how to visualize the decision boundaries in a decision tree leads to <https://www.r-bloggers.com/2020/03/visualizing-decision-tree-partition-and-decision-boundaries/>. The `parttree` package, written by Grant McDermott can be used with the `rpart` package to construct:
+
+```{r}
+#| warning: false
+library(tidymodels)
+library(titanic)
+
+## remotes::install_github("grantmcdermott/parttree")
+library(parttree)
+set.seed(123) ## For consistent jitter
+
+titanic_train$Survived = as.factor(titanic_train$Survived)
+
+## Build our tree using parsnip (but with rpart as the model engine)
+ti_tree =
+  decision_tree() %>%
+  set_engine("rpart") %>%
+  set_mode("classification") %>%
+  fit(Survived ~ Pclass + Age, data = titanic_train)
+
+## Plot the data and model partitions
+titanic_train %>%
+  ggplot(aes(x = Pclass, y = Age)) +
+  geom_jitter(aes(colour = Survived), alpha = 0.7) +
+  geom_parttree(data = ti_tree, aes(fill = Survived), alpha = 0.1) +
+  theme_minimal()
+```
+
+Note that I've copied the code directly from the R bloggers site for this example. Additionally, the code used to create the `ti_tree` object is from the `tidymodels` ecosystem of statistical learning. If you decide to do something involving statistical learning, I would highly encourage you to learn how to fit your model with `tidymodels` <https://www.tidymodels.org/start/models/>.
+
 
 ## Your Turn
 

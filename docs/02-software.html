@@ -159,12 +159,6 @@ ul.task-list li input[type="checkbox"] {
  <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Expressing Variability/Uncertainty</span></span></a>
   </div>
 </li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="./14-other-topics.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Other Topics</span></span></a>
-  </div>
-</li>
       </ul>
 </li>
         <li class="sidebar-item sidebar-item-section">
@@ -179,19 +173,25 @@ ul.task-list li input[type="checkbox"] {
 <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./07-stat213.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">STAT 213 Review</span></span></a>
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">STAT 213 Review</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./08-model-interactions.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Linear Model Visualization</span></span></a>
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Linear Model Visualization</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./09-logistic.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Logistic Model Visualization</span></span></a>
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Logistic Model Visualization</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./14-other-topics.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Other Topics and Models</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -296,16 +296,69 @@ Important
 <p>Start this early, and, if you get stuck, try to troubleshoot for 5 minutes or so. If you are still stuck, to protect your own time, make an appointment for office hours so we can work through the issue.</p>
 </div>
 </div>
-<p>The following links and videos provide instructions on getting started with <code>Git</code> and <code>GitHub</code> for version control of projects (repositories). The videos assume that you already have <code>R</code> and <code>R Studio</code> installed on your laptop. It will be easiest if you complete all of these steps consecutively in one sitting. So, you should ideally have about 1.5 - 2 hours of your time blocked off to complete the “getting started” process using the videos below. It might also be helpful (but not necessary) to work through these with a partner or two in case either of you get stuck.</p>
-<p><input type="checkbox"> Read Chapter 1 of Jenny Bryan’s <a href="https://happygitwithr.com/big-picture.html" target="_blank">Happy Git and GitHub for the useR</a> book to get a brief overview of why we are using <code>Git</code> and <code>GitHub</code>. Note the quote “Is it going to hurt? Yes.” </p>
-<p><input type="checkbox"> Watch and follow along with a <a href="https://www.youtube.com/watch?v=RgjDn2EmAaA" target="_blank">video on our overall purpose for using Git and GitHub</a>. </p>
-<p><input type="checkbox"> Install Git by following along with <a href="https://happygitwithr.com/install-git.html" target="_blank">Section 6 of Happy Git for the useR </a>. Note that I removed the video for this step because the directions are different depending on whether you are on Windows, MacOS, or Linux. Also note that you will need to access the Shell. You can do this from R Studiofrom the <code>Tools</code> option: <code>Tools -&gt; Shell</code>. </p>
-<p><input type="checkbox"> Watch and follow along with a <a href="https://www.youtube.com/watch?v=DNgsDD23sVc" target="_blank">video on how to create a GitHub account</a>. </p>
-<p><input type="checkbox"> Watch and follow along with a <a href="https://www.youtube.com/watch?v=TfCY9_jag6w" target="_blank">video on how to link your GitHub account to your local Git and R Studio</a>. </p>
-<p><input type="checkbox"> Watch and follow along with a <a href="https://www.youtube.com/watch?v=RyPcuq6GAyo" target="_blank"> video on creating your first repository</a>. </p>
-<p><input type="checkbox"> Watch and follow along with a <a href="https://www.youtube.com/watch?v=9RuXy0s3T4U" target="_blank"> video on making commits, pushing, and pulling</a>. </p>
-<p>After you are able to commit, push, and see that push show up on your remote GitHub site, you know that you have successfully set up this version control system!</p>
-</section><section id="using-git-and-github" class="level2" data-number="4.3"><h2 data-number="4.3" class="anchored" data-anchor-id="using-git-and-github">
+<p>The following links provide instructions on getting started with <code>Git</code> and <code>GitHub</code> for version control of projects (repositories). The videos assume that you already have <code>R</code> and <code>R Studio</code> installed on your laptop. It will be easiest if you complete all of these steps consecutively in one sitting. So, you should ideally have about 1.5 - 2 hours of your time blocked off to complete the “getting started” process using the videos below. It might also be helpful (but not necessary) to work through these with a partner or two in case either of you get stuck.</p>
+<p>This section outlines the steps to get Git up, running, and connected to <code>R Studio</code>. There are accompanying videos at <a href="https://highamm.github.io/dataviz334/02-software.html#installing-git-and-using-github-class-prep" class="uri">https://highamm.github.io/dataviz334/02-software.html#installing-git-and-using-github-class-prep</a>, which may provide a little more guidance than the written steps below.</p>
+<section id="pre-requisites" class="level4" data-number="4.2.0.1"><h4 data-number="4.2.0.1" class="anchored" data-anchor-id="pre-requisites">
+<span class="header-section-number">4.2.0.1</span> Pre-requisites</h4>
+<ol type="1">
+<li><p>Install both <code>R</code> and <code>R Studio</code> locally.</p></li>
+<li>
+<p>Install Git, following <a href="https://happygitwithr.com/install-git.html" class="uri">https://happygitwithr.com/install-git.html</a>. Note that most of the code in this section is code for the Terminal. You can access the Terminal within <code>R Studio</code> by going to “Tools -&gt; Terminal -&gt; New Terminal”</p>
+<ul>
+<li><p>You may already have Git installed: type <code>git --version</code> in your Terminal window and hit Enter: if you see a version number get returned, you can jump to the next step!</p></li>
+<li><p>Make sure to follow the directions with your associated operating system (likely either Windows or Mac).</p></li>
+<li><p>After installation, in the Terminal, type <code>git --version</code> to verify that you get a version number</p></li>
+</ul>
+</li>
+<li><p>Create a GitHub account at <a href="https://github.com/" class="uri">https://github.com/</a> with the “Sign Up” button.</p></li>
+</ol></section><section id="connect-github-to-r-studio" class="level4" data-number="4.2.0.2"><h4 data-number="4.2.0.2" class="anchored" data-anchor-id="connect-github-to-r-studio">
+<span class="header-section-number">4.2.0.2</span> Connect GitHub to <code>R Studio</code>
+</h4>
+<p>While the previous steps were completed in Terminal, the following steps use <code>R</code> code itself, so you can run the commands below like normal <code>R</code> code.</p>
+<ol type="1">
+<li><p>Install the <code>usethis</code> package in <code>R</code> with <code>install.packages("usethis")</code>.</p></li>
+<li>
+<p>Give Git your credentials with the <code>use_git_config</code> function in the <code>usethis</code> package: <code>usethis::use_git_config(user.name = "Matt Higham", user.email = "mhigham@stlawu.edu")</code>.</p>
+<ul>
+<li>Note that the email provided must match your GitHub email address. The <code>user.name</code> need not match.</li>
+</ul>
+</li>
+<li>
+<p>Generate a Personal Access Token (PAT) with <code><a href="https://usethis.r-lib.org/reference/github-token.html">usethis::create_github_token()</a></code></p>
+<ul>
+<li>You can change the recommended scopes if you want but you should at least leave “repo”, “user”, and “workflow” checked.</li>
+<li>By default, the PAT will expire in 30 days. People have varying levels of comfort with security: I will somewhat shamefully admit that I always click the “No Expiration” option because I do not want to ever generate a new one.</li>
+</ul>
+</li>
+<li>
+<p>Install the <code>gitcreds</code> package with <code>install.packages("gitcreds")</code> and then, in <code>R</code>, run <code><a href="https://rdrr.io/pkg/gitcreds/man/gitcreds_get.html">gitcreds::gitcreds_set()</a></code> and paste in your PAT when prompted.</p>
+<ul>
+<li>Run <code><a href="https://rdrr.io/pkg/gitcreds/man/gitcreds_get.html">gitcreds::gitcreds_get()</a></code> or <code><a href="https://usethis.r-lib.org/reference/git_sitrep.html">usethis::git_sitrep()</a></code> to verify that your PAT was accepted.</li>
+</ul>
+</li>
+</ol></section><section id="create-a-repository" class="level4" data-number="4.2.0.3"><h4 data-number="4.2.0.3" class="anchored" data-anchor-id="create-a-repository">
+<span class="header-section-number">4.2.0.3</span> Create a Repository</h4>
+<ol type="1">
+<li>
+<p>On your GitHub account site, click the “<code>+</code>” sign in the upper-right corner and select “New Repository.”</p>
+<ul>
+<li><p>Give the repository a title and make sure to have the option to create the README file checked.</p></li>
+<li><p>If your repository will eventually contain data or other code that cannot be made public, you should select the “Private” option for the repository.</p></li>
+</ul>
+</li>
+<li>
+<p>Back in <code>R Studio</code>, go to “File -&gt; New Project”, select “Version Control” from the options, and then select “Git”. Then, copy and paste the GitHub repository web URL address, give the folder that will be created a name (giving it the same name as the repository is not required but is something that I find convenient), select where that folder will live on your local computer, and click “Create Project”.</p>
+<ul>
+<li>If all goes well, you should have a new project with a “Git” pane in the upper-right window. If all does not go well, it may be that <code>R Studio</code> cannot locate Git on your local computer and that we need to do a bit of troubleshooting.</li>
+</ul>
+</li>
+</ol></section><section id="commit-push-and-pull" class="level4" data-number="4.2.0.4"><h4 data-number="4.2.0.4" class="anchored" data-anchor-id="commit-push-and-pull">
+<span class="header-section-number">4.2.0.4</span> Commit, Push, and Pull</h4>
+<ul>
+<li>Watch and follow along with a <a href="https://www.youtube.com/watch?v=9RuXy0s3T4U" target="_blank"> video on making commits, pushing, and pulling</a>.</li>
+</ul>
+<!-- <input type="checkbox"> Watch and follow along with a <a href="https://www.youtube.com/watch?v=RgjDn2EmAaA" target="_blank">video on our overall purpose for using Git and GitHub</a>. </input> --><!-- <input type="checkbox"> Watch and follow along with a <a href="https://www.youtube.com/watch?v=DNgsDD23sVc" target="_blank">video on how to create a GitHub account</a>. </input> --><!-- <input type="checkbox"> Watch and follow along with a <a href="https://www.youtube.com/watch?v=TfCY9_jag6w" target="_blank">video on how to link your GitHub account to your local Git and R Studio</a>. </input> --><!-- <input type="checkbox"> Watch and follow along with a <a href="https://www.youtube.com/watch?v=RyPcuq6GAyo" target="_blank"> video on creating your first repository</a>. </input> --><p>After you are able to commit, push, and see that push show up on your remote GitHub site, you know that you have successfully set up this version control system!</p>
+</section></section><section id="using-git-and-github" class="level2" data-number="4.3"><h2 data-number="4.3" class="anchored" data-anchor-id="using-git-and-github">
 <span class="header-section-number">4.3</span> Using Git and GitHub</h2>
 <p>In class, we will discuss how to use <code>Git</code> and <code>GitHub</code> with <code>R Studio</code> as well as how we will use these tools to submit assignments in this course. By the end of the class in which we discuss <code>Git</code> and <code>GitHub</code>, at minimum you should be able to (1) locally commit a change to your files with a commit message, (2) push that local change to your remote GitHub repository, and (3) pull a change that someone else made to the remote GitHub repository.</p>
 

@@ -60,10 +60,12 @@ ggplot(data = state_df,
   theme_void()
 ```
 
+We used an `"albers"` projection to make the map above, which is a commonly used projection for the Untied States. Note that __the choice of projection matters__, particularly for maps that cover larger areas of the globe. The video found here <https://www.youtube.com/watch?v=kIID5FDi2JQ> explains more about projections. We will watch the video in class, so there is no need for you to watch this video on your own.
+
 ::: {.callout-note}
 ## Note
 
-We unfortunately do not have time to talk about map projection in detail, but, this is an area you would want to read more about if your final project involves mapping of some kind. Or, if you are interested, you can read more about projections at these two links: <https://medium.com/nightingale/understanding-map-projections-8b23ecbd2a2f> or <https://mdsr-book.github.io/mdsr2e/ch-spatial.html#sec:projections>.
+We unfortunately do not have time to talk about map projection in more detail, but, this is an area you would want to read more about if your final project involves mapping of some kind. Or, if you are interested, you can read more about projections at these two links: <https://medium.com/nightingale/understanding-map-projections-8b23ecbd2a2f> or <https://mdsr-book.github.io/mdsr2e/ch-spatial.html#sec:projections>.
 :::
 
 Now that we've created a base map, we probably want to add a variable to fill by to examine patterns across the states. The resulting map is sometimes called a "choropleth" map. We will use the `state_stats` data set from the `usdata` package.
@@ -249,7 +251,7 @@ ggplot(data = world_full, aes(x = long, y = lat, group = group)) +
 
 **Exercise 3**. You may have noticed that there are two horizontal stripes across your map. This is an issue that drove me nuts! Check out <a href="https://github.com/tidyverse/ggplot2/issues/1104" target="_blank">this submitted issue on ggplot2's GitHub page</a> for the reason for the error as well as a fix. Use it to fix your plot.
 
-**Exercise 4**. Read about Mercator projections in <a href="https://futuremaps.com/blogs/news/top-10-world-map-projections" target="_blank">this blog post</a>. What does this source say about the sizes of Greenland vs. Africa in a Mercator projection.
+**Exercise 4**. Read about Mercator projections in <a href="https://mdsr-book.github.io/mdsr2e/ch-spatial.html#sec:projections" target="_blank">this blog post</a>. What does this source say about the sizes of Greenland vs. Africa in a Mercator projection.
 
 **Exercise 5**. Examine all of the different options for map projection with `?mapproject`. Then, change the `projection` to `"globular"`. Change the `projection` again to `"gilbert"`. How does the relative size of Greenland to Africa change in the projections?
 

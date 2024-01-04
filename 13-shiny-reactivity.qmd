@@ -30,6 +30,9 @@ Again, a usual first step is creating a static graph, choosing a value for each 
 
 ```{r, appendix = TRUE}
 library(tidyverse)
+
+theme_set(theme_minimal())
+
 atp_df <- read_csv("data/atp_matches_2019.csv")
 wta_df <- read_csv("data/wta_matches_2019.csv")
 both_df <- bind_rows(atp_df, wta_df)

@@ -39,6 +39,8 @@ To accomplish this task, we might consider using `shiny` to build a web app. A u
 ```{r, appendix = TRUE}
 library(tidyverse)
 library(readxl)
+theme_set(theme_minimal())
+
 df <- read_excel("data/slu_graduates_17_21.xlsx")
 
 ## fixes error in the data

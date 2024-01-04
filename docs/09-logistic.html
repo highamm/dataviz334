@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="generator" content="quarto-1.3.353">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-<title>DATA / STAT 334 - 11&nbsp; Logistic Model Visualization</title>
+<title>DATA / STAT 334 - 10&nbsp; Logistic Model Visualization</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -60,7 +60,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="site_libs/quarto-search/fuse.min.js"></script>
 <script src="site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="./">
-<link href="./10-ethics.html" rel="next">
+<link href="./14-other-topics.html" rel="next">
 <link href="./08-model-interactions.html" rel="prev">
 <script src="site_libs/quarto-html/quarto.js"></script>
 <script src="site_libs/quarto-html/popper.min.js"></script>
@@ -97,7 +97,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./07-stat213.html">Model Visualization</a></li><li class="breadcrumb-item"><a href="./09-logistic.html"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Logistic Model Visualization</span></a></li></ol></nav>
+      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./07-stat213.html">Model Visualization</a></li><li class="breadcrumb-item"><a href="./09-logistic.html"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Logistic Model Visualization</span></a></li></ol></nav>
       <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
       </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -193,12 +193,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
  <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Expressing Variability/Uncertainty</span></span></a>
   </div>
 </li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="./14-other-topics.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Other Topics</span></span></a>
-  </div>
-</li>
       </ul>
 </li>
         <li class="sidebar-item sidebar-item-section">
@@ -213,19 +207,25 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./07-stat213.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">STAT 213 Review</span></span></a>
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">STAT 213 Review</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./08-model-interactions.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Linear Model Visualization</span></span></a>
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Linear Model Visualization</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./09-logistic.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Logistic Model Visualization</span></span></a>
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Logistic Model Visualization</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./14-other-topics.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Other Topics and Models</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -274,20 +274,20 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
    
   <ul>
 <li>
-<a href="#logistic-regression-review-class-prep" id="toc-logistic-regression-review-class-prep" class="nav-link active" data-scroll-target="#logistic-regression-review-class-prep"><span class="header-section-number">11.1</span> Logistic Regression Review (Class Prep)</a>
+<a href="#logistic-regression-review-class-prep" id="toc-logistic-regression-review-class-prep" class="nav-link active" data-scroll-target="#logistic-regression-review-class-prep"><span class="header-section-number">10.1</span> Logistic Regression Review (Class Prep)</a>
   <ul class="collapse">
-<li><a href="#review-of-model" id="toc-review-of-model" class="nav-link" data-scroll-target="#review-of-model"><span class="header-section-number">11.1.1</span> Review of Model</a></li>
-  <li><a href="#fitting-the-model" id="toc-fitting-the-model" class="nav-link" data-scroll-target="#fitting-the-model"><span class="header-section-number">11.1.2</span> Fitting the Model</a></li>
-  <li><a href="#interpreting-coefficients" id="toc-interpreting-coefficients" class="nav-link" data-scroll-target="#interpreting-coefficients"><span class="header-section-number">11.1.3</span> Interpreting Coefficients</a></li>
+<li><a href="#review-of-model" id="toc-review-of-model" class="nav-link" data-scroll-target="#review-of-model"><span class="header-section-number">10.1.1</span> Review of Model</a></li>
+  <li><a href="#fitting-the-model" id="toc-fitting-the-model" class="nav-link" data-scroll-target="#fitting-the-model"><span class="header-section-number">10.1.2</span> Fitting the Model</a></li>
+  <li><a href="#interpreting-coefficients" id="toc-interpreting-coefficients" class="nav-link" data-scroll-target="#interpreting-coefficients"><span class="header-section-number">10.1.3</span> Interpreting Coefficients</a></li>
   </ul>
 </li>
-  <li><a href="#visualizing-logistic-regression-models" id="toc-visualizing-logistic-regression-models" class="nav-link" data-scroll-target="#visualizing-logistic-regression-models"><span class="header-section-number">11.2</span> Visualizing Logistic Regression Models</a></li>
-  <li><a href="#your-turn" id="toc-your-turn" class="nav-link" data-scroll-target="#your-turn"><span class="header-section-number">11.3</span> Your Turn</a></li>
+  <li><a href="#visualizing-logistic-regression-models" id="toc-visualizing-logistic-regression-models" class="nav-link" data-scroll-target="#visualizing-logistic-regression-models"><span class="header-section-number">10.2</span> Visualizing Logistic Regression Models</a></li>
+  <li><a href="#your-turn" id="toc-your-turn" class="nav-link" data-scroll-target="#your-turn"><span class="header-section-number">10.3</span> Your Turn</a></li>
   </ul></nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block default"><div class="quarto-title">
-<h1 class="title"><span id="logmodviz" class="quarto-section-identifier"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Logistic Model Visualization</span></span></h1>
+<h1 class="title"><span id="logmodviz" class="quarto-section-identifier"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Logistic Model Visualization</span></span></h1>
 </div>
 
 
@@ -300,9 +300,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </div>
   
 
-</header><p>The purpose of this section is to use visualization to give better model interpretations in the context of logistic regression. We will again use the <code>modelr</code> package and will again use the overall strategy of model interpretation that we used in the previous section.</p>
-<section id="logistic-regression-review-class-prep" class="level2" data-number="11.1"><h2 data-number="11.1" class="anchored" data-anchor-id="logistic-regression-review-class-prep">
-<span class="header-section-number">11.1</span> Logistic Regression Review (Class Prep)</h2>
+</header><p>The purpose of this section is to use visualization to give better model interpretations in the context of logistic regression. We will again use the overall strategy of model interpretation that we used in the previous section: interpreting the model by visualizing predictions from a grid of predictor values that we create.</p>
+<section id="logistic-regression-review-class-prep" class="level2" data-number="10.1"><h2 data-number="10.1" class="anchored" data-anchor-id="logistic-regression-review-class-prep">
+<span class="header-section-number">10.1</span> Logistic Regression Review (Class Prep)</h2>
 <p>Recall that, if the response variable is categorical with only two levels, then we can fit a logistic regression model. Interpreting the coefficients of a logistic regression model, however, is more challenging than interpreting the fitted coefficients in a standard linear regression model. The interpretations rely on a statement about the multiplicative change in odds, which is generally not very intuitive.</p>
 <p>In this section, we will review the overall logistic regression model, the interpretations of the fitted regression coefficients, and how to fit a logistic regression model in <code>R</code>.</p>
 <p>We will use the <code>titanic</code> data set, obtained from Kaggle: <a href="https://www.kaggle.com/c/titanic/data" class="uri">https://www.kaggle.com/c/titanic/data</a>. Each row of the data set is a passenger on the Titanic ship. The columns include:</p>
@@ -320,6 +320,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://tidyverse.tidyverse.org">tidyverse</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://here.r-lib.org/">here</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://broom.tidymodels.org/">broom</a></span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme_get.html">theme_set</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html">theme_minimal</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
 <span><span class="va">titanic_df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://readr.tidyverse.org/reference/read_delim.html">read_csv</a></span><span class="op">(</span><span class="fu"><a href="https://here.r-lib.org//reference/here.html">here</a></span><span class="op">(</span><span class="st">"data/titanic.csv"</span><span class="op">)</span>,</span>
 <span>                       col_types <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>Pclass <span class="op">=</span> <span class="fu"><a href="https://readr.tidyverse.org/reference/parse_factor.html">col_factor</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span>Pclass <span class="op">=</span> <span class="fu"><a href="https://forcats.tidyverse.org/reference/fct_recode.html">fct_recode</a></span><span class="op">(</span><span class="va">Pclass</span>,</span>
@@ -339,8 +341,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span><span class="co">#&gt; # ℹ 885 more rows</span></span>
 <span><span class="co">#&gt; # ℹ 2 more variables: Cabin &lt;chr&gt;, Embarked &lt;chr&gt;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<section id="review-of-model" class="level3" data-number="11.1.1"><h3 data-number="11.1.1" class="anchored" data-anchor-id="review-of-model">
-<span class="header-section-number">11.1.1</span> Review of Model</h3>
+<section id="review-of-model" class="level3" data-number="10.1.1"><h3 data-number="10.1.1" class="anchored" data-anchor-id="review-of-model">
+<span class="header-section-number">10.1.1</span> Review of Model</h3>
 <p>We will first consider a model with <code>Survived</code> as the response variable and <code>Age</code> as the predictor variable. The fact that <code>Survived</code> is a binary categorical variable means that standard linear regression would not be appropriate. Recall that, in logistic regression, we model the <strong>log-odds</strong> of survival:</p>
 <p><span class="math display">\[
 log\left(\frac{\pi}{1 - \pi}\right) = \beta_0 + \beta_1 Age,
@@ -349,11 +351,12 @@ log\left(\frac{\pi}{1 - \pi}\right) = \beta_0 + \beta_1 Age,
 <p><span class="math display">\[
 \pi = \frac{\text{exp}(\beta_0 + \beta_1 Age)}{1 + \text{exp}(\beta_0 + \beta_1 Age)},
 \]</span></p>
-</section><section id="fitting-the-model" class="level3" data-number="11.1.2"><h3 data-number="11.1.2" class="anchored" data-anchor-id="fitting-the-model">
-<span class="header-section-number">11.1.2</span> Fitting the Model</h3>
+</section><section id="fitting-the-model" class="level3" data-number="10.1.2"><h3 data-number="10.1.2" class="anchored" data-anchor-id="fitting-the-model">
+<span class="header-section-number">10.1.2</span> Fitting the Model</h3>
 <p>We can fit the model in <code>R</code> with the <code><a href="https://rdrr.io/r/stats/glm.html">glm()</a></code> function, which is very similar to <code><a href="https://rdrr.io/r/stats/lm.html">lm()</a></code>, except that there is an extra argument <code>family</code> to specify that we want to use the <code>"binomial"</code> to fit a logistic regression model.</p>
 <div class="cell">
-<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">titanic_mod</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/glm.html">glm</a></span><span class="op">(</span><span class="va">Survived</span> <span class="op">~</span> <span class="va">Age</span>, data <span class="op">=</span> <span class="va">titanic_df</span>, family <span class="op">=</span> <span class="st">"binomial"</span><span class="op">)</span></span>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">titanic_mod</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/glm.html">glm</a></span><span class="op">(</span><span class="va">Survived</span> <span class="op">~</span> <span class="va">Age</span>,</span>
+<span>                   data <span class="op">=</span> <span class="va">titanic_df</span>, family <span class="op">=</span> <span class="st">"binomial"</span><span class="op">)</span></span>
 <span><span class="va">titanic_mod</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Call:  glm(formula = Survived ~ Age, family = "binomial", data = titanic_df)</span></span>
@@ -376,7 +379,7 @@ log\left(\frac{\pi}{1 - \pi}\right) = \beta_0 + \beta_1 Age,
 <span><span class="co">#&gt; 1 (Intercept)  -0.0567   0.174      -0.327  0.744 </span></span>
 <span><span class="co">#&gt; 2 Age          -0.0110   0.00533    -2.06   0.0397</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>We can also make a plot of the fitted model (without <code>modelr</code>) by using <code><a href="https://ggplot2.tidyverse.org/reference/geom_smooth.html">geom_smooth()</a></code> with <code>method = "glm"</code>:</p>
+<p>We can also make a plot of the fitted model by using <code><a href="https://ggplot2.tidyverse.org/reference/geom_smooth.html">geom_smooth()</a></code> with <code>method = "glm"</code>:</p>
 <div class="cell">
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">titanic_df</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">Age</span>, y <span class="op">=</span> <span class="va">Survived</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_jitter.html">geom_jitter</a></span><span class="op">(</span>height <span class="op">=</span> <span class="fl">0.05</span><span class="op">)</span> <span class="op">+</span></span>
@@ -400,8 +403,8 @@ Warning
 </div>
 </div>
 <p>We also see that the model predicts that older passengers tended to have a lower survival probability.</p>
-</section><section id="interpreting-coefficients" class="level3" data-number="11.1.3"><h3 data-number="11.1.3" class="anchored" data-anchor-id="interpreting-coefficients">
-<span class="header-section-number">11.1.3</span> Interpreting Coefficients</h3>
+</section><section id="interpreting-coefficients" class="level3" data-number="10.1.3"><h3 data-number="10.1.3" class="anchored" data-anchor-id="interpreting-coefficients">
+<span class="header-section-number">10.1.3</span> Interpreting Coefficients</h3>
 <p>We next interpret the coefficients from this simple logistic regression model. Because our interpretations involve explanations about odds, these coefficient interpretations are not particularly useful, especially to the general public who use the words “probability” and “odds” somewhat interchangeably (for statisticians, these are different things though!).</p>
 <div class="cell">
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">titanic_mod</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://generics.r-lib.org/reference/tidy.html">tidy</a></span><span class="op">(</span><span class="op">)</span></span>
@@ -412,18 +415,21 @@ Warning
 <span><span class="co">#&gt; 2 Age          -0.0110   0.00533    -2.06   0.0397</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Because this model was linear on the log-odds scale, the interpretation of the <code>-0.00261</code> value is linear on the log-odds scale: The model predicts that a one year increase in age is associated with a 0.00261 decrease in the log-odds of survival.</p>
-<p>This interpretation is practically useless: what does it mean to have that amount decrease in log-odds of survival? If we take <span class="math inline">\(e^{-0.00261} = 0.997\)</span>, we can interpret the resulting value on the odds scale as a multiplicative change in odds. You likely discussed why you can do this in STAT 213 but we won’t focus on it again here. The resulting interpretation is something like “The model predicts that a one year increase in age is associated with a multiplicative change in the odds of survival of 0.997 times.” In other words, the model predicts that, for a one year increase in age, odds of survival are the predicted odds of survival of the previous year times 0.997.</p>
+<p>This interpretation is practically useless: what does it mean to have that amount decrease in log-odds of survival? If we take <span class="math inline">\(e^{-0.00261} = 0.997\)</span>, we can interpret the resulting value on the odds scale as a multiplicative change in odds. You likely discussed why you can do this in STAT 213 but we won’t focus on it again here. The resulting interpretation is something like “The model predicts that a one year increase in age is associated with a multiplicative change in the odds of survival of 0.997 times.” In other words, the model predicts that, for a one year increase in age, odds of survival are the predicted odds of survival of the previous year of age times 0.997.</p>
 <p>Again, this interpretation is not particularly useful or effective. And, we are in the simplest possible case of logistic regression: a model with just one predictor! Interpretations are even more challenging when there are multiple predictors, interactions, squared terms, etc. The goal of the next section is to use visualization to help communicate model results from logistic regression.</p>
 <p><strong>Exercise 1</strong>. Fit a logistic regression model with <code>Fare</code> as a predictor. Obtain summary output with <code><a href="https://generics.r-lib.org/reference/tidy.html">tidy()</a></code> and use <code>ggplot2</code> to construct a plot of the model.</p>
 <p><strong>Exercise 2</strong>. Fit a logistic regression model with <code>Sex</code> as the predictor. Make an attempt at interpreting the resulting fitted coefficient for <code>Sex</code> on either the log-odds scale or the odds scale (keeping in mind that <code>Sex</code> is categorical so your interpretation should be comparing odds of survival of female and male passengers).</p>
-</section></section><section id="visualizing-logistic-regression-models" class="level2" data-number="11.2"><h2 data-number="11.2" class="anchored" data-anchor-id="visualizing-logistic-regression-models">
-<span class="header-section-number">11.2</span> Visualizing Logistic Regression Models</h2>
+</section></section><section id="visualizing-logistic-regression-models" class="level2" data-number="10.2"><h2 data-number="10.2" class="anchored" data-anchor-id="visualizing-logistic-regression-models">
+<span class="header-section-number">10.2</span> Visualizing Logistic Regression Models</h2>
+<p><strong>Warm Up Exercise</strong>. Jittering allowed us to see the data points on the logistic regression plot of <code>Survival</code> vs.&nbsp;<code>Age</code> earlier, but, another option, is to generate a rug plot with <code><a href="https://ggplot2.tidyverse.org/reference/geom_rug.html">geom_rug()</a></code>. Examine the link <a href="https://ggplot2.tidyverse.org/reference/geom_rug.html" class="uri">https://ggplot2.tidyverse.org/reference/geom_rug.html</a> and modify the plot to have the “rug” tick marks on the top and bottom of the graph instead of the points.</p>
+<p><br></p>
+<p><br></p>
 <p>To help communicate what a fitted logistic regression model means, in terms of predicted probability (as opposed to predicted odds or log-odds), we will again make use of the <code>modelr</code> package. We will use the same overall strategy as the previous section on using <code>modelr</code> to visualize models from standard linear regression models.</p>
 <p>Our basic strategy for visualizing models is to</p>
 <ol type="1">
-<li><p>fit the model with <code><a href="https://rdrr.io/r/stats/glm.html">glm()</a></code></p></li>
+<li><p>fit the model with <code><a href="https://rdrr.io/r/stats/glm.html">glm()</a></code>.</p></li>
 <li><p>construct a grid of predictor values with the <code><a href="https://modelr.tidyverse.org/reference/data_grid.html">data_grid()</a></code> function from the <code>modelr</code> package.</p></li>
-<li><p>Use the <code><a href="https://modelr.tidyverse.org/reference/add_predictions.html">gather_predictions()</a></code> function from the <code>modelr</code> package to obtain predicted probabilities according to the model for each row in the grid.</p></li>
+<li><p>Use the <code><a href="https://generics.r-lib.org/reference/augment.html">augment()</a></code> function from the <code>broom</code> package on the data grid in (2) to to obtain predicted probabilities according to the model for each row in the grid.</p></li>
 <li><p>Use <code>ggplot2</code> to construct a meaningful plot with the predicted probabilities.</p></li>
 </ol>
 <div class="callout callout-style-simple callout-important callout-titled">
@@ -463,7 +469,7 @@ Note
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>Let’s take a moment to appreciate that interpreting these coefficients in terms of a multiplicative change in odds of survival would be challenging and not that informative.</p>
+<p>Let’s take a moment to appreciate that interpreting these coefficients in terms of a multiplicative change in odds of survival would not be that informative.</p>
 </div>
 </div>
 <p>We next use <code>modelr</code> to create a grid of predictors that we want to make predictions for and then gather these predictions using the <code>titanic_large</code> model:</p>
@@ -471,7 +477,7 @@ Note
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://modelr.tidyverse.org">modelr</a></span><span class="op">)</span></span>
 <span><span class="va">grid</span> <span class="op">&lt;-</span> <span class="va">titanic_df</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://modelr.tidyverse.org/reference/data_grid.html">data_grid</a></span><span class="op">(</span></span>
-<span>    Age <span class="op">=</span> <span class="fu"><a href="https://modelr.tidyverse.org/reference/seq_range.html">seq_range</a></span><span class="op">(</span><span class="va">Age</span>, <span class="fl">10</span><span class="op">)</span>,</span>
+<span>    Age <span class="op">=</span> <span class="fu"><a href="https://modelr.tidyverse.org/reference/seq_range.html">seq_range</a></span><span class="op">(</span><span class="va">Age</span>, n <span class="op">=</span> <span class="fl">10</span><span class="op">)</span>,</span>
 <span>    Sex <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"female"</span>, <span class="st">"male"</span><span class="op">)</span>,</span>
 <span>    Pclass <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"1st"</span>, <span class="st">"2nd"</span>, <span class="st">"3rd"</span><span class="op">)</span></span>
 <span>  <span class="op">)</span> </span>
@@ -488,33 +494,34 @@ Note
 <span><span class="co">#&gt; # ℹ 54 more rows</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell">
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">model_df</span> <span class="op">&lt;-</span> <span class="va">grid</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu">modelr</span><span class="fu">::</span><span class="fu"><a href="https://modelr.tidyverse.org/reference/add_predictions.html">gather_predictions</a></span><span class="op">(</span><span class="va">titanic_large</span><span class="op">)</span> </span>
-<span><span class="va">model_df</span></span>
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">aug_surv</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://generics.r-lib.org/reference/augment.html">augment</a></span><span class="op">(</span><span class="va">titanic_large</span>, newdata <span class="op">=</span> <span class="va">grid</span>,</span>
+<span>                    se_fit <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span><span class="va">aug_surv</span></span>
 <span><span class="co">#&gt; # A tibble: 60 × 5</span></span>
-<span><span class="co">#&gt;   model           Age Sex    Pclass    pred</span></span>
-<span><span class="co">#&gt;   &lt;chr&gt;         &lt;dbl&gt; &lt;chr&gt;  &lt;chr&gt;    &lt;dbl&gt;</span></span>
-<span><span class="co">#&gt; 1 titanic_large  0.42 female 1st     3.76  </span></span>
-<span><span class="co">#&gt; 2 titanic_large  0.42 female 2nd     2.45  </span></span>
-<span><span class="co">#&gt; 3 titanic_large  0.42 female 3rd     1.18  </span></span>
-<span><span class="co">#&gt; 4 titanic_large  0.42 male   1st     1.24  </span></span>
-<span><span class="co">#&gt; 5 titanic_large  0.42 male   2nd    -0.0711</span></span>
-<span><span class="co">#&gt; 6 titanic_large  0.42 male   3rd    -1.34  </span></span>
+<span><span class="co">#&gt;     Age Sex    Pclass .fitted .se.fit</span></span>
+<span><span class="co">#&gt;   &lt;dbl&gt; &lt;chr&gt;  &lt;chr&gt;    &lt;dbl&gt;   &lt;dbl&gt;</span></span>
+<span><span class="co">#&gt; 1  0.42 female 1st     3.76     0.399</span></span>
+<span><span class="co">#&gt; 2  0.42 female 2nd     2.45     0.317</span></span>
+<span><span class="co">#&gt; 3  0.42 female 3rd     1.18     0.250</span></span>
+<span><span class="co">#&gt; 4  0.42 male   1st     1.24     0.357</span></span>
+<span><span class="co">#&gt; 5  0.42 male   2nd    -0.0711   0.296</span></span>
+<span><span class="co">#&gt; 6  0.42 male   3rd    -1.34     0.246</span></span>
 <span><span class="co">#&gt; # ℹ 54 more rows</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>We will complete the rest of this exercise as a class.</p>
-<p><strong>Exercise 1</strong>. Examine the <code>pred</code> column in <code>model_df</code>. What are these values? Why are they not between <code>0</code> and <code>1</code>?</p>
-<p><strong>Exercise 2</strong>. Make a plot of the values of <code>pred</code> (without modifying them).</p>
-<p><strong>Exercise 3</strong>. Convert <code>pred</code> to predicted probabilities <span class="math inline">\(\hat{\pi}\)</span> with the following formula. Note that <code>exp(3.2)</code> is <code>R</code> code from <span class="math inline">\(e^{3.2}\)</span></p>
+<p><strong>Exercise 1</strong>. Examine the <code>.fitted</code> column in <code>aug_surv</code>. What are these values? Why are they not between <code>0</code> and <code>1</code>?</p>
+<p><strong>Exercise 2</strong>. Make a plot of the values of <code>.fitted</code> (without modifying them).</p>
+<p><strong>Exercise 3</strong>. Convert <code>.fitted</code> to predicted probabilities <span class="math inline">\(\hat{\pi}\)</span> with the following formula. Note that <code>exp(3.2)</code> is <code>R</code> code for <span class="math inline">\(e^{3.2}\)</span></p>
 <p><span class="math display">\[
 \hat{\pi} = \frac{e^{pred}}{(1 + e^{pred})}
 \]</span></p>
-<p><strong>Exercise 4</strong>: Make the plot again, using predicted probabilities instead of <code>pred</code> values.</p>
-</section><section id="your-turn" class="level2" data-number="11.3"><h2 data-number="11.3" class="anchored" data-anchor-id="your-turn">
-<span class="header-section-number">11.3</span> Your Turn</h2>
+<p><strong>Exercise 4</strong>: Make the plot again, using predicted probabilities instead of <code>.fitted</code> values.</p>
+</section><section id="your-turn" class="level2" data-number="10.3"><h2 data-number="10.3" class="anchored" data-anchor-id="your-turn">
+<span class="header-section-number">10.3</span> Your Turn</h2>
 <p><strong>Exercise 1</strong>. Add an <code>Sex:Pclass</code> interaction term to the previous model and fit the model with <code><a href="https://rdrr.io/r/stats/glm.html">glm()</a></code>.</p>
-<p><strong>Exercise 2</strong>. Use <code>modelr</code> to obtain model predictions for both the previous model (without the interaction) and the new model (with the interaction). Convert the resulting <code>pred</code> column to predicted probabilities.</p>
+<p><strong>Exercise 2</strong>. Obtain model predictions for both the previous model (without the interaction) and the new model (with the interaction). Convert the resulting <code>.fitted</code> column to predicted probabilities.</p>
 <p><strong>Exercise 3</strong>. Construct a graphic that shows how the two models differ.</p>
+<p><strong>Exercise 4</strong>. How would you incorporate uncertainty into your graph?</p>
 
 
 </section></main><!-- /main --><script id="quarto-html-after-body" type="application/javascript">
@@ -751,12 +758,12 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 });
 </script><nav class="page-navigation"><div class="nav-page nav-page-previous">
       <a href="./08-model-interactions.html" class="pagination-link">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Linear Model Visualization</span></span>
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Linear Model Visualization</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="./10-ethics.html" class="pagination-link">
-        <span class="nav-page-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Ethics</span></span> <i class="bi bi-arrow-right-short"></i>
+      <a href="./14-other-topics.html" class="pagination-link">
+        <span class="nav-page-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Other Topics and Models</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>

@@ -36,6 +36,7 @@ Make sure the `hpi-tidy.csv` data set is in a `/data` folder in your current `R 
 
 ```{r, appendix = TRUE}
 library(tidyverse)
+theme_set(theme_minimal())
 hpi_df <- read_csv("data/hpi-tidy.csv")
 hpi_df
 ```

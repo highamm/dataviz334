@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="generator" content="quarto-1.3.353">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-<title>DATA / STAT 334 - 9&nbsp; STAT 213 Review</title>
+<title>DATA / STAT 334 - 8&nbsp; STAT 213 Review</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -61,7 +61,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="./">
 <link href="./08-model-interactions.html" rel="next">
-<link href="./14-other-topics.html" rel="prev">
+<link href="./05-uncertainty.html" rel="prev">
 <script src="site_libs/quarto-html/quarto.js"></script>
 <script src="site_libs/quarto-html/popper.min.js"></script>
 <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
@@ -97,7 +97,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./07-stat213.html">Model Visualization</a></li><li class="breadcrumb-item"><a href="./07-stat213.html"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">STAT 213 Review</span></a></li></ol></nav>
+      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./07-stat213.html">Model Visualization</a></li><li class="breadcrumb-item"><a href="./07-stat213.html"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">STAT 213 Review</span></a></li></ol></nav>
       <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
       </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -193,12 +193,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
  <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Expressing Variability/Uncertainty</span></span></a>
   </div>
 </li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="./14-other-topics.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Other Topics</span></span></a>
-  </div>
-</li>
       </ul>
 </li>
         <li class="sidebar-item sidebar-item-section">
@@ -213,19 +207,25 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./07-stat213.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">STAT 213 Review</span></span></a>
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">STAT 213 Review</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./08-model-interactions.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Linear Model Visualization</span></span></a>
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Linear Model Visualization</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./09-logistic.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Logistic Model Visualization</span></span></a>
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Logistic Model Visualization</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./14-other-topics.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Other Topics and Models</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -274,20 +274,20 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
    
   <ul>
 <li>
-<a href="#stat-213-with-broom-class-prep" id="toc-stat-213-with-broom-class-prep" class="nav-link active" data-scroll-target="#stat-213-with-broom-class-prep"><span class="header-section-number">9.1</span> STAT 213 with <code>broom</code> (Class Prep)</a>
+<a href="#stat-213-with-broom-class-prep" id="toc-stat-213-with-broom-class-prep" class="nav-link active" data-scroll-target="#stat-213-with-broom-class-prep"><span class="header-section-number">8.1</span> STAT 213 with <code>broom</code> (Class Prep)</a>
   <ul class="collapse">
-<li><a href="#tidy" id="toc-tidy" class="nav-link" data-scroll-target="#tidy"><span class="header-section-number">9.1.1</span> <code>tidy()</code></a></li>
-  <li><a href="#glance" id="toc-glance" class="nav-link" data-scroll-target="#glance"><span class="header-section-number">9.1.2</span> <code>glance()</code></a></li>
-  <li><a href="#augment" id="toc-augment" class="nav-link" data-scroll-target="#augment"><span class="header-section-number">9.1.3</span> <code>augment()</code></a></li>
-  <li><a href="#exercises" id="toc-exercises" class="nav-link" data-scroll-target="#exercises"><span class="header-section-number">9.1.4</span> Exercises</a></li>
+<li><a href="#tidy" id="toc-tidy" class="nav-link" data-scroll-target="#tidy"><span class="header-section-number">8.1.1</span> <code>tidy()</code></a></li>
+  <li><a href="#glance" id="toc-glance" class="nav-link" data-scroll-target="#glance"><span class="header-section-number">8.1.2</span> <code>glance()</code></a></li>
+  <li><a href="#augment" id="toc-augment" class="nav-link" data-scroll-target="#augment"><span class="header-section-number">8.1.3</span> <code>augment()</code></a></li>
+  <li><a href="#exercises" id="toc-exercises" class="nav-link" data-scroll-target="#exercises"><span class="header-section-number">8.1.4</span> Exercises</a></li>
   </ul>
 </li>
-  <li><a href="#model-coefficient-interpretation" id="toc-model-coefficient-interpretation" class="nav-link" data-scroll-target="#model-coefficient-interpretation"><span class="header-section-number">9.2</span> Model Coefficient Interpretation</a></li>
+  <li><a href="#model-coefficient-interpretation" id="toc-model-coefficient-interpretation" class="nav-link" data-scroll-target="#model-coefficient-interpretation"><span class="header-section-number">8.2</span> Model Coefficient Interpretation</a></li>
   </ul></nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block default"><div class="quarto-title">
-<h1 class="title"><span id="stat213review" class="quarto-section-identifier"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">STAT 213 Review</span></span></h1>
+<h1 class="title"><span id="stat213review" class="quarto-section-identifier"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">STAT 213 Review</span></span></h1>
 </div>
 
 
@@ -300,8 +300,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </div>
   
 
-</header><section id="stat-213-with-broom-class-prep" class="level2" data-number="9.1"><h2 data-number="9.1" class="anchored" data-anchor-id="stat-213-with-broom-class-prep">
-<span class="header-section-number">9.1</span> STAT 213 with <code>broom</code> (Class Prep)</h2>
+</header><section id="stat-213-with-broom-class-prep" class="level2" data-number="8.1"><h2 data-number="8.1" class="anchored" data-anchor-id="stat-213-with-broom-class-prep">
+<span class="header-section-number">8.1</span> STAT 213 with <code>broom</code> (Class Prep)</h2>
 <p>In this section, we will focus more on a tidy approach to the models that you fit and interpreted in STAT 213.</p>
 <div class="callout callout-style-simple callout-note callout-titled">
 <div class="callout-header d-flex align-content-center">
@@ -356,8 +356,8 @@ Note
 Y = \beta_0 + \beta_1 species + \beta_2 aroma + \beta_3 flavor + \beta_4 sweetness + \beta_5 moisture + \epsilon,
 \]</span></p>
 <p>where <span class="math inline">\(Y\)</span> is the rating of the coffee (<code>total_cup_points</code>), <code>species</code> is an indicator variable equal to <code>1</code> if the species is <code>Robusta</code> and a <code>0</code> if the species is <code>Arabica</code>, and <span class="math inline">\(epsilon\)</span> are the random errors, which follow the usual assumptions that they are independent and normally distributed with constant variance.</p>
-<section id="tidy" class="level3" data-number="9.1.1"><h3 data-number="9.1.1" class="anchored" data-anchor-id="tidy">
-<span class="header-section-number">9.1.1</span> <code>tidy()</code>
+<section id="tidy" class="level3" data-number="8.1.1"><h3 data-number="8.1.1" class="anchored" data-anchor-id="tidy">
+<span class="header-section-number">8.1.1</span> <code>tidy()</code>
 </h3>
 <p><code><a href="https://generics.r-lib.org/reference/tidy.html">tidy()</a></code> is analagous to <code><a href="https://rdrr.io/r/base/summary.html">summary()</a></code> for a linear model object. Let’s start by fitting a linear model with <code><a href="https://rdrr.io/r/stats/lm.html">lm()</a></code> with <code>total_cup_points</code> as the response and <code>species</code>, <code>aroma</code>, <code>flavor</code>, <code>sweetness</code>, and <code>moisture</code> as predictors.</p>
 <p>Read in the data, load the <code>broom</code> package (and install it with <code>install.packages("broom")</code>), and fit the model with</p>
@@ -365,6 +365,8 @@ Y = \beta_0 + \beta_1 species + \beta_2 aroma + \beta_3 flavor + \beta_4 sweetne
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://tidyverse.tidyverse.org">tidyverse</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://broom.tidymodels.org/">broom</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://here.r-lib.org/">here</a></span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme_get.html">theme_set</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html">theme_minimal</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
 <span><span class="va">coffee_df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://readr.tidyverse.org/reference/read_delim.html">read_csv</a></span><span class="op">(</span><span class="fu"><a href="https://here.r-lib.org//reference/here.html">here</a></span><span class="op">(</span><span class="st">"data/coffee_ratings.csv"</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="va">coffee_mod</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/lm.html">lm</a></span><span class="op">(</span><span class="va">total_cup_points</span> <span class="op">~</span> <span class="va">species</span> <span class="op">+</span> <span class="va">aroma</span> <span class="op">+</span> <span class="va">flavor</span> <span class="op">+</span></span>
 <span>                   <span class="va">sweetness</span> <span class="op">+</span> <span class="va">moisture</span>,</span>
@@ -436,8 +438,8 @@ Y = \beta_0 + \beta_1 species + \beta_2 aroma + \beta_3 flavor + \beta_4 sweetne
 <span><span class="co">#&gt;   &lt;chr&gt;    &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt;</span></span>
 <span><span class="co">#&gt; 1 aroma     1.95     0.146      13.4 1.82e-38</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-</section><section id="glance" class="level3" data-number="9.1.2"><h3 data-number="9.1.2" class="anchored" data-anchor-id="glance">
-<span class="header-section-number">9.1.2</span> <code>glance()</code>
+</section><section id="glance" class="level3" data-number="8.1.2"><h3 data-number="8.1.2" class="anchored" data-anchor-id="glance">
+<span class="header-section-number">8.1.2</span> <code>glance()</code>
 </h3>
 <p><code><a href="https://generics.r-lib.org/reference/glance.html">glance()</a></code> puts some model summary statistics into a tidy tibble. For example, if we run</p>
 <div class="cell" data-appendix="true">
@@ -449,8 +451,8 @@ Y = \beta_0 + \beta_1 species + \beta_2 aroma + \beta_3 flavor + \beta_4 sweetne
 <span><span class="co">#&gt; # ℹ 3 more variables: deviance &lt;dbl&gt;, df.residual &lt;int&gt;, nobs &lt;int&gt;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>you should notice a lot of statistics that you are familiar with from STAT 213, including <code>r.squared</code>, <code>adj.r.squared</code>, <code>sigma</code> (the residual standard error), <code>statistic</code> (the overall F-statistic), <code>AIC</code>, and <code>BIC</code>. We are going to focus mainly on coefficient interpretation in this course, so there is no need to worry if you do not remember exactly what, for example, <code>BIC</code> is.</p>
-</section><section id="augment" class="level3" data-number="9.1.3"><h3 data-number="9.1.3" class="anchored" data-anchor-id="augment">
-<span class="header-section-number">9.1.3</span> <code>augment()</code>
+</section><section id="augment" class="level3" data-number="8.1.3"><h3 data-number="8.1.3" class="anchored" data-anchor-id="augment">
+<span class="header-section-number">8.1.3</span> <code>augment()</code>
 </h3>
 <p><code><a href="https://generics.r-lib.org/reference/augment.html">augment()</a></code> is my personal favourite of the three. The function returns a <code>tibble</code> that contains all of the variables used to fit the model appended with commonly used diagnostic statistics like the fitted values (<code>.fitted)</code>, cook’s distance (<code>.cooksd)</code>, <code>.hat</code> values for leverage, and residuals (<code>.resid</code>).</p>
 <div class="cell" data-appendix="true">
@@ -527,8 +529,8 @@ Y = \beta_0 + \beta_1 species + \beta_2 aroma + \beta_3 flavor + \beta_4 sweetne
 <p><img src="07-stat213_files/figure-html/unnamed-chunk-14-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
-</section><section id="exercises" class="level3" data-number="9.1.4"><h3 data-number="9.1.4" class="anchored" data-anchor-id="exercises">
-<span class="header-section-number">9.1.4</span> Exercises</h3>
+</section><section id="exercises" class="level3" data-number="8.1.4"><h3 data-number="8.1.4" class="anchored" data-anchor-id="exercises">
+<span class="header-section-number">8.1.4</span> Exercises</h3>
 <p><strong>Exercise 1</strong>. Examine the <code>penguins</code> data set in the <code>palmerpenguins</code> package:</p>
 <div class="cell">
 <div class="sourceCode" id="cb14"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://allisonhorst.github.io/palmerpenguins/">palmerpenguins</a></span><span class="op">)</span></span>
@@ -550,8 +552,8 @@ Y = \beta_0 + \beta_1 species + \beta_2 aroma + \beta_3 flavor + \beta_4 sweetne
 <p><strong>Exercise 3</strong>. Use <code><a href="https://generics.r-lib.org/reference/glance.html">glance()</a></code> to glance at some of the relevant model statistics.</p>
 <p><strong>Exercise 4</strong>. Using <code><a href="https://generics.r-lib.org/reference/augment.html">augment()</a></code>, create a plot of the residuals vs.&nbsp;the fitted values and evaluate the constant variance assumption.</p>
 <p><strong>Exercise 5</strong>. Using <code><a href="https://generics.r-lib.org/reference/augment.html">augment()</a></code>, check to see if there are any penguins that are influential. Use 0.75 as your cut-off value for Cook’s distance.</p>
-</section></section><section id="model-coefficient-interpretation" class="level2" data-number="9.2"><h2 data-number="9.2" class="anchored" data-anchor-id="model-coefficient-interpretation">
-<span class="header-section-number">9.2</span> Model Coefficient Interpretation</h2>
+</section></section><section id="model-coefficient-interpretation" class="level2" data-number="8.2"><h2 data-number="8.2" class="anchored" data-anchor-id="model-coefficient-interpretation">
+<span class="header-section-number">8.2</span> Model Coefficient Interpretation</h2>
 <p>The goal of this section is to review intercept and slope coefficient interpretations from STAT 213. Our ultimate goal, in the coming weeks, is to use visualization to make our model coefficient interpretation more clear. We will have a particular focus on interpreting model coefficients from relatively complex models (with interaction terms, for example) for an audience with little statistical background.</p>
 <p>We will use an accompanying handout and pen-and-paper to review model coefficient interpretation from STAT 213.</p>
 
@@ -789,13 +791,13 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   }
 });
 </script><nav class="page-navigation"><div class="nav-page nav-page-previous">
-      <a href="./14-other-topics.html" class="pagination-link">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Other Topics</span></span>
+      <a href="./05-uncertainty.html" class="pagination-link">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Expressing Variability/Uncertainty</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
       <a href="./08-model-interactions.html" class="pagination-link">
-        <span class="nav-page-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Linear Model Visualization</span></span> <i class="bi bi-arrow-right-short"></i>
+        <span class="nav-page-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Linear Model Visualization</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>

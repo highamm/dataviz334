@@ -22,6 +22,8 @@ I would be remiss if I did not include the Pokemon data set at least once in thi
 
 ```{r, appendix = TRUE}
 library(tidyverse)
+theme_set(theme_minimal())
+
 pokemon_df <- read_csv("data/pokemon_full.csv")
 pokemon_height <- pokemon_df |> 
   filter(Type %in% c("Bug", "Electric", "Fighting", "Flying",

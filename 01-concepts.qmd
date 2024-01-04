@@ -88,6 +88,7 @@ Let's practice making some basic plots with these 3 parameters using the `pengui
 ## install.packages("palmerpenguins")
 library(palmerpenguins)
 library(tidyverse)
+theme_set(theme_minimal())
 penguins
 ```
 

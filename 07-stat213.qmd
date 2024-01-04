@@ -56,6 +56,8 @@ Read in the data, load the `broom` package (and install it with `install.package
 library(tidyverse)
 library(broom)
 library(here)
+theme_set(theme_minimal())
+
 coffee_df <- read_csv(here("data/coffee_ratings.csv"))
 coffee_mod <- lm(total_cup_points ~ species + aroma + flavor +
                    sweetness + moisture,

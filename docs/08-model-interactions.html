@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="generator" content="quarto-1.3.353">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-<title>DATA / STAT 334 - 10&nbsp; Linear Model Visualization</title>
+<title>DATA / STAT 334 - 9&nbsp; Linear Model Visualization</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -88,7 +88,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     "search-detached-cancel-button-title": "Cancel",
     "search-submit-button-title": "Submit"
   }
-}</script>
+}</script><script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script><script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
 </head>
 <body class="nav-sidebar floating">
 
@@ -97,7 +97,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./07-stat213.html">Model Visualization</a></li><li class="breadcrumb-item"><a href="./08-model-interactions.html"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Linear Model Visualization</span></a></li></ol></nav>
+      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./07-stat213.html">Model Visualization</a></li><li class="breadcrumb-item"><a href="./08-model-interactions.html"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Linear Model Visualization</span></a></li></ol></nav>
       <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
       </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -193,12 +193,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
  <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Expressing Variability/Uncertainty</span></span></a>
   </div>
 </li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="./14-other-topics.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Other Topics</span></span></a>
-  </div>
-</li>
       </ul>
 </li>
         <li class="sidebar-item sidebar-item-section">
@@ -213,19 +207,25 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./07-stat213.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">STAT 213 Review</span></span></a>
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">STAT 213 Review</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./08-model-interactions.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Linear Model Visualization</span></span></a>
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Linear Model Visualization</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./09-logistic.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Logistic Model Visualization</span></span></a>
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Logistic Model Visualization</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./14-other-topics.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Other Topics and Models</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -273,14 +273,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
         <nav id="TOC" role="doc-toc" class="toc-active"><h2 id="toc-title">Table of contents</h2>
    
   <ul>
-<li><a href="#introducing-modelr-class-prep" id="toc-introducing-modelr-class-prep" class="nav-link active" data-scroll-target="#introducing-modelr-class-prep"><span class="header-section-number">10.1</span> Introducing <code>modelr</code> (Class Prep)</a></li>
-  <li><a href="#visualizing-more-complex-models" id="toc-visualizing-more-complex-models" class="nav-link" data-scroll-target="#visualizing-more-complex-models"><span class="header-section-number">10.2</span> Visualizing More Complex Models</a></li>
-  <li><a href="#your-turn" id="toc-your-turn" class="nav-link" data-scroll-target="#your-turn"><span class="header-section-number">10.3</span> Your Turn</a></li>
+<li><a href="#introducing-modelr-class-prep" id="toc-introducing-modelr-class-prep" class="nav-link active" data-scroll-target="#introducing-modelr-class-prep"><span class="header-section-number">9.1</span> Introducing <code>modelr</code> (Class Prep)</a></li>
+  <li><a href="#visualizing-more-complex-models" id="toc-visualizing-more-complex-models" class="nav-link" data-scroll-target="#visualizing-more-complex-models"><span class="header-section-number">9.2</span> Visualizing More Complex Models</a></li>
+  <li><a href="#your-turn" id="toc-your-turn" class="nav-link" data-scroll-target="#your-turn"><span class="header-section-number">9.3</span> Your Turn</a></li>
   </ul></nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block default"><div class="quarto-title">
-<h1 class="title"><span id="modeviz" class="quarto-section-identifier"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Linear Model Visualization</span></span></h1>
+<h1 class="title"><span id="modeviz" class="quarto-section-identifier"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Linear Model Visualization</span></span></h1>
 </div>
 
 
@@ -293,7 +293,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </div>
   
 
-</header><p>The purpose of this section is to use the <code>modelr</code> package to visualize potentially complex linear models. We will begin with how to use the <code>modelr</code> package to visualize a linear regression model with a single quantitative predictor in order to see how the package works. We will then expand our usage to include models with categorical predictors, interaction terms, and quadratic (or higher order) terms.</p>
+</header><p>The purpose of this section is to visualize potentially complex linear models. We will begin with how to visualize a linear regression model with a single quantitative predictor in order to see how the package works. We will then expand our usage to include models with categorical predictors, interaction terms, and quadratic (or higher order) terms.</p>
 <p>Throughout this section, we will use a data set on course evaluations at the University of Texas Austin from the <code>openintro</code> package. Each row of the data set corresponds to a course at UT Austin. Variables that we will use include course evaluation <code>score</code> (on a 1-5 scale), <code>age</code> of professor, <code>bty_avg</code> (the attractiveness of the professor), <code>ethnicity</code> (either <code>minority</code> or <code>not minority</code>) and <code>gender</code> (either <code>male</code> or <code>female</code> in this data set).</p>
 <div class="callout callout-style-simple callout-note callout-titled">
 <div class="callout-header d-flex align-content-center">
@@ -310,6 +310,8 @@ Note
 </div>
 <div class="cell">
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="http://openintrostat.github.io/openintro/">openintro</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://tidyverse.tidyverse.org">tidyverse</a></span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme_get.html">theme_set</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html">theme_minimal</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="va">evals</span></span>
 <span><span class="co">#&gt; # A tibble: 463 × 23</span></span>
 <span><span class="co">#&gt;   course_id prof_id score rank  ethnicity gender language   age cls_perc_eval</span></span>
@@ -327,26 +329,25 @@ Note
 <span><span class="co">#&gt; #   bty_m1upper &lt;int&gt;, bty_m2upper &lt;int&gt;, bty_avg &lt;dbl&gt;, pic_outfit &lt;fct&gt;,</span></span>
 <span><span class="co">#&gt; #   pic_color &lt;fct&gt;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<section id="introducing-modelr-class-prep" class="level2" data-number="10.1"><h2 data-number="10.1" class="anchored" data-anchor-id="introducing-modelr-class-prep">
-<span class="header-section-number">10.1</span> Introducing <code>modelr</code> (Class Prep)</h2>
+<section id="introducing-modelr-class-prep" class="level2" data-number="9.1"><h2 data-number="9.1" class="anchored" data-anchor-id="introducing-modelr-class-prep">
+<span class="header-section-number">9.1</span> Introducing <code>modelr</code> (Class Prep)</h2>
 <p>Our basic strategy for visualizing models is to</p>
 <ol type="1">
-<li><p>fit the model with <code><a href="https://rdrr.io/r/stats/lm.html">lm()</a></code></p></li>
+<li><p>fit the model of interest with <code><a href="https://rdrr.io/r/stats/lm.html">lm()</a></code>.</p></li>
 <li><p>construct a grid of predictor values with the <code><a href="https://modelr.tidyverse.org/reference/data_grid.html">data_grid()</a></code> function from the <code>modelr</code> package.</p></li>
-<li><p>Use the <code><a href="https://modelr.tidyverse.org/reference/add_predictions.html">gather_predictions()</a></code> function from the <code>modelr</code> package to predict the response variable according to the model for each row in the grid.</p></li>
-<li><p>Use <code>ggplot2</code> to construct a meaningful plot with the model predictions.</p></li>
+<li><p>Use the <code><a href="https://generics.r-lib.org/reference/augment.html">augment()</a></code> function from the <code>broom</code> package on the data grid in (2) to predict the response variable according to the model for each row in the grid.</p></li>
+<li><p>Use <code>ggplot2</code> to construct a meaningful plot with the model predictions from (3).</p></li>
 </ol>
-<p>We will begin by fitting a linear regression model with <code>score</code> as the response and <code>age</code> (in years) as the predictor. Note that we can easily visualize this model without <code>modelr</code> because of how simple it is:</p>
+<p>We will begin by fitting a linear regression model with <code>score</code> as the response and <code>age</code> (in years) as the predictor. Note that we can easily visualize this model because of how simple it is:</p>
 <div class="cell">
-<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org">ggplot2</a></span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">evals</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">age</span>, y <span class="op">=</span> <span class="va">score</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">evals</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">age</span>, y <span class="op">=</span> <span class="va">score</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html">geom_point</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_smooth.html">geom_smooth</a></span><span class="op">(</span>method <span class="op">=</span> <span class="st">"lm"</span>, se <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_smooth.html">geom_smooth</a></span><span class="op">(</span>method <span class="op">=</span> <span class="st">"lm"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <p><img src="08-model-interactions_files/figure-html/unnamed-chunk-3-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
-<p>Our goal is to use <code>modelr</code> to recreate this plot so that we can see what the different functions are doing in a relatively simple example.</p>
+<p>Our first goal is to recreate the plot above “by hand” so that we can see what the different functions are doing in a relatively simple example.</p>
 <p><strong>Step 1</strong>: Fit the model.</p>
 <div class="cell">
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://broom.tidymodels.org/">broom</a></span><span class="op">)</span></span>
@@ -359,7 +360,7 @@ Note
 <span><span class="co">#&gt; 2 age         -0.00594   0.00257     -2.31 2.13e-  2</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p><strong>Step 2</strong>: Create a grid of predictor values.</p>
-<p>In this simple example, we only have one predictor: <code>age</code>. So, we want to create a <code>tibble</code> that has a few values of <code>age</code> to plug into the fitted model. The <code><a href="https://modelr.tidyverse.org/reference/seq_range.html">seq_range()</a></code> function can help with this. In the code below, we are creating a <code>tibble</code> called <code>grid</code> that contains <code>6</code> values of <code>age</code>: the minimum <code>age</code> in <code>evals</code>, the maximum <code>age</code> in <code>evals</code>, and four other values that are equally spaced between the minimum and the maximum.</p>
+<p>In this simple example, we only have one predictor: <code>age</code>. So, we want to create a <code>tibble</code> that has a few values of <code>age</code> to plug into the fitted model. The <code><a href="https://modelr.tidyverse.org/reference/seq_range.html">seq_range()</a></code> function can help with this. In the code below, we are creating a <code>tibble</code> called <code>grid</code> that contains <code>6</code> values of <code>age</code>: the minimum <code>age</code> in <code>evals</code>, the maximum <code>age</code> in <code>evals</code>, and four other values that are equally spaced between the minimum and the maximum. The <code><a href="https://modelr.tidyverse.org/reference/seq_range.html">seq_range()</a></code> and <code><a href="https://modelr.tidyverse.org/reference/data_grid.html">data_grid()</a></code> functions come from the <code>modelr</code> package.</p>
 <div class="cell">
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://modelr.tidyverse.org">modelr</a></span><span class="op">)</span></span>
 <span><span class="va">grid</span> <span class="op">&lt;-</span> <span class="va">evals</span> <span class="op">|&gt;</span></span>
@@ -377,39 +378,50 @@ Note
 <span><span class="co">#&gt; 5  64.2</span></span>
 <span><span class="co">#&gt; 6  73</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p><strong>Step 3</strong>: <code><a href="https://modelr.tidyverse.org/reference/add_predictions.html">gather_predictions()</a></code>.</p>
-<p>Next, we want to use the <code><a href="https://modelr.tidyverse.org/reference/add_predictions.html">gather_predictions()</a></code> function from <code>modelr</code> to use the <code>mod_age</code> model to predict course <code>score</code> for each row in <code>grid</code>. We will name this new <code>tibble</code> <code>model_df</code>.</p>
+<p><strong>Step 3</strong>: <code><a href="https://generics.r-lib.org/reference/augment.html">augment()</a></code>.</p>
+<p>Next, we want to use the <code><a href="https://generics.r-lib.org/reference/augment.html">augment()</a></code> function from <code>broom</code> to use the <code>mod_age</code> model to predict course <code>score</code> for each row in <code>grid</code>. We will name this new <code>tibble</code> <code>aug_age</code>.</p>
 <div class="cell">
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">model_df</span> <span class="op">&lt;-</span> <span class="va">grid</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://modelr.tidyverse.org/reference/add_predictions.html">gather_predictions</a></span><span class="op">(</span><span class="va">mod_age</span><span class="op">)</span></span>
-<span><span class="va">model_df</span></span>
-<span><span class="co">#&gt; # A tibble: 6 × 3</span></span>
-<span><span class="co">#&gt;   model     age  pred</span></span>
-<span><span class="co">#&gt;   &lt;chr&gt;   &lt;dbl&gt; &lt;dbl&gt;</span></span>
-<span><span class="co">#&gt; 1 mod_age  29    4.29</span></span>
-<span><span class="co">#&gt; 2 mod_age  37.8  4.24</span></span>
-<span><span class="co">#&gt; 3 mod_age  46.6  4.19</span></span>
-<span><span class="co">#&gt; 4 mod_age  55.4  4.13</span></span>
-<span><span class="co">#&gt; 5 mod_age  64.2  4.08</span></span>
-<span><span class="co">#&gt; 6 mod_age  73    4.03</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">aug_age</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://generics.r-lib.org/reference/augment.html">augment</a></span><span class="op">(</span><span class="va">mod_age</span>, newdata <span class="op">=</span> <span class="va">grid</span>,</span>
+<span>                   interval <span class="op">=</span> <span class="st">"confidence"</span><span class="op">)</span></span>
+<span><span class="va">aug_age</span></span>
+<span><span class="co">#&gt; # A tibble: 6 × 4</span></span>
+<span><span class="co">#&gt;     age .fitted .lower .upper</span></span>
+<span><span class="co">#&gt;   &lt;dbl&gt;   &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;</span></span>
+<span><span class="co">#&gt; 1  29      4.29   4.18   4.40</span></span>
+<span><span class="co">#&gt; 2  37.8    4.24   4.16   4.31</span></span>
+<span><span class="co">#&gt; 3  46.6    4.19   4.13   4.24</span></span>
+<span><span class="co">#&gt; 4  55.4    4.13   4.07   4.19</span></span>
+<span><span class="co">#&gt; 5  64.2    4.08   3.99   4.17</span></span>
+<span><span class="co">#&gt; 6  73      4.03   3.89   4.16</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
+<p><code><a href="https://generics.r-lib.org/reference/augment.html">augment()</a></code> takes the name of the model and the name of the gridded data frame we created in the previous step. We can also obtain 95% confidence intervals for the mean response at each value of <code>age</code> in <code>grid</code> if we specify the <code>interval = "confidence"</code> argument.</p>
 <p><strong>Step 4</strong>: Use <code>ggplot2</code>.</p>
-<p>The last step is to use <code>ggplot2</code> to make a meaningful plot. In this case, we can construct a plot with <code>pred</code> on the y-axis and <code>age</code> on the x-axis.</p>
+<p>The last step is to use <code>ggplot2</code> to make a meaningful plot. In this case, we can construct a plot with <code>score</code> on the y-axis and <code>age</code> on the x-axis.</p>
 <div class="cell">
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">model_df</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">age</span>, y <span class="op">=</span> <span class="va">pred</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html">geom_line</a></span><span class="op">(</span>colour <span class="op">=</span> <span class="st">"blue"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">evals</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">age</span>, y <span class="op">=</span> <span class="va">score</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html">geom_point</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html">geom_line</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">aug_age</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">age</span>, y <span class="op">=</span> <span class="va">.fitted</span><span class="op">)</span>,</span>
+<span>            colour <span class="op">=</span> <span class="st">"blue"</span>, linewidth <span class="op">=</span> <span class="fl">1.2</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <p><img src="08-model-interactions_files/figure-html/unnamed-chunk-7-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
-<p>We get a plot of the fitted model. To plot the original data on top of the this plot,</p>
+<p>Note that, because the original data and the grid used for the predictions are different data frames, we have to remember to adjust the data used for each geom appropriately, taking advantage of the fact that a local <code>data</code> argument and local <code><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes()</a></code> aesthetics will overrid the global arguments in the <code><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot()</a></code> function.</p>
+<p>We can then use the <code><a href="https://ggplot2.tidyverse.org/reference/geom_ribbon.html">geom_ribbon()</a></code> function to add a measure of uncertainty to our plot and generate the 95% confidence band:</p>
 <div class="cell">
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">model_df</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">age</span>, y <span class="op">=</span> <span class="va">pred</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html">geom_line</a></span><span class="op">(</span>colour <span class="op">=</span> <span class="st">"blue"</span>, size <span class="op">=</span> <span class="fl">1.4</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html">geom_point</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">evals</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">age</span>, y <span class="op">=</span> <span class="va">score</span><span class="op">)</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">evals</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">age</span>, y <span class="op">=</span> <span class="va">score</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html">geom_point</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html">geom_line</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">aug_age</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">age</span>, y <span class="op">=</span> <span class="va">.fitted</span><span class="op">)</span>,</span>
+<span>            colour <span class="op">=</span> <span class="st">"blue"</span>, linewidth <span class="op">=</span> <span class="fl">1.2</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_ribbon.html">geom_ribbon</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">aug_age</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>y <span class="op">=</span> <span class="va">.fitted</span>,</span>
+<span>                                  ymin <span class="op">=</span> <span class="va">.lower</span>,</span>
+<span>                                  ymax <span class="op">=</span> <span class="va">.upper</span><span class="op">)</span>, </span>
+<span>              alpha <span class="op">=</span> <span class="fl">0.4</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <p><img src="08-model-interactions_files/figure-html/unnamed-chunk-8-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
+<p>So, we finally get a plot of the fitted model that matches with the default plot that we get from <code>geom_smooth(method = "lm")</code>!</p>
 <div class="callout callout-style-simple callout-important callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -420,12 +432,14 @@ Important
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>This exercise is only to help us understand what some of the <code>modelr</code> functions are doing. For such a simple example, we would not go through the trouble of using <code>modelr</code> to create this plot when it can easily be created without it.</p>
+<p>This exercise is only to help us understand the steps to create the plot. For such a simple example, we would not go through the trouble of using this workflow to create this plot when it can easily be created without it.</p>
 </div>
 </div>
-<p><strong>Exercise 1</strong>. By “hand”, verify that the <code>pred</code> value in the first row of <code>model_df</code> can be calculated simply by plugging in <code>29</code> into the fitted regression equation obtained from <code>mod_age</code>.</p>
-<p><strong>Exercise 2</strong>. In <code>data_grid(age = seq_range(age, n = 6))</code>, why does it not matter what value is chosen for <code>n</code> in this example (as long as <code>n</code> is greater than or equal to <code>2</code>)? Change <code>n</code> to be a different integer and verify that the plot does not change. Then, write a one to two sentence explanation of why the value of <code>n</code> does not matter here.</p>
-<p><strong>Exercise 3</strong>. Fit the following model, which includes an <code>age^2</code> term. Then, run the rest of the code in the chunk to use <code>modelr</code> to obtain predictions for the <code>age</code> values in <code>grid</code> with both the <code>mod_age</code> model and the <code>mod_agesq</code> model. There are now 12 rows in <code>model_df</code>: 6 corresponding to predictions with the <code>mod_age</code> <code>model</code> and 6 corresponding to predictions with the <code>mod_agesq</code> <code>model</code>.</p>
+<p><strong>Exercise 1</strong>. As we saw above, the grey “band” around the fitted regression line represents 95% confidence intervals for the mean response (score) for particular values of the predictor (age). In STAT 213, you also discussed 95% prediction intervals for a new observation’s response (score) for particular values of the predictor (age). What is the difference between a 95% confidence interval and a 95% prediction interval?</p>
+<p><strong>Exercise 2</strong>. Modify the code so that the grey band reflects 95% prediction intervals instead of 95% confidence intervals for the mean.</p>
+<p><strong>Exercise 3</strong>. By “hand”, verify that the <code>.fitted</code> value in the first row of <code>aug_df</code> can be calculated simply by plugging in <code>29</code> into the fitted regression equation obtained from <code>mod_age</code>.</p>
+<p><strong>Exercise 4</strong>. In <code>data_grid(age = seq_range(age, n = 6))</code>, why does it not matter as much what value is chosen for <code>n</code> in this example? Change <code>n</code> to be a different integer and verify that the plot does not substantially change.</p>
+<p><strong>Exercise 5</strong>. Fit the following model, which includes an <code>age^2</code> term. Then, run the rest of the code in the chunk to obtain predictions for the <code>age</code> values in <code>grid</code> with both the <code>mod_age</code> model and the <code>mod_agesq</code> model.</p>
 <div class="cell">
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">mod_agesq</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/lm.html">lm</a></span><span class="op">(</span><span class="va">score</span> <span class="op">~</span> <span class="va">age</span> <span class="op">+</span> <span class="fu"><a href="https://rdrr.io/r/base/AsIs.html">I</a></span><span class="op">(</span><span class="va">age</span> <span class="op">^</span> <span class="fl">2</span><span class="op">)</span>, data <span class="op">=</span> <span class="va">evals</span><span class="op">)</span> </span>
 <span></span>
@@ -433,26 +447,42 @@ Important
 <span>  <span class="fu"><a href="https://modelr.tidyverse.org/reference/data_grid.html">data_grid</a></span><span class="op">(</span></span>
 <span>    age <span class="op">=</span> <span class="fu"><a href="https://modelr.tidyverse.org/reference/seq_range.html">seq_range</a></span><span class="op">(</span><span class="va">age</span>, n <span class="op">=</span> <span class="fl">6</span><span class="op">)</span></span>
 <span>  <span class="op">)</span> </span>
-<span><span class="va">model_df</span> <span class="op">&lt;-</span> <span class="va">grid</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://modelr.tidyverse.org/reference/add_predictions.html">gather_predictions</a></span><span class="op">(</span><span class="va">mod_age</span>, <span class="va">mod_agesq</span><span class="op">)</span></span>
-<span><span class="va">model_df</span></span>
-<span><span class="co">#&gt; # A tibble: 12 × 3</span></span>
-<span><span class="co">#&gt;   model     age  pred</span></span>
-<span><span class="co">#&gt;   &lt;chr&gt;   &lt;dbl&gt; &lt;dbl&gt;</span></span>
-<span><span class="co">#&gt; 1 mod_age  29    4.29</span></span>
-<span><span class="co">#&gt; 2 mod_age  37.8  4.24</span></span>
-<span><span class="co">#&gt; 3 mod_age  46.6  4.19</span></span>
-<span><span class="co">#&gt; 4 mod_age  55.4  4.13</span></span>
-<span><span class="co">#&gt; 5 mod_age  64.2  4.08</span></span>
-<span><span class="co">#&gt; 6 mod_age  73    4.03</span></span>
+<span></span>
+<span><span class="va">aug_agesq</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://generics.r-lib.org/reference/augment.html">augment</a></span><span class="op">(</span><span class="va">mod_agesq</span>, newdata <span class="op">=</span> <span class="va">grid</span>,</span>
+<span>                     interval <span class="op">=</span> <span class="st">"confidence"</span><span class="op">)</span></span>
+<span><span class="va">aug_agesq</span></span>
+<span><span class="co">#&gt; # A tibble: 6 × 4</span></span>
+<span><span class="co">#&gt;     age .fitted .lower .upper</span></span>
+<span><span class="co">#&gt;   &lt;dbl&gt;   &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;</span></span>
+<span><span class="co">#&gt; 1  29      4.29   4.12   4.47</span></span>
+<span><span class="co">#&gt; 2  37.8    4.24   4.16   4.31</span></span>
+<span><span class="co">#&gt; 3  46.6    4.18   4.12   4.25</span></span>
+<span><span class="co">#&gt; 4  55.4    4.13   4.07   4.20</span></span>
+<span><span class="co">#&gt; 5  64.2    4.08   3.97   4.20</span></span>
+<span><span class="co">#&gt; 6  73      4.03   3.76   4.30</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Use <code>ggplot</code> to make a plot that has (1) the fitted line from <code>mod_age</code> and the fitted curve from <code>mod_agesq</code>, where the line/curves are coloured by the <code>model</code> type and (2) has the data points in the background of the plot. The code below stacks the two augmented data frames on top of each other and creates a new column called <code>model</code> that gives the names of the data frames as its levels.</p>
+<div class="cell">
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">plot_df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/bind_rows.html">bind_rows</a></span><span class="op">(</span><span class="fu"><a href="https://tibble.tidyverse.org/reference/lst.html">lst</a></span><span class="op">(</span><span class="va">aug_age</span>, <span class="va">aug_agesq</span><span class="op">)</span>, .id <span class="op">=</span> <span class="st">"model"</span><span class="op">)</span></span>
+<span><span class="va">plot_df</span></span>
+<span><span class="co">#&gt; # A tibble: 12 × 5</span></span>
+<span><span class="co">#&gt;   model     age .fitted .lower .upper</span></span>
+<span><span class="co">#&gt;   &lt;chr&gt;   &lt;dbl&gt;   &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;</span></span>
+<span><span class="co">#&gt; 1 aug_age  29      4.29   4.18   4.40</span></span>
+<span><span class="co">#&gt; 2 aug_age  37.8    4.24   4.16   4.31</span></span>
+<span><span class="co">#&gt; 3 aug_age  46.6    4.19   4.13   4.24</span></span>
+<span><span class="co">#&gt; 4 aug_age  55.4    4.13   4.07   4.19</span></span>
+<span><span class="co">#&gt; 5 aug_age  64.2    4.08   3.99   4.17</span></span>
+<span><span class="co">#&gt; 6 aug_age  73      4.03   3.89   4.16</span></span>
 <span><span class="co">#&gt; # ℹ 6 more rows</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>Use <code>ggplot</code> to make a plot that has (1) the fitted line from <code>mod_age</code> and the fitted curve from <code>mod_agesq</code>, where the line/curves are coloured by the <code>model</code> type and (2) has the data points in the background of the plot.</p>
-<p><strong>Exercise 4</strong>. In Exercise 3, explain why the choice of <code>n</code> matters more for this model. Then, change <code>n</code> from <code>6</code> to a value that is more reasonable and yields a nicer looking plot.</p>
-</section><section id="visualizing-more-complex-models" class="level2" data-number="10.2"><h2 data-number="10.2" class="anchored" data-anchor-id="visualizing-more-complex-models">
-<span class="header-section-number">10.2</span> Visualizing More Complex Models</h2>
-<p>The power of <code>modelr</code> (and this model visualization strategy in general) can really be seen in models where the coefficients are more challenging to interpret. For example, suppose that we fit the following model to the <code>evals</code> data:</p>
+<p><strong>Exercise 6</strong>. In Exercise 5, explain why the choice of <code>n</code> matters more for this model. Then, change <code>n</code> from <code>6</code> to a value that is more reasonable.</p>
+</section><section id="visualizing-more-complex-models" class="level2" data-number="9.2"><h2 data-number="9.2" class="anchored" data-anchor-id="visualizing-more-complex-models">
+<span class="header-section-number">9.2</span> Visualizing More Complex Models</h2>
+<p>The power of this model visualization strategy in general can really be seen in models where the coefficients are more challenging to interpret. For example, suppose that we fit the following model to the <code>evals</code> data:</p>
 <div class="cell">
-<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">mod_comp</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/lm.html">lm</a></span><span class="op">(</span><span class="va">score</span> <span class="op">~</span> <span class="va">age</span> <span class="op">+</span> <span class="va">bty_avg</span> <span class="op">+</span> <span class="va">age</span><span class="op">:</span><span class="va">bty_avg</span> <span class="op">+</span> <span class="va">gender</span>, data <span class="op">=</span> <span class="va">evals</span><span class="op">)</span></span>
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">mod_comp</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/lm.html">lm</a></span><span class="op">(</span><span class="va">score</span> <span class="op">~</span> <span class="va">age</span> <span class="op">+</span> <span class="va">bty_avg</span> <span class="op">+</span> <span class="va">age</span><span class="op">:</span><span class="va">bty_avg</span> <span class="op">+</span> <span class="va">gender</span>,</span>
+<span>               data <span class="op">=</span> <span class="va">evals</span><span class="op">)</span></span>
 <span><span class="va">mod_comp</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://generics.r-lib.org/reference/tidy.html">tidy</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="co">#&gt; # A tibble: 5 × 5</span></span>
 <span><span class="co">#&gt;   term        estimate std.error statistic  p.value</span></span>
@@ -466,7 +496,7 @@ Important
 <p>The model contains an interaction between <code>age</code> and <code>bty_avg</code> so the coefficients involving these two terms are very tough to interpret. Our goal is to create a plot that helps interpret this model.</p>
 <p>We will use the same strategy outlined in the previous section to create a data frame with predictions for various values of <code>age</code>, <code>bty_avg</code>, and <code>gender</code>. In <code><a href="https://modelr.tidyverse.org/reference/data_grid.html">data_grid()</a></code>, we now need to give values not only for <code>age</code>, but also for <code>bty_avg</code>, and <code>gender</code>. Note that <code>gender</code>, the categorical predictor is a vector of its possible levels.</p>
 <div class="cell">
-<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">grid</span> <span class="op">&lt;-</span> <span class="va">evals</span> <span class="op">|&gt;</span></span>
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">grid</span> <span class="op">&lt;-</span> <span class="va">evals</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://modelr.tidyverse.org/reference/data_grid.html">data_grid</a></span><span class="op">(</span></span>
 <span>    age <span class="op">=</span> <span class="fu"><a href="https://modelr.tidyverse.org/reference/seq_range.html">seq_range</a></span><span class="op">(</span><span class="va">age</span>, n <span class="op">=</span> <span class="fl">6</span><span class="op">)</span>,</span>
 <span>    bty_avg <span class="op">=</span> <span class="fu"><a href="https://modelr.tidyverse.org/reference/seq_range.html">seq_range</a></span><span class="op">(</span><span class="va">bty_avg</span>, n <span class="op">=</span> <span class="fl">6</span><span class="op">)</span>,</span>
@@ -486,28 +516,31 @@ Important
 </div>
 <p><code><a href="https://modelr.tidyverse.org/reference/data_grid.html">data_grid()</a></code> creates one row for each <code>age</code>-<code>bty_avg</code>-<code>gender</code> combination. With 6 values for <code>age</code>, 6 values for <code>bty_avg</code>, and 2 values for <code>gender</code>, <code>grid</code> has 72 rows. We then gather the predictions from this <code>grid</code> with the <code>mod_comp</code> model:</p>
 <div class="cell">
-<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">model_df</span> <span class="op">&lt;-</span> <span class="va">grid</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://modelr.tidyverse.org/reference/add_predictions.html">gather_predictions</a></span><span class="op">(</span><span class="va">mod_comp</span><span class="op">)</span></span>
-<span><span class="va">model_df</span></span>
-<span><span class="co">#&gt; # A tibble: 72 × 5</span></span>
-<span><span class="co">#&gt;   model      age bty_avg gender  pred</span></span>
-<span><span class="co">#&gt;   &lt;chr&gt;    &lt;dbl&gt;   &lt;dbl&gt; &lt;chr&gt;  &lt;dbl&gt;</span></span>
-<span><span class="co">#&gt; 1 mod_comp    29    1.67 female  4.29</span></span>
-<span><span class="co">#&gt; 2 mod_comp    29    1.67 male    4.50</span></span>
-<span><span class="co">#&gt; 3 mod_comp    29    2.97 female  4.24</span></span>
-<span><span class="co">#&gt; 4 mod_comp    29    2.97 male    4.45</span></span>
-<span><span class="co">#&gt; 5 mod_comp    29    4.27 female  4.19</span></span>
-<span><span class="co">#&gt; 6 mod_comp    29    4.27 male    4.40</span></span>
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">aug_int</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://generics.r-lib.org/reference/augment.html">augment</a></span><span class="op">(</span><span class="va">mod_comp</span>, newdata <span class="op">=</span> <span class="va">grid</span>,</span>
+<span>                   interval <span class="op">=</span> <span class="st">"confidence"</span><span class="op">)</span></span>
+<span><span class="va">aug_int</span></span>
+<span><span class="co">#&gt; # A tibble: 72 × 6</span></span>
+<span><span class="co">#&gt;     age bty_avg gender .fitted .lower .upper</span></span>
+<span><span class="co">#&gt;   &lt;dbl&gt;   &lt;dbl&gt; &lt;chr&gt;    &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;</span></span>
+<span><span class="co">#&gt; 1    29    1.67 female    4.29   4.06   4.51</span></span>
+<span><span class="co">#&gt; 2    29    1.67 male      4.50   4.26   4.74</span></span>
+<span><span class="co">#&gt; 3    29    2.97 female    4.24   4.08   4.40</span></span>
+<span><span class="co">#&gt; 4    29    2.97 male      4.45   4.28   4.62</span></span>
+<span><span class="co">#&gt; 5    29    4.27 female    4.19   4.07   4.31</span></span>
+<span><span class="co">#&gt; 6    29    4.27 male      4.40   4.27   4.53</span></span>
 <span><span class="co">#&gt; # ℹ 66 more rows</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>And the final step is to create a plot of the resulting model predictions. This is the step that requires the most critical thinking, as the plot will change depending on (1) how many models we fit (just 1 in this example) and (2) how many predictor variables we have.</p>
 <p><strong>Exercise 1</strong>. By hand, sketch a plot that shows the predictions from the <code>mod_comp</code> model in a meaningful way.</p>
 <p><strong>Exercise 2</strong>. Make the plot that you sketched in the previous exercise.</p>
-<p><strong>Exercise 3</strong>. Adjust one of the values for <code>n</code> to modify the plot in the previous exercise.</p>
-<p><strong>Exercise 4</strong>. Look at the help in <code><a href="https://modelr.tidyverse.org/reference/seq_range.html">?seq_range</a></code> and use it to adjust the <code>trim</code> option for <code>age</code>.</p>
-</section><section id="your-turn" class="level2" data-number="10.3"><h2 data-number="10.3" class="anchored" data-anchor-id="your-turn">
-<span class="header-section-number">10.3</span> Your Turn</h2>
-<p><strong>Exercise 1</strong>. Fit a model of your choice with <strong>two</strong> categorical predictors, <strong>one</strong> quantitative predictor, and an interaction between the quantitative predictor and one of the categorical predictors. Construct a plot that helps interpret the coefficients from the fitted model.</p>
-<p><strong>Exercise 2</strong>. Modify the model from the previous exercise by getting rid of the interaction term. Using <code>modelr</code>, construct a plot that compares the model with the interaction and the model without the interaction.</p>
+<p><strong>Exercise 3</strong>. We’ve discussed in this class the importance of showing uncertainty, when possible, using our visualizations. However, if you attempt to show uncertainty using <code><a href="https://ggplot2.tidyverse.org/reference/geom_ribbon.html">geom_ribbon()</a></code> on the plot you created, you end up with a mess. How could you modify the plot so that uncertainty is shown?</p>
+<p><strong>Exercise 4</strong>. Adjust one of the values for <code>n</code> to modify the plot in the previous exercise.</p>
+<p><strong>Exercise 5</strong>. Look at the help in <code><a href="https://modelr.tidyverse.org/reference/seq_range.html">?seq_range</a></code> and use it to adjust the <code>trim</code> option for <code>age</code>.</p>
+</section><section id="your-turn" class="level2" data-number="9.3"><h2 data-number="9.3" class="anchored" data-anchor-id="your-turn">
+<span class="header-section-number">9.3</span> Your Turn</h2>
+<p><strong>Exercise 1</strong>. Fit a model of your choice with <strong>two</strong> categorical predictors, <strong>one</strong> quantitative predictor, and an interaction between the quantitative predictor and one of the categorical predictors. Construct a plot that helps interpret the coefficients from the fitted model. You do not need to show confidence bands on your plot. You should make a sketch of the plot you intend to create first!</p>
+<p><strong>Exercise 2</strong>. Modify the model from the previous exercise by getting rid of the interaction term. Using the workflow we have been using, construct a plot that compares the model with the interaction and the model without the interaction. Again, it might be helpful to sketch the plot first.</p>
+<p><strong>Exercise 3</strong>. Suppose that you want to visualize a regression model with a generic quantitative response variable <span class="math inline">\(y\)</span> and <strong>10</strong> predictor variables <span class="math inline">\(x_1\)</span>, <span class="math inline">\(x_2\)</span>, …., <span class="math inline">\(x_{10}\)</span>. You are most interested in the visualizing the association between <span class="math inline">\(x_4\)</span> and <span class="math inline">\(y\)</span>, after accounting for the effects of the other 9 predictors. Sketch an appropriate visualization for this setting. What should the values for the other 9 predictors be?</p>
 
 
 </section></main><!-- /main --><script id="quarto-html-after-body" type="application/javascript">
@@ -744,12 +777,12 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 });
 </script><nav class="page-navigation"><div class="nav-page nav-page-previous">
       <a href="./07-stat213.html" class="pagination-link">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">STAT 213 Review</span></span>
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">STAT 213 Review</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
       <a href="./09-logistic.html" class="pagination-link">
-        <span class="nav-page-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Logistic Model Visualization</span></span> <i class="bi bi-arrow-right-short"></i>
+        <span class="nav-page-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Logistic Model Visualization</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>

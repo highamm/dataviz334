@@ -6,7 +6,7 @@
 source("_common.R")
 ```
 
-The purpose of this section is to use the `modelr` package to visualize potentially complex linear models. We will begin with how to use the `modelr` package to visualize a linear regression model with a single quantitative predictor in order to see how the package works. We will then expand our usage to include models with categorical predictors, interaction terms, and quadratic (or higher order) terms.
+The purpose of this section is to visualize potentially complex linear models. We will begin with how to visualize a linear regression model with a single quantitative predictor in order to see how the package works. We will then expand our usage to include models with categorical predictors, interaction terms, and quadratic (or higher order) terms.
 
 Throughout this section, we will use a data set on course evaluations at the University of Texas Austin from the `openintro` package. Each row of the data set corresponds to a course at UT Austin. Variables that we will use include course evaluation `score` (on a 1-5 scale), `age` of professor, `bty_avg` (the attractiveness of the professor), `ethnicity` (either `minority` or `not minority`) and `gender` (either `male` or `female` in this data set).
 
@@ -18,6 +18,8 @@ We will assume each observation is independent in our linear model. For those of
 
 ```{r}
 library(openintro)
+library(tidyverse)
+theme_set(theme_minimal())
 evals
 ```
 
@@ -25,24 +27,23 @@ evals
 
 Our basic strategy for visualizing models is to
 
-1.  fit the model with `lm()`
+1.  fit the model of interest with `lm()`.
 
 2.  construct a grid of predictor values with the `data_grid()` function from the `modelr` package.
 
-3.  Use the `gather_predictions()` function from the `modelr` package to predict the response variable according to the model for each row in the grid.
+3.  Use the `augment()` function from the `broom` package on the data grid in (2) to predict the response variable according to the model for each row in the grid.
 
-4.  Use `ggplot2` to construct a meaningful plot with the model predictions.
+4.  Use `ggplot2` to construct a meaningful plot with the model predictions from (3).
 
-We will begin by fitting a linear regression model with `score` as the response and `age` (in years) as the predictor. Note that we can easily visualize this model without `modelr` because of how simple it is:
+We will begin by fitting a linear regression model with `score` as the response and `age` (in years) as the predictor. Note that we can easily visualize this model because of how simple it is:
 
 ```{r}
-library(ggplot2)
 ggplot(data = evals, aes(x = age, y = score)) +
   geom_point() +
-  geom_smooth(method = "lm", se = FALSE)
+  geom_smooth(method = "lm")
 ```
 
-Our goal is to use `modelr` to recreate this plot so that we can see what the different functions are doing in a relatively simple example.
+Our first goal is to recreate the plot above "by hand" so that we can see what the different functions are doing in a relatively simple example.
 
 **Step 1**: Fit the model.
 
@@ -54,7 +55,7 @@ mod_age |> tidy()
 
 **Step 2**: Create a grid of predictor values.
 
-In this simple example, we only have one predictor: `age`. So, we want to create a `tibble` that has a few values of `age` to plug into the fitted model. The `seq_range()` function can help with this. In the code below, we are creating a `tibble` called `grid` that contains `6` values of `age`: the minimum `age` in `evals`, the maximum `age` in `evals`, and four other values that are equally spaced between the minimum and the maximum.
+In this simple example, we only have one predictor: `age`. So, we want to create a `tibble` that has a few values of `age` to plug into the fitted model. The `seq_range()` function can help with this. In the code below, we are creating a `tibble` called `grid` that contains `6` values of `age`: the minimum `age` in `evals`, the maximum `age` in `evals`, and four other values that are equally spaced between the minimum and the maximum. The `seq_range()` and `data_grid()` functions come from the `modelr` package.
 
 ```{r}
 library(modelr)
@@ -65,43 +66,61 @@ grid <- evals |>
 grid
 ```
 
-**Step 3**: `gather_predictions()`.
+**Step 3**: `augment()`.
 
-Next, we want to use the `gather_predictions()` function from `modelr` to use the `mod_age` model to predict course `score` for each row in `grid`. We will name this new `tibble` `model_df`.
+Next, we want to use the `augment()` function from `broom` to use the `mod_age` model to predict course `score` for each row in `grid`. We will name this new `tibble` `aug_age`.
 
 ```{r}
-model_df <- grid |> gather_predictions(mod_age)
-model_df
+aug_age <- augment(mod_age, newdata = grid,
+                   interval = "confidence")
+aug_age
 ```
+
+`augment()` takes the name of the model and the name of the gridded data frame we created in the previous step. We can also obtain 95% confidence intervals for the mean response at each value of `age` in `grid` if we specify the `interval = "confidence"` argument.
 
 **Step 4**: Use `ggplot2`.
 
-The last step is to use `ggplot2` to make a meaningful plot. In this case, we can construct a plot with `pred` on the y-axis and `age` on the x-axis.
+The last step is to use `ggplot2` to make a meaningful plot. In this case, we can construct a plot with `score` on the y-axis and `age` on the x-axis.
 
 ```{r}
-ggplot(data = model_df, aes(x = age, y = pred)) +
-  geom_line(colour = "blue")
+ggplot(data = evals, aes(x = age, y = score)) +
+  geom_point() +
+  geom_line(data = aug_age, aes(x = age, y = .fitted),
+            colour = "blue", linewidth = 1.2)
 ```
 
-We get a plot of the fitted model. To plot the original data on top of the this plot,
+Note that, because the original data and the grid used for the predictions are different data frames, we have to remember to adjust the data used for each geom appropriately, taking advantage of the fact that a local `data` argument and local `aes()` aesthetics will overrid the global arguments in the `ggplot()` function.
+
+We can then use the `geom_ribbon()` function to add a measure of uncertainty to our plot and generate the 95% confidence band:
 
 ```{r}
-ggplot(data = model_df, aes(x = age, y = pred)) +
-  geom_line(colour = "blue", size = 1.4) +
-  geom_point(data = evals, aes(x = age, y = score))
+ggplot(data = evals, aes(x = age, y = score)) +
+  geom_point() +
+  geom_line(data = aug_age, aes(x = age, y = .fitted),
+            colour = "blue", linewidth = 1.2) +
+  geom_ribbon(data = aug_age, aes(y = .fitted,
+                                  ymin = .lower,
+                                  ymax = .upper), 
+              alpha = 0.4)
 ```
+
+So, we finally get a plot of the fitted model that matches with the default plot that we get from `geom_smooth(method = "lm")`!
 
 ::: {.callout-important}
 ## Important
 
-This exercise is only to help us understand what some of the `modelr` functions are doing. For such a simple example, we would not go through the trouble of using `modelr` to create this plot when it can easily be created without it.
+This exercise is only to help us understand the steps to create the plot. For such a simple example, we would not go through the trouble of using this workflow to create this plot when it can easily be created without it.
 :::
 
-**Exercise 1**. By "hand", verify that the `pred` value in the first row of `model_df` can be calculated simply by plugging in `29` into the fitted regression equation obtained from `mod_age`.
+**Exercise 1**. As we saw above, the grey "band" around the fitted regression line represents 95% confidence intervals for the mean response (score) for particular values of the predictor (age). In STAT 213, you also discussed 95% prediction intervals for a new observation's response (score) for particular values of the predictor (age). What is the difference between a 95% confidence interval and a 95% prediction interval?
 
-**Exercise 2**. In `data_grid(age = seq_range(age, n = 6))`, why does it not matter what value is chosen for `n` in this example (as long as `n` is greater than or equal to `2`)? Change `n` to be a different integer and verify that the plot does not change. Then, write a one to two sentence explanation of why the value of `n` does not matter here.
+**Exercise 2**. Modify the code so that the grey band reflects 95% prediction intervals instead of 95% confidence intervals for the mean.
 
-**Exercise 3**. Fit the following model, which includes an `age^2` term. Then, run the rest of the code in the chunk to use `modelr` to obtain predictions for the `age` values in `grid` with both the `mod_age` model and the `mod_agesq` model. There are now 12 rows in `model_df`: 6 corresponding to predictions with the `mod_age` `model` and 6 corresponding to predictions with the `mod_agesq` `model`.
+**Exercise 3**. By "hand", verify that the `.fitted` value in the first row of `aug_df` can be calculated simply by plugging in `29` into the fitted regression equation obtained from `mod_age`.
+
+**Exercise 4**. In `data_grid(age = seq_range(age, n = 6))`, why does it not matter as much what value is chosen for `n` in this example? Change `n` to be a different integer and verify that the plot does not substantially change. 
+
+**Exercise 5**. Fit the following model, which includes an `age^2` term. Then, run the rest of the code in the chunk to obtain predictions for the `age` values in `grid` with both the `mod_age` model and the `mod_agesq` model. 
 
 ```{r}
 mod_agesq <- lm(score ~ age + I(age ^ 2), data = evals) 
@@ -110,20 +129,42 @@ grid <- evals |>
   data_grid(
     age = seq_range(age, n = 6)
   ) 
-model_df <- grid |> gather_predictions(mod_age, mod_agesq)
-model_df
+
+aug_agesq <- augment(mod_agesq, newdata = grid,
+                     interval = "confidence")
+aug_agesq
 ```
 
-Use `ggplot` to make a plot that has (1) the fitted line from `mod_age` and the fitted curve from `mod_agesq`, where the line/curves are coloured by the `model` type and (2) has the data points in the background of the plot.
+Use `ggplot` to make a plot that has (1) the fitted line from `mod_age` and the fitted curve from `mod_agesq`, where the line/curves are coloured by the `model` type and (2) has the data points in the background of the plot. The code below stacks the two augmented data frames on top of each other and creates a new column called `model` that gives the names of the data frames as its levels.
 
-**Exercise 4**. In Exercise 3, explain why the choice of `n` matters more for this model. Then, change `n` from `6` to a value that is more reasonable and yields a nicer looking plot.
+```{r}
+plot_df <- bind_rows(lst(aug_age, aug_agesq), .id = "model")
+plot_df
+```
+
+```{r}
+#| echo: false
+#| output: false
+ggplot(data = evals, aes(x = age, y = score)) +
+  geom_point() +
+  geom_line(data = plot_df, aes(y = .fitted, colour = model),
+            linewidth = 1.3) +
+  geom_ribbon(data = plot_df, aes(y = .fitted,
+                                   ymin = .lower, 
+                                   ymax = .upper,
+                                  fill = model),
+              alpha = 0.4)
+```
+
+**Exercise 6**. In Exercise 5, explain why the choice of `n` matters more for this model. Then, change `n` from `6` to a value that is more reasonable.
 
 ## Visualizing More Complex Models
 
-The power of `modelr` (and this model visualization strategy in general) can really be seen in models where the coefficients are more challenging to interpret. For example, suppose that we fit the following model to the `evals` data:
+The power of this model visualization strategy in general can really be seen in models where the coefficients are more challenging to interpret. For example, suppose that we fit the following model to the `evals` data:
 
 ```{r}
-mod_comp <- lm(score ~ age + bty_avg + age:bty_avg + gender, data = evals)
+mod_comp <- lm(score ~ age + bty_avg + age:bty_avg + gender,
+               data = evals)
 mod_comp |> tidy()
 ```
 
@@ -144,8 +185,9 @@ grid
 `data_grid()` creates one row for each `age`-`bty_avg`-`gender` combination. With 6 values for `age`, 6 values for `bty_avg`, and 2 values for `gender`, `grid` has 72 rows. We then gather the predictions from this `grid` with the `mod_comp` model:
 
 ```{r}
-model_df <- grid |> gather_predictions(mod_comp)
-model_df
+aug_int <- augment(mod_comp, newdata = grid,
+                   interval = "confidence")
+aug_int
 ```
 
 And the final step is to create a plot of the resulting model predictions. This is the step that requires the most critical thinking, as the plot will change depending on (1) how many models we fit (just 1 in this example) and (2) how many predictor variables we have.
@@ -156,22 +198,98 @@ And the final step is to create a plot of the resulting model predictions. This 
 
 ```{r}
 #| echo: false
-#| eval: false
-
-ggplot(data = model_df, aes(x = bty_avg, y = pred)) +
+#| output: false
+ggplot(data = evals, aes(x = bty_avg, y = score)) +
+  geom_point() + 
   facet_wrap(~ gender) +
-  geom_line(aes(colour = factor(age))) +
+  geom_line(data = aug_int, aes(y = .fitted, 
+                                colour = factor(age)),
+            linewidth = 1.2) +
+  scale_colour_viridis_d() +
+  theme_minimal() 
+
+ggplot(data = evals, aes(x = bty_avg, y = score)) +
+  geom_point() + 
+  facet_wrap(~ gender) +
+  geom_line(data = aug_int, aes(y = .fitted, 
+                                colour = factor(age)),
+            linewidth = 1.2) +
   scale_colour_viridis_d() +
   theme_minimal() +
-  geom_point(data = evals, aes(y = score))
+  geom_ribbon(data = aug_int, aes(y = .fitted,
+                                  fill = factor(age),
+                                  ymin = .lower,
+                                  ymax = .upper),
+              alpha = 0.2)
 ```
 
-**Exercise 3**. Adjust one of the values for `n` to modify the plot in the previous exercise.
+**Exercise 3**. We've discussed in this class the importance of showing uncertainty, when possible, using our visualizations. However, if you attempt to show uncertainty using `geom_ribbon()` on the plot you created, you end up with a mess. How could you modify the plot so that uncertainty is shown?
 
-**Exercise 4**. Look at the help in `?seq_range` and use it to adjust the `trim` option for `age`.
+**Exercise 4**. Adjust one of the values for `n` to modify the plot in the previous exercise.
+
+**Exercise 5**. Look at the help in `?seq_range` and use it to adjust the `trim` option for `age`.
 
 ## Your Turn
 
-**Exercise 1**. Fit a model of your choice with **two** categorical predictors, **one** quantitative predictor, and an interaction between the quantitative predictor and one of the categorical predictors. Construct a plot that helps interpret the coefficients from the fitted model.
+**Exercise 1**. Fit a model of your choice with **two** categorical predictors, **one** quantitative predictor, and an interaction between the quantitative predictor and one of the categorical predictors. Construct a plot that helps interpret the coefficients from the fitted model. You do not need to show confidence bands on your plot. You should make a sketch of the plot you intend to create first!
 
-**Exercise 2**. Modify the model from the previous exercise by getting rid of the interaction term. Using `modelr`, construct a plot that compares the model with the interaction and the model without the interaction.
+```{r}
+#| echo: false
+#| output: false
+mod_cat <- lm(score ~ gender + ethnicity + age + age:gender,
+               data = evals)
+mod_cat |> tidy()
+
+grid <- evals |>
+  data_grid(
+    age = seq_range(age, n = 6),
+    ethnicity = c("minority", "not minority"),
+    gender = c("female", "male")
+  ) 
+
+aug_cat_int <- augment(mod_cat, newdata = grid,
+                       interval = "confidence")
+
+ggplot(data = evals, aes(x = age, y = score)) +
+  geom_point() + 
+  facet_wrap( ~ gender) +
+  geom_line(data = aug_cat_int,
+            aes(y = .fitted, colour = ethnicity),
+            linewidth = 1.2) +
+  scale_colour_viridis_d() +
+  theme_minimal() 
+```
+
+**Exercise 2**. Modify the model from the previous exercise by getting rid of the interaction term. Using the workflow we have been using, construct a plot that compares the model with the interaction and the model without the interaction. Again, it might be helpful to sketch the plot first.
+
+```{r}
+#| echo: false
+#| output: false
+mod_cat_noint <- lm(score ~ gender + ethnicity + age,
+               data = evals)
+mod_cat_noint |> tidy()
+
+grid <- evals |>
+  data_grid(
+    age = seq_range(age, n = 6),
+    ethnicity = c("minority", "not minority"),
+    gender = c("female", "male")
+  ) 
+
+aug_cat_noint <- augment(mod_cat_noint, newdata = grid,
+                       interval = "confidence")
+
+cat_plot <- bind_rows(lst(aug_cat_int, aug_cat_noint),
+                      .id = "model")
+
+ggplot(data = evals, aes(x = age, y = score)) +
+  geom_point() + 
+  facet_wrap(ethnicity ~ gender) +
+  geom_line(data = cat_plot,
+            aes(y = .fitted, colour = model),
+            linewidth = 1.2) +
+  scale_colour_viridis_d() +
+  theme_minimal() 
+```
+
+**Exercise 3**. Suppose that you want to visualize a regression model with a generic quantitative response variable $y$ and __10__ predictor variables $x_1$, $x_2$, ...., $x_{10}$. You are most interested in the visualizing the association between $x_4$ and $y$, after accounting for the effects of the other 9 predictors. Sketch an appropriate visualization for this setting. What should the values for the other 9 predictors be?

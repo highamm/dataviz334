@@ -1,8 +1,13 @@
 # Choosing a Visualization {#chooseviz}
 
+```{r}
+#| echo: false
+source("_common.R")
+```
+
 <!-- day 1 -->
 
-In this section, we will review commonly used graphics, introduce a few new graphics, and articulate some of the benefits and drawbacks of various graphics. We will complete most of this with a pen-and-paper handout, but the code for many of the visualizations we will discuss is given here for reference. 
+In this section, we will review commonly used graphics, introduce a few new graphics, and articulate some of the benefits and drawbacks of the various graphics given below. Note that some graphs (looking at your, pie chart) mainly have drawbacks, with very few benfits. We will complete most of this with a pen-and-paper handout, but the code for many of the visualizations we will discuss is given here for reference. 
 
 ## Why Visualize Data?
 

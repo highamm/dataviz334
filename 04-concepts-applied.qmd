@@ -51,6 +51,8 @@ __Example 1__: Examine the following plots, which attempt to explore how many di
 ```{r}
 library(tidyverse)
 library(palmerpenguins)
+theme_set(theme_minimal())
+
 penguins_sum <- penguins |> group_by(species, year) |>
   summarise(n_penguins = n()) |>
   mutate(year = factor(year))

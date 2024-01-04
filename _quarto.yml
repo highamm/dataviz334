@@ -23,12 +23,12 @@ book:
       - 03-statdata234.qmd
       - 06-mapping.qmd
       - 05-uncertainty.qmd
-      - 14-other-topics.qmd
     - part: Model Visualization
       chapters:
       - 07-stat213.qmd
       - 08-model-interactions.qmd
       - 09-logistic.qmd
+      - 14-other-topics.qmd
       - 10-ethics.qmd
     - part: Interactive Visualization
       chapters:

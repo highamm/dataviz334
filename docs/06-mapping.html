@@ -193,12 +193,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
  <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Expressing Variability/Uncertainty</span></span></a>
   </div>
 </li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="./14-other-topics.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Other Topics</span></span></a>
-  </div>
-</li>
       </ul>
 </li>
         <li class="sidebar-item sidebar-item-section">
@@ -213,19 +207,25 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./07-stat213.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">STAT 213 Review</span></span></a>
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">STAT 213 Review</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./08-model-interactions.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Linear Model Visualization</span></span></a>
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Linear Model Visualization</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./09-logistic.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Logistic Model Visualization</span></span></a>
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Logistic Model Visualization</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./14-other-topics.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Other Topics and Models</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -361,6 +361,7 @@ Important
 <p><img src="06-mapping_files/figure-html/unnamed-chunk-4-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
+<p>We used an <code>"albers"</code> projection to make the map above, which is a commonly used projection for the Untied States. Note that <strong>the choice of projection matters</strong>, particularly for maps that cover larger areas of the globe. The video found here <a href="https://www.youtube.com/watch?v=kIID5FDi2JQ" class="uri">https://www.youtube.com/watch?v=kIID5FDi2JQ</a> explains more about projections. We will watch the video in class, so there is no need for you to watch this video on your own.</p>
 <div class="callout callout-style-simple callout-note callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -371,7 +372,7 @@ Note
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>We unfortunately do not have time to talk about map projection in detail, but, this is an area you would want to read more about if your final project involves mapping of some kind. Or, if you are interested, you can read more about projections at these two links: <a href="https://medium.com/nightingale/understanding-map-projections-8b23ecbd2a2f" class="uri">https://medium.com/nightingale/understanding-map-projections-8b23ecbd2a2f</a> or <a href="https://mdsr-book.github.io/mdsr2e/ch-spatial.html#sec:projections" class="uri">https://mdsr-book.github.io/mdsr2e/ch-spatial.html#sec:projections</a>.</p>
+<p>We unfortunately do not have time to talk about map projection in more detail, but, this is an area you would want to read more about if your final project involves mapping of some kind. Or, if you are interested, you can read more about projections at these two links: <a href="https://medium.com/nightingale/understanding-map-projections-8b23ecbd2a2f" class="uri">https://medium.com/nightingale/understanding-map-projections-8b23ecbd2a2f</a> or <a href="https://mdsr-book.github.io/mdsr2e/ch-spatial.html#sec:projections" class="uri">https://mdsr-book.github.io/mdsr2e/ch-spatial.html#sec:projections</a>.</p>
 </div>
 </div>
 <p>Now that we’ve created a base map, we probably want to add a variable to fill by to examine patterns across the states. The resulting map is sometimes called a “choropleth” map. We will use the <code>state_stats</code> data set from the <code>usdata</code> package.</p>
@@ -548,7 +549,7 @@ Important
 <p><strong>Hint</strong>: You can read more about <strong>projections</strong> in <a href="https://mdsr-book.github.io/mdsr2e/ch-spatial.html" target="_blank">Section 17.3.2 of Modern Data Science with R</a></p>
 <p><strong>Exercise 2</strong>. You may notice that the United States does not get coloured in your map. Examine this issue further and fix the map so that the United States is coloured.</p>
 <p><strong>Exercise 3</strong>. You may have noticed that there are two horizontal stripes across your map. This is an issue that drove me nuts! Check out <a href="https://github.com/tidyverse/ggplot2/issues/1104" target="_blank">this submitted issue on ggplot2’s GitHub page</a> for the reason for the error as well as a fix. Use it to fix your plot.</p>
-<p><strong>Exercise 4</strong>. Read about Mercator projections in <a href="https://futuremaps.com/blogs/news/top-10-world-map-projections" target="_blank">this blog post</a>. What does this source say about the sizes of Greenland vs.&nbsp;Africa in a Mercator projection.</p>
+<p><strong>Exercise 4</strong>. Read about Mercator projections in <a href="https://mdsr-book.github.io/mdsr2e/ch-spatial.html#sec:projections" target="_blank">this blog post</a>. What does this source say about the sizes of Greenland vs.&nbsp;Africa in a Mercator projection.</p>
 <p><strong>Exercise 5</strong>. Examine all of the different options for map projection with <code>?mapproject</code>. Then, change the <code>projection</code> to <code>"globular"</code>. Change the <code>projection</code> again to <code>"gilbert"</code>. How does the relative size of Greenland to Africa change in the projections?</p>
 <div class="callout callout-style-simple callout-note callout-titled">
 <div class="callout-header d-flex align-content-center">
