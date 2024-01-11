@@ -240,7 +240,15 @@ ul.task-list li input[type="checkbox"] {
    
   <ul>
 <li><a href="#installing-r-and-r-studio-class-prep" id="toc-installing-r-and-r-studio-class-prep" class="nav-link active" data-scroll-target="#installing-r-and-r-studio-class-prep"><span class="header-section-number">4.1</span> Installing <code>R</code> and <code>R Studio</code> (Class Prep)</a></li>
-  <li><a href="#installing-git-and-using-github-class-prep" id="toc-installing-git-and-using-github-class-prep" class="nav-link" data-scroll-target="#installing-git-and-using-github-class-prep"><span class="header-section-number">4.2</span> Installing <code>Git</code> and Using <code>GitHub</code> (Class Prep)</a></li>
+  <li>
+<a href="#installing-git-and-using-github-class-prep" id="toc-installing-git-and-using-github-class-prep" class="nav-link" data-scroll-target="#installing-git-and-using-github-class-prep"><span class="header-section-number">4.2</span> Installing <code>Git</code> and Using <code>GitHub</code> (Class Prep)</a>
+  <ul class="collapse">
+<li><a href="#pre-requisites" id="toc-pre-requisites" class="nav-link" data-scroll-target="#pre-requisites"><span class="header-section-number">4.2.1</span> Pre-requisites</a></li>
+  <li><a href="#connect-github-to-r-studio" id="toc-connect-github-to-r-studio" class="nav-link" data-scroll-target="#connect-github-to-r-studio"><span class="header-section-number">4.2.2</span> Connect GitHub to <code>R Studio</code></a></li>
+  <li><a href="#create-a-repository" id="toc-create-a-repository" class="nav-link" data-scroll-target="#create-a-repository"><span class="header-section-number">4.2.3</span> Create a Repository</a></li>
+  <li><a href="#commit-push-and-pull" id="toc-commit-push-and-pull" class="nav-link" data-scroll-target="#commit-push-and-pull"><span class="header-section-number">4.2.4</span> Commit, Push, and Pull</a></li>
+  </ul>
+</li>
   <li><a href="#using-git-and-github" id="toc-using-git-and-github" class="nav-link" data-scroll-target="#using-git-and-github"><span class="header-section-number">4.3</span> Using Git and GitHub</a></li>
   </ul></nav>
     </div>
@@ -267,13 +275,22 @@ ul.task-list li input[type="checkbox"] {
 <p><input type="checkbox"> Watch and follow along with a <a href="https://www.youtube.com/watch?v=-WNEPGMpzns" target="_blank">video on installing R</a>. </p>
 <p><input type="checkbox"> Watch and follow along with a <a href="https://www.youtube.com/watch?v=urw6AMOzAUo" target="_blank">video on installing R Studio</a>. </p>
 <p><input type="checkbox"> Watch and follow along with a <a href="https://www.youtube.com/watch?v=IaONPkvjNZM" target="_blank">video on installing R packages and changing other options</a>. </p>
-<p>After you install <code>R Studio</code>, create a new Quarto file, and answer the following questions. Render the file and submit the file to Canvas.</p>
+<p>After you install <code>R Studio</code>, create a new Quarto file (File -&gt; New File -&gt; Quarto Document), and answer the following questions within the file. At the top of the file, you should change the YAML header to something like</p>
+<pre><code>---
+title: "Your Title"
+author: "Your Name"
+format: 
+  html:
+    embed-resources: true
+---</code></pre>
+<p>The <code>embed-resources</code> part of the YAML header says to embed all of the necessary code, tables, and graphs into one single file.</p>
+<p>Render the file and submit the resulting .html file to Canvas.</p>
 <ol type="a">
 <li><p>What is your name and what is your class year (first-year, sophomore, junior, senior)?</p></li>
 <li><p>What is/are your major(s) and minor(s), either actual or intended?</p></li>
 <li><p>Why did you decide to take this course?</p></li>
-<li><p>In what semester and year did you take STAT/DATA 234?</p></li>
-<li><p>Have you taken STAT 213? Have you taken CS 140?</p></li>
+<li><p>In what semester and year did you take STAT/DATA 234? STAT 213?</p></li>
+<li><p>Have you taken CS 140?</p></li>
 <li><p>Have you used Git before? If so, in what context?</p></li>
 <li><p>Before this course, did you use <code>R Studio</code> on your desktop?</p></li>
 <li><p>What is your hometown: city, state, country?</p></li>
@@ -298,8 +315,8 @@ Important
 </div>
 <p>The following links provide instructions on getting started with <code>Git</code> and <code>GitHub</code> for version control of projects (repositories). The videos assume that you already have <code>R</code> and <code>R Studio</code> installed on your laptop. It will be easiest if you complete all of these steps consecutively in one sitting. So, you should ideally have about 1.5 - 2 hours of your time blocked off to complete the “getting started” process using the videos below. It might also be helpful (but not necessary) to work through these with a partner or two in case either of you get stuck.</p>
 <p>This section outlines the steps to get Git up, running, and connected to <code>R Studio</code>. There are accompanying videos at <a href="https://highamm.github.io/dataviz334/02-software.html#installing-git-and-using-github-class-prep" class="uri">https://highamm.github.io/dataviz334/02-software.html#installing-git-and-using-github-class-prep</a>, which may provide a little more guidance than the written steps below.</p>
-<section id="pre-requisites" class="level4" data-number="4.2.0.1"><h4 data-number="4.2.0.1" class="anchored" data-anchor-id="pre-requisites">
-<span class="header-section-number">4.2.0.1</span> Pre-requisites</h4>
+<section id="pre-requisites" class="level3" data-number="4.2.1"><h3 data-number="4.2.1" class="anchored" data-anchor-id="pre-requisites">
+<span class="header-section-number">4.2.1</span> Pre-requisites</h3>
 <ol type="1">
 <li><p>Install both <code>R</code> and <code>R Studio</code> locally.</p></li>
 <li>
@@ -311,9 +328,9 @@ Important
 </ul>
 </li>
 <li><p>Create a GitHub account at <a href="https://github.com/" class="uri">https://github.com/</a> with the “Sign Up” button.</p></li>
-</ol></section><section id="connect-github-to-r-studio" class="level4" data-number="4.2.0.2"><h4 data-number="4.2.0.2" class="anchored" data-anchor-id="connect-github-to-r-studio">
-<span class="header-section-number">4.2.0.2</span> Connect GitHub to <code>R Studio</code>
-</h4>
+</ol></section><section id="connect-github-to-r-studio" class="level3" data-number="4.2.2"><h3 data-number="4.2.2" class="anchored" data-anchor-id="connect-github-to-r-studio">
+<span class="header-section-number">4.2.2</span> Connect GitHub to <code>R Studio</code>
+</h3>
 <p>While the previous steps were completed in Terminal, the following steps use <code>R</code> code itself, so you can run the commands below like normal <code>R</code> code.</p>
 <ol type="1">
 <li><p>Install the <code>usethis</code> package in <code>R</code> with <code>install.packages("usethis")</code>.</p></li>
@@ -336,8 +353,8 @@ Important
 <li>Run <code><a href="https://rdrr.io/pkg/gitcreds/man/gitcreds_get.html">gitcreds::gitcreds_get()</a></code> or <code><a href="https://usethis.r-lib.org/reference/git_sitrep.html">usethis::git_sitrep()</a></code> to verify that your PAT was accepted.</li>
 </ul>
 </li>
-</ol></section><section id="create-a-repository" class="level4" data-number="4.2.0.3"><h4 data-number="4.2.0.3" class="anchored" data-anchor-id="create-a-repository">
-<span class="header-section-number">4.2.0.3</span> Create a Repository</h4>
+</ol></section><section id="create-a-repository" class="level3" data-number="4.2.3"><h3 data-number="4.2.3" class="anchored" data-anchor-id="create-a-repository">
+<span class="header-section-number">4.2.3</span> Create a Repository</h3>
 <ol type="1">
 <li>
 <p>On your GitHub account site, click the “<code>+</code>” sign in the upper-right corner and select “New Repository.”</p>
@@ -352,8 +369,8 @@ Important
 <li>If all goes well, you should have a new project with a “Git” pane in the upper-right window. If all does not go well, it may be that <code>R Studio</code> cannot locate Git on your local computer and that we need to do a bit of troubleshooting.</li>
 </ul>
 </li>
-</ol></section><section id="commit-push-and-pull" class="level4" data-number="4.2.0.4"><h4 data-number="4.2.0.4" class="anchored" data-anchor-id="commit-push-and-pull">
-<span class="header-section-number">4.2.0.4</span> Commit, Push, and Pull</h4>
+</ol></section><section id="commit-push-and-pull" class="level3" data-number="4.2.4"><h3 data-number="4.2.4" class="anchored" data-anchor-id="commit-push-and-pull">
+<span class="header-section-number">4.2.4</span> Commit, Push, and Pull</h3>
 <ul>
 <li>Watch and follow along with a <a href="https://www.youtube.com/watch?v=9RuXy0s3T4U" target="_blank"> video on making commits, pushing, and pulling</a>.</li>
 </ul>

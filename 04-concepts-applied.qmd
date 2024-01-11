@@ -197,7 +197,8 @@ __Example 6__: The following plot uses the Happy Planet Index data to show the t
 
 ```{r}
 library(tidyverse)
-hpi_df <- read_csv("data/hpi-tidy.csv")
+library(here)
+hpi_df <- read_csv(here("data/hpi-tidy.csv"))
 hpi_extreme <- hpi_df |>
   arrange(desc(HappyPlanetIndex)) |>
   slice(1:10, (nrow(hpi_df) - 9):nrow(hpi_df)) |>

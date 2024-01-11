@@ -20,7 +20,21 @@ The following videos provide instructions on how to install `R` and `R Studio` t
 
 <input type="checkbox"> Watch and follow along with a <a href="https://www.youtube.com/watch?v=IaONPkvjNZM" target="_blank">video on installing R packages and changing other options</a>. </input>
 
-After you install `R Studio`, create a new Quarto file, and answer the following questions. Render the file and submit the file to Canvas.
+After you install `R Studio`, create a new Quarto file (File -> New File -> Quarto Document), and answer the following questions within the file. At the top of the file, you should change the YAML header to something like
+
+```
+---
+title: "Your Title"
+author: "Your Name"
+format: 
+  html:
+    embed-resources: true
+---
+```
+
+The `embed-resources` part of the YAML header says to embed all of the necessary code, tables, and graphs into one single file.
+
+Render the file and submit the resulting .html file to Canvas.
 
 a.  What is your name and what is your class year (first-year, sophomore, junior, senior)?
 
@@ -28,9 +42,9 @@ b.  What is/are your major(s) and minor(s), either actual or intended?
 
 c.  Why did you decide to take this course?
 
-d.  In what semester and year did you take STAT/DATA 234?
+d.  In what semester and year did you take STAT/DATA 234? STAT 213?
 
-e.  Have you taken STAT 213? Have you taken CS 140?
+e.  Have you taken CS 140?
 
 f.  Have you used Git before? If so, in what context?
 
@@ -60,7 +74,7 @@ The following links provide instructions on getting started with `Git` and `GitH
 
 This section outlines the steps to get Git up, running, and connected to `R Studio`. There are accompanying videos at <https://highamm.github.io/dataviz334/02-software.html#installing-git-and-using-github-class-prep>, which may provide a little more guidance than the written steps below.
 
-#### Pre-requisites
+### Pre-requisites
 
 1. Install both `R` and `R Studio` locally.
 
@@ -74,7 +88,7 @@ This section outlines the steps to get Git up, running, and connected to `R Stud
     
 1. Create a GitHub account at <https://github.com/> with the "Sign Up" button.
 
-#### Connect GitHub to `R Studio`
+### Connect GitHub to `R Studio`
 
 While the previous steps were completed in Terminal, the following steps use `R` code itself, so you can run the commands below like normal `R` code. 
 
@@ -93,7 +107,7 @@ While the previous steps were completed in Terminal, the following steps use `R`
 
     * Run `gitcreds::gitcreds_get()` or `usethis::git_sitrep()` to verify that your PAT was accepted.
 
-#### Create a Repository
+### Create a Repository
 
 1. On your GitHub account site, click the "`+`" sign in the upper-right corner and select "New Repository."
 
@@ -105,7 +119,7 @@ While the previous steps were completed in Terminal, the following steps use `R`
 
     * If all goes well, you should have a new project with a "Git" pane in the upper-right window. If all does not go well, it may be that `R Studio` cannot locate Git on your local computer and that we need to do a bit of troubleshooting.
     
-#### Commit, Push, and Pull
+### Commit, Push, and Pull
 
 * Watch and follow along with a <a href="https://www.youtube.com/watch?v=9RuXy0s3T4U" target="_blank"> video on making commits, pushing, and pulling</a>.
 

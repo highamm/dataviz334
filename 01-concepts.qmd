@@ -10,7 +10,17 @@ For this section, we will use Kearan Healy's *Data Visualization: A Practical In
 
 ## Data Visualization Concepts (Class Prep)
 
-Read Sections 1.1 - 1.2 of Kearen Healy's *Data Visualization: A Practical Introduction*, found <a href="https://socviz.co/lookatdata.html" target="_blank">here</a>. As you read, answer the following questions in just 1 to 2 sentences.
+Read Sections 1.1 - 1.2 of Kearen Healy's *Data Visualization: A Practical Introduction*, found <a href="https://socviz.co/lookatdata.html" target="_blank">here</a>. As you read, answer the following questions in just 1 to 2 sentences in a Quarto document. Recall that you should change the YAML header of your Quarto document so that all resources are embedded:
+
+```
+---
+title: "Your Title"
+author: "Your Name"
+format: 
+  html:
+    embed-resources: true
+---
+```
 
 1.  Using either Anscombe's quartet or the income/voter turnout graph as an example, explain why it's valuable to look at data graphically instead of examining data only with summary statistics.
 
@@ -144,7 +154,7 @@ The remaining 3 parameters in the Grammar of Graphics are `<STAT>`, `<POSITION>`
 
 **`<STAT>`**
 
-Each `geom` has a default statistical transformation, `<STAT>`, given here <http://sape.inf.usi.ch/quick-reference/ggplot2/geom>. In many cases, the transformation is the "identity" (meaning there is no real transformation at all). For `geom_bar()`, the default `<STAT>` is **count**: a bar plot is made by counting up the number of each level of a categorical variable. Behind the scenes, using `geom_bar()` creates a new data frame that counts the number of observations for each unique level of `x` and plots that.
+Each `geom` has a default statistical transformation, `<STAT>`, given in the help file for that `<GEOM>`. In many cases, the transformation is the "identity" (meaning there is no real transformation at all). For `geom_bar()`, the default `<STAT>` is **count**: a bar plot is made by counting up the number of each level of a categorical variable. Behind the scenes, using `geom_bar()` creates a new data frame that counts the number of observations for each unique level of `x` and plots that.
 
 ```{r, appendix = TRUE}
 ggplot(data = penguins, aes(x = species)) +
@@ -162,7 +172,7 @@ ggplot(data = INSERT_DATA, aes(x = species, y = INSERT_YVAR)) +
 
 **`<POSITION>`**:
 
-A common way in which `<POSITION>` is changed is to create a side-by-side barplot instead of a stacked barplot. The default position in `geom_bar()` is `"stacked"` for an observations that occupy the same `x`:
+A common way in which `<POSITION>` is changed is to create a side-by-side barplot instead of a stacked barplot. The default position in `geom_bar()` is `"stack"` for an observations that occupy the same `x`:
 
 ```{r, appendix = TRUE}
 ggplot(data = penguins, aes(x = species, fill = sex)) +
@@ -210,9 +220,6 @@ ggplot(data = penguins, aes(x = bill_length_mm, y = bill_depth_mm)) +
 ```
 
 The other 4 parameters are given default values: `<FACET>` is `facet_null()` (which is added as another layer to the plot), `<STAT>` is `"identity"` (an argument of `geom_point()`), `<POSITION>` is `"identity"` (an argument of `geom_point()`), and `<COORDINATE_FUNCTION>` is `coord_cartersian()` (which is added as another layer to the plot). Modify the plot so that it **explicitly** uses the default values for the other 4 parameters.
-
-A list of `<GEOM>`'s and their default `<STAT>` and `<POSITION>` values are given <a href="http://sape.inf.usi.ch/quick-reference/ggplot2/geom
-" target="_blank">at this link</a>
 
 ## Your Turn
 

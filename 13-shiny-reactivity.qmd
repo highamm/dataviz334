@@ -24,7 +24,7 @@ __Exercise 3__. Sketch a reactive graph for the majors app in the previous secti
 
 ## Another Example Tennis App
 
-The purpose of this section is to complete another example with a different data set, continuing to strengthen our conceptual understanding of reactivity. We will use a couple of tennis data sets to create an app that lets us create a histogram of a summary statistic of our choosing for a player of our choosing. Constructing this app will cover another common use case: allowing a user to choose a variable from a data set to plot.
+The purpose of this section is to complete another example with a different data set, continuing to strengthen our conceptual understanding of reactivity. We will use a couple of tennis data sets obtained from <https://github.com/JeffSackmann/tennis_atp> and <https://github.com/JeffSackmann/tennis_wta> to create an app that lets us create a histogram of a summary statistic of our choosing for a player of our choosing. Constructing this app will cover another common use case: allowing a user to choose a variable from a data set to plot.
 
 Again, a usual first step is creating a static graph, choosing a value for each future interactive input. Begin by reading in the data and doing a bit of preparatory work. To focus on `shiny`, we will skip discussion of this work, but all of it are functions you should recognize.
 
@@ -33,8 +33,9 @@ library(tidyverse)
 
 theme_set(theme_minimal())
 
-atp_df <- read_csv("data/atp_matches_2019.csv")
-wta_df <- read_csv("data/wta_matches_2019.csv")
+atp_df <- read_csv("https://raw.githubusercontent.com/JeffSackmann/tennis_atp/master/atp_matches_2023.csv")
+wta_df <- read_csv("https://raw.githubusercontent.com/JeffSackmann/tennis_wta/master/wta_matches_2023.csv")
+
 both_df <- bind_rows(atp_df, wta_df)
 
 both_long <- both_df |> pivot_longer(c(winner_name, loser_name))
@@ -279,8 +280,8 @@ shinyApp(ui, server)
 ```{r, message = FALSE, eval = FALSE, echo = FALSE}
 ## updated version of app
 library(tidyverse)
-atp_df <- read_csv("data/atp_matches_2019.csv")
-wta_df <- read_csv("data/wta_matches_2019.csv")
+atp_df <- read_csv("https://raw.githubusercontent.com/JeffSackmann/tennis_atp/master/atp_matches_2023.csv")
+wta_df <- read_csv("https://raw.githubusercontent.com/JeffSackmann/tennis_wta/master/wta_matches_2023.csv")
 both_df <- bind_rows(atp_df, wta_df)
 
 both_long <- both_df %>% pivot_longer(c(winner_name, loser_name))
@@ -416,7 +417,7 @@ The `glue()` function from the `glue` package is really useful for making plot t
 It's a fairly simple function: you just put together text in `" "` and variable names, separated by commas.
 
 ```{r}
-poke_df <- read_csv("data/pokemon_full.csv")
+poke_df <- read_csv(here::here("data/pokemon_full.csv"))
 poke_long <- poke_df %>% pivot_longer(4:9, values_to = "value", 
                                       names_to = "stat")
 

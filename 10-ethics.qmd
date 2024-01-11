@@ -94,8 +94,9 @@ __Exercise 1__. Read in the `Challenger.csv` data file, which contains the varia
 
 ```{r}
 library(tidyverse)
+library(here)
 theme_set(theme_minimal())
-challenger_df <- read_csv("data/Challenger.csv")
+challenger_df <- read_csv(here("data/Challenger.csv"))
 ```
 
 __Exercise 2__. Fit a logistic regression model with `SuccessfulLaunch` as the response variable and `Temperature` as the predictor. Interpret the resulting coefficient for `Temperature` in terms of either the log-odds of a successful launch or in terms of the odds of a successful launch.

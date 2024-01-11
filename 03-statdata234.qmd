@@ -36,8 +36,9 @@ Make sure the `hpi-tidy.csv` data set is in a `/data` folder in your current `R 
 
 ```{r, appendix = TRUE}
 library(tidyverse)
+library(here)
 theme_set(theme_minimal())
-hpi_df <- read_csv("data/hpi-tidy.csv")
+hpi_df <- read_csv(here("data/hpi-tidy.csv"))
 hpi_df
 ```
 
@@ -263,3 +264,41 @@ ggplot(data = df_2000s_sum, aes(x = artist, y = n)) +
   labs(x = "Artist Name", 
        y = "Number of Songs in Top 100")
 ```
+
+**Exercise 2**. You may have used a SLU majors data set in DATA/STAT 234, but now, we will use a data set that is a little different in that it shows the major/minor combination of __each__ student. That is, instead of each row being a major, each row is an individual student. This allows us to look at more detailed questions about what students tend to double-major or minor in. The data was obtained from Christine Zimmerman in SLU's Institutional Research Office and contains data on all graduating students in the past 7 years.
+
+The variables in the data set are:
+
+* `adm_id`, a unique ID assigned to each student,
+* `sex`, the sex of the student,
+* `major1`, `major2`, `major3`, `minor1`, `minor2`, `minor3`, the majors and minors of the student.
+
+```{r}
+library(tidyverse)
+library(readxl)
+library(here)
+df <- read_excel(here::here("data/slu_graduates_17_21.xlsx"))
+
+## fixes error in the data
+df <- df |> mutate(across(everything(),
+                          .fns = ~replace(., . ==  "STATS" , "STAT")))
+```
+
+Using this data set, construct a visualization that shows the proportion of students within each major who identify as female. We will begin this exercise by sketching out what we want to create as a class.
+
+```{r}
+#| echo: false
+#| output: false
+
+## do in class
+df_long <- df %>% pivot_longer(3:8, names_to = "type", values_to = "discipline")
+df_major <- df_long %>% 
+  filter(type == "major1" | type == "major2" | type == "major3")
+
+df_stat <- df_major %>% filter(discipline == "STAT") 
+df_statfull <- semi_join(df_long, df_stat, by = "adm_id") %>%
+  filter(type == "major1" |
+           type == "major2" | 
+           type == "major3")
+```
+

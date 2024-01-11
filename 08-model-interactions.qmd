@@ -23,7 +23,7 @@ theme_set(theme_minimal())
 evals
 ```
 
-## Introducing `modelr` (Class Prep)
+## Basic Strategy (Class Prep)
 
 Our basic strategy for visualizing models is to
 

@@ -36,9 +36,10 @@ Next, we can read in the beer data set:
 
 ```{r, appendix = TRUE}
 library(tidyverse)
+library(here)
 theme_set(theme_minimal())
 
-beers <- read_csv("data/breweries.csv") 
+beers <- read_csv(here("data/breweries.csv"))
 ```
 
 Variables include the `brewery_name`, `type`, `address`, and `state`. But, you'll notice that the `beers` data set does not include any spatial coordinates that give the locations of the breweries. There is, however, a variable called `address`: we will use the `uszipcodes` package to extract the zip code from the `address` variable so that we can map a brewery to its zip code.
@@ -116,7 +117,7 @@ library(tidyverse)
 Recall the Happy Planet Index data set, where we constructed a scatterplot of `Wellbeing` vs. carbon `Footprint`:
 
 ```{r}
-hpi_df <- read_csv("data/hpi-tidy.csv")
+hpi_df <- read_csv(here::here("data/hpi-tidy.csv"))
 ggplot(data = hpi_df, aes(x = Footprint, y = Wellbeing)) +
   geom_point() +
   theme_minimal()

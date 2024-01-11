@@ -221,7 +221,8 @@ Consider again the Happy Planet Index data. Recall that the basic idea of a "hap
 
 ```{r}
 library(tidyverse)
-hpi_df <- read_csv("data/hpi-tidy.csv")
+library(here)
+hpi_df <- read_csv(here("data/hpi-tidy.csv"))
 ```
 
 **Exericse 1**. Make a map of a variable of your choosing. In `coord_map()`, use `projection = "mercator"`, which is also the default (we will see in a later exercise that this probably is not the best choice).

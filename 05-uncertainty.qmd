@@ -24,7 +24,8 @@ I would be remiss if I did not include the Pokemon data set at least once in thi
 library(tidyverse)
 theme_set(theme_minimal())
 
-pokemon_df <- read_csv("data/pokemon_full.csv")
+library(here)
+pokemon_df <- read_csv(here("data/pokemon_full.csv"))
 pokemon_height <- pokemon_df |> 
   filter(Type %in% c("Bug", "Electric", "Fighting", "Flying",
                      "Grass", "Steel")) |>
@@ -82,7 +83,8 @@ You may recall from taking STAT 113 that you completed a survey at the beginning
 To begin, read in the data set:
 
 ```{r, appendix = TRUE}
-statsurvey_df <- read_csv("data/stat113_survey.csv")
+library(here)
+statsurvey_df <- read_csv(here("data/stat113_survey.csv"))
 ```
 
 The data set has many variables. Some that we will use are:
@@ -93,7 +95,7 @@ The data set has many variables. Some that we will use are:
 -   `TV`, the amount of time spent watching TV per week
 -   `Facebook`, the number of Facebook friends
 
-Using this data set, we answer some interesting questions. First, is there evidence of grade inflation at SLU? That is, is there evidence that student GPAs have increased over time?
+Using this data set, we answer some interesting questions. First, is there evidence of grade inflation at SLU? That is, is there evidence that student GPAs have increased over time? We will start this problem by making a sketch of a couple of visualizations we might want to create.
 
 ```{r, echo = FALSE, results = "hide", fig.keep = "none"}
 ggplot(data = statsurvey_df, aes(x = time_both, fill = Tattoo)) +
