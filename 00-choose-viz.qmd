@@ -84,6 +84,16 @@ ggplot(data = Salaries, aes(x = rank)) +
 salaries_sum <- Salaries |> group_by(rank) |>
   summarise(n = n()) |>
   mutate(prop = n / sum(n))
+ggplot(data = salaries_sum, aes(x = rank, y = n)) +
+  geom_segment(aes(xend = rank, y = 0, yend = n),
+               colour = "mediumpurple1") +
+  geom_point(colour = "mediumpurple4") +
+  labs(title = "Lollipop Plot")
+```
+
+<br>
+
+```{r}
 ggplot(data = salaries_sum, aes(x = rank, y = prop)) +
   geom_col(colour = "mediumpurple4", fill = "mediumpurple1") +
   labs(title = "Bar Plot of Proportions")

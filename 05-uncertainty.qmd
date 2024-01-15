@@ -146,13 +146,10 @@ ggplot(data = tattoo_sum, aes(x = time_both, y = prop_tattoo)) +
   geom_errorbar(aes(ymin = l_se, ymax = u_se))
 ```
 
-::: {.callout-note collapse="true"}
-## Note
 
-It was not actually trivial making this data set from the years of STAT 113 surveys. Some questions are added or tweaked over the years so automating the combination of the different STAT 113 surveys is tricky. Below is the code that was used to create the data set: note that you cannot run the code because you do not have access to the folder of the STAT 113 surveys. But it may give you an idea of what you can do with `purrr`.
-:::
-
-```{r, eval = FALSE}
+```{r}
+#| eval: false
+#| echo: false
 library(purrr)
 
 dir_list <- list.files("data/firstsurvey", full.names = TRUE)

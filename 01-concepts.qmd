@@ -249,3 +249,5 @@ a.  the points are coloured by species, but there is only one smoother instead o
 b.  there are three different coloured smoothers (one for each species) but the points are all the same colour.
 
 **Exercise 5**. Construct another graph that explicitly uses all 7 grammar of graphics parameters (you may set some of these parameters to be the default values, but you should do so explicitly).
+
+**Exercise 6**. Create two different graphs that differ only by __1__ of the 7 grammar of graphics parameters. Then, show your two graphs (but not your code) to a partner and see if they can identify which graphics parameter has been modified.
