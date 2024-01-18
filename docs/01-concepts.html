@@ -495,7 +495,7 @@ format:
 <p>A common way in which <code>&lt;POSITION&gt;</code> is changed is to create a side-by-side barplot instead of a stacked barplot. The default position in <code><a href="https://ggplot2.tidyverse.org/reference/geom_bar.html">geom_bar()</a></code> is <code>"stack"</code> for an observations that occupy the same <code>x</code>:</p>
 <div class="cell" data-appendix="true">
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">penguins</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">species</span>, fill <span class="op">=</span> <span class="va">sex</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_bar.html">geom_bar</a></span><span class="op">(</span>position <span class="op">=</span> <span class="st">"stack"</span><span class="op">)</span> <span class="op">+</span> <span class="co">## don't need "stacked" because it's default</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_bar.html">geom_bar</a></span><span class="op">(</span>position <span class="op">=</span> <span class="st">"stack"</span><span class="op">)</span> <span class="op">+</span> <span class="co">## don't need "stack" because it's default</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_viridis.html">scale_fill_viridis_d</a></span><span class="op">(</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <p><img src="01-concepts_files/figure-html/unnamed-chunk-8-1.png" class="img-fluid" width="672"></p>
@@ -540,7 +540,7 @@ format:
 <p><img src="01-concepts_files/figure-html/unnamed-chunk-12-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
-<p>The other 4 parameters are given default values: <code>&lt;FACET&gt;</code> is <code><a href="https://ggplot2.tidyverse.org/reference/facet_null.html">facet_null()</a></code> (which is added as another layer to the plot), <code>&lt;STAT&gt;</code> is <code>"identity"</code> (an argument of <code><a href="https://ggplot2.tidyverse.org/reference/geom_point.html">geom_point()</a></code>), <code>&lt;POSITION&gt;</code> is <code>"identity"</code> (an argument of <code><a href="https://ggplot2.tidyverse.org/reference/geom_point.html">geom_point()</a></code>), and <code>&lt;COORDINATE_FUNCTION&gt;</code> is <code>coord_cartersian()</code> (which is added as another layer to the plot). Modify the plot so that it <strong>explicitly</strong> uses the default values for the other 4 parameters.</p>
+<p>The other 4 parameters are given default values: <code>&lt;FACET&gt;</code> is <code><a href="https://ggplot2.tidyverse.org/reference/facet_null.html">facet_null()</a></code> (which is added as another layer to the plot), <code>&lt;STAT&gt;</code> is <code>"identity"</code> (an argument of <code><a href="https://ggplot2.tidyverse.org/reference/geom_point.html">geom_point()</a></code>), <code>&lt;POSITION&gt;</code> is <code>"identity"</code> (an argument of <code><a href="https://ggplot2.tidyverse.org/reference/geom_point.html">geom_point()</a></code>), and <code>&lt;COORDINATE_FUNCTION&gt;</code> is <code><a href="https://ggplot2.tidyverse.org/reference/coord_cartesian.html">coord_cartesian()</a></code> (which is added as another layer to the plot). Modify the plot so that it <strong>explicitly</strong> uses the default values for the other 4 parameters.</p>
 </section></section><section id="your-turn" class="level2" data-number="2.3"><h2 data-number="2.3" class="anchored" data-anchor-id="your-turn">
 <span class="header-section-number">2.3</span> Your Turn</h2>
 <p><strong>Exercise 1</strong>. Make another plot of <code>bill_length_mm</code> with a different geom that is used for a single quantitative variable.</p>
@@ -548,7 +548,7 @@ format:
 <p><strong>Exercise 3</strong>. Modify the frequency plot made with <code><a href="https://ggplot2.tidyverse.org/reference/geom_histogram.html">geom_freqpoly()</a></code> to use <code>colour</code> in two different ways:</p>
 <ol type="a">
 <li><p>change the colour of the line to any colour that <code>R</code> knows. A list of some colours can be found <a href="http://www.stat.columbia.edu/~tzheng/files/Rcolor.pdf" target="_blank">at this link</a>.</p></li>
-<li><p>add a colour asethetic to make three different frequency lines, one for each <code>species</code> of penguin.</p></li>
+<li><p>add a colour aesthetic to make three different frequency lines, one for each <code>species</code> of penguin.</p></li>
 </ol>
 <div class="callout callout-style-simple callout-tip callout-titled">
 <div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-1-contents" aria-controls="callout-1" aria-expanded="false" aria-label="Toggle callout">

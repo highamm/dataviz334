@@ -71,6 +71,8 @@ ggplot(data = penguins_sum, aes(x = year, y = n_penguins,
 
 Which plot is preferable? Can you relate your choice to a concept in the reading?
 
+<!-- The second plot. In Figure 1.11 of the reading, we see how its hard to see trend in some of the levels. However, examining an overall trend in count is easier in the second plot. -->
+
 <br>
 
 __Example 2__: The following plots examine the number of penguins in each species in the data set. 
@@ -87,6 +89,8 @@ ggplot(data = penguins, aes(x = species)) +
 ```
 
 Which plot is preferable? Can you relate your choice to a concept in the reading?
+
+<!-- The first plot. If length or area is encoded in the graph, 0 should be the starting point for the line or bar. -->
 
 <br>
 
@@ -105,6 +109,8 @@ ggplot(data = penguins, aes(x = species, y = body_mass_g)) +
 ```
 
 Which plot is preferable? Can you relate your choice to a concept in the reading?
+
+<!-- The first. If length/area is not used in the plot, it may be preferable to show the data over the range that we observe it. -->
 
 <br>
 
@@ -135,6 +141,8 @@ ggplot(data = penguins, aes(x = bill_length_mm, y = bill_depth_mm)) +
 
 Which plot is preferable? Why?
 
+<!-- The first. We can distinguish the colours, and, since position is one of the easiest things to perceive (Figure 1.24), we can compare the distributions of the three species easily.  -->
+
 <br>
 
 __Pair 2__: These plots are meant to explore the relationship between bill length and bill depth for each species-island-sex combination. 
@@ -158,7 +166,11 @@ ggplot(data = penguins |> filter(!is.na(sex)),
 
 Both plots can be improved upon but which plot is preferable? Why?
 
+<!-- The second. In the first, there are too many colours to distinguish anything. -->
+
 On a sheet of paper, sketch out an improved plot to investigate these variables.
+
+<!-- Sketch should be faceted by 2 things, coloured by the third. -->
 
 ```{r}
 #| echo: false
@@ -191,6 +203,8 @@ ggplot(penguins_island, aes(x = "", y = n, fill = island)) +
 
 Which plot is preferable? Can you relate your choice to a concept in the reading?
 
+<!-- The first. Its much easier to perceive position and length than it is to perceive area.  -->
+
 <br>
 
 __Example 6__: The following plot uses the Happy Planet Index data to show the top 10 and bottom 10 countries for the `HappyPlanetIndex` variable, a variable that is meant to measure how "happy" its citizens while taking into account how the average citizen from that country affects our planet. 
@@ -221,6 +235,8 @@ ggplot(data = hpi_extreme, aes(x = Country, y = HappyPlanetIndex,
 ```
 
 Which plot is preferable? Can you relate your choice to a concept in the reading?
+
+<!-- The second: minimizes data to ink ratio. -->
 
 <br>
 
@@ -254,6 +270,8 @@ ggplot(data = penguins, aes(x = bill_length_mm, y = bill_depth_mm)) +
 ```
 
 For this example, which scale makes the most sense: `seq`, `div`, or `qual`? Why?
+
+<!-- qual: species is unordered. -->
 
 Another colour and fill scale package is the `viridis` package. The base `viridis` functions automatically load with `ggplot2` so there's no need to call the package with `library(viridis)`. The `viridis` colour scales were made to be both aesthetically pleasing, CVD-friendly, and visible when printed to black-and-white. We've used the viridis colour scale in many examples already but another example is given below, in which the default `option` argument is changed to another scale called `"plasma"`. The `viridis` colour scales can either be used as sequential colour scales or qualitative colour scales, but I do not believe they have any colour scales that would work well for diverging colours.
 

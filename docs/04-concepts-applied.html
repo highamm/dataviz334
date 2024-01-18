@@ -356,6 +356,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 <p>Which plot is preferable? Can you relate your choice to a concept in the reading?</p>
+<!-- The second plot. In Figure 1.11 of the reading, we see how its hard to see trend in some of the levels. However, examining an overall trend in count is easier in the second plot. -->
 <p><br></p>
 <p><strong>Example 2</strong>: The following plots examine the number of penguins in each species in the data set.</p>
 <div class="cell">
@@ -375,6 +376,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 <p>Which plot is preferable? Can you relate your choice to a concept in the reading?</p>
+<!-- The first plot. If length or area is encoded in the graph, 0 should be the starting point for the line or bar. -->
 <p><br></p>
 <p><strong>Example 3</strong>: The following plots examine the distribution of <code>body_mass_g</code> for each <code>species</code> of penguin.</p>
 <div class="cell">
@@ -395,6 +397,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 <p>Which plot is preferable? Can you relate your choice to a concept in the reading?</p>
+<!-- The first. If length/area is not used in the plot, it may be preferable to show the data over the range that we observe it. -->
 <p><br></p>
 <p><strong>Example 4</strong>: The following plots explore whether to use <code>colour</code> or faceting to explore three (or more) variables in a data set.</p>
 <div class="callout callout-style-simple callout-tip callout-titled">
@@ -433,6 +436,7 @@ Tip
 </div>
 </div>
 <p>Which plot is preferable? Why?</p>
+<!-- The first. We can distinguish the colours, and, since position is one of the easiest things to perceive (Figure 1.24), we can compare the distributions of the three species easily.  -->
 <p><br></p>
 <p><strong>Pair 2</strong>: These plots are meant to explore the relationship between bill length and bill depth for each species-island-sex combination.</p>
 <div class="cell">
@@ -458,7 +462,9 @@ Tip
 </div>
 </div>
 <p>Both plots can be improved upon but which plot is preferable? Why?</p>
+<!-- The second. In the first, there are too many colours to distinguish anything. -->
 <p>On a sheet of paper, sketch out an improved plot to investigate these variables.</p>
+<!-- Sketch should be faceted by 2 things, coloured by the third. -->
 <p><br></p>
 <p><strong>Example 5</strong>: The following plots look at the distribution of <code>island</code>.</p>
 <div class="cell">
@@ -481,6 +487,7 @@ Tip
 </div>
 </div>
 <p>Which plot is preferable? Can you relate your choice to a concept in the reading?</p>
+<!-- The first. Its much easier to perceive position and length than it is to perceive area.  -->
 <p><br></p>
 <p><strong>Example 6</strong>: The following plot uses the Happy Planet Index data to show the top 10 and bottom 10 countries for the <code>HappyPlanetIndex</code> variable, a variable that is meant to measure how “happy” its citizens while taking into account how the average citizen from that country affects our planet.</p>
 <div class="cell">
@@ -514,6 +521,7 @@ Tip
 </div>
 </div>
 <p>Which plot is preferable? Can you relate your choice to a concept in the reading?</p>
+<!-- The second: minimizes data to ink ratio. -->
 <p><br></p>
 <p><strong>Example 7</strong>: The final few examples discuss the choice of colour palettes when using colour in visualizations. We want to use our graphics to communicate with others as clearly as possible. We also want to be as inclusive as possible in our communications. This means that, if we choose to use colour, our graphics should be made so that a colour-vision-deficient (CVD) person can read our graphs.</p>
 <div class="callout callout-style-simple callout-note callout-titled">
@@ -557,6 +565,7 @@ Note
 </div>
 </div>
 <p>For this example, which scale makes the most sense: <code>seq</code>, <code>div</code>, or <code>qual</code>? Why?</p>
+<!-- qual: species is unordered. -->
 <p>Another colour and fill scale package is the <code>viridis</code> package. The base <code>viridis</code> functions automatically load with <code>ggplot2</code> so there’s no need to call the package with <code><a href="https://sjmgarnier.github.io/viridis/">library(viridis)</a></code>. The <code>viridis</code> colour scales were made to be both aesthetically pleasing, CVD-friendly, and visible when printed to black-and-white. We’ve used the viridis colour scale in many examples already but another example is given below, in which the default <code>option</code> argument is changed to another scale called <code>"plasma"</code>. The <code>viridis</code> colour scales can either be used as sequential colour scales or qualitative colour scales, but I do not believe they have any colour scales that would work well for diverging colours.</p>
 <div class="cell" data-appendix="true">
 <div class="sourceCode" id="cb18"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">hpi_df</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">Footprint</span>, y <span class="op">=</span> <span class="va">HappyLifeYears</span>,</span>

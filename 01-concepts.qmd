@@ -176,7 +176,7 @@ A common way in which `<POSITION>` is changed is to create a side-by-side barplo
 
 ```{r, appendix = TRUE}
 ggplot(data = penguins, aes(x = species, fill = sex)) +
-  geom_bar(position = "stack") + ## don't need "stacked" because it's default
+  geom_bar(position = "stack") + ## don't need "stack" because it's default
   scale_fill_viridis_d()
 ```
 
@@ -219,7 +219,7 @@ ggplot(data = penguins, aes(x = bill_length_mm, y = bill_depth_mm)) +
   geom_point() 
 ```
 
-The other 4 parameters are given default values: `<FACET>` is `facet_null()` (which is added as another layer to the plot), `<STAT>` is `"identity"` (an argument of `geom_point()`), `<POSITION>` is `"identity"` (an argument of `geom_point()`), and `<COORDINATE_FUNCTION>` is `coord_cartersian()` (which is added as another layer to the plot). Modify the plot so that it **explicitly** uses the default values for the other 4 parameters.
+The other 4 parameters are given default values: `<FACET>` is `facet_null()` (which is added as another layer to the plot), `<STAT>` is `"identity"` (an argument of `geom_point()`), `<POSITION>` is `"identity"` (an argument of `geom_point()`), and `<COORDINATE_FUNCTION>` is `coord_cartesian()` (which is added as another layer to the plot). Modify the plot so that it **explicitly** uses the default values for the other 4 parameters.
 
 ## Your Turn
 
@@ -231,7 +231,7 @@ The other 4 parameters are given default values: `<FACET>` is `facet_null()` (wh
 
 a.  change the colour of the line to any colour that `R` knows. A list of some colours can be found <a href="http://www.stat.columbia.edu/~tzheng/files/Rcolor.pdf" target="_blank">at this link</a>.
 
-b.  add a colour asethetic to make three different frequency lines, one for each `species` of penguin.
+b.  add a colour aesthetic to make three different frequency lines, one for each `species` of penguin.
 
 ::: {.callout-tip collapse="true"}
 ## Hint
