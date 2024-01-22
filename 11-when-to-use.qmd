@@ -123,7 +123,7 @@ ggplot(data = hpi_df, aes(x = Footprint, y = Wellbeing)) +
   theme_minimal()
 ```
 
-If we were interested in labeling __1__ particular country, then we can do so with `geom_label()` or `geom_label_repel()`. But, if we want the user to be able to hover over any point in the scatterplot to see the name of the country, we can use `plotly`.
+If we were interested in labeling __1__ particular country, then we can do so with `geom_text()` or `geom_text_repel()`. But, if we want the user to be able to hover over any point in the scatterplot to see the name of the country, we can use `plotly`.
 
 First, we assign out plot a name so that we can reference it with a plotly function. In this example, we name our plot `plot1`.
 

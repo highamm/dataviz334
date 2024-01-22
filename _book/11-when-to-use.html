@@ -404,7 +404,7 @@ Important
 <p><img src="11-when-to-use_files/figure-html/unnamed-chunk-10-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
-<p>If we were interested in labeling <strong>1</strong> particular country, then we can do so with <code><a href="https://ggplot2.tidyverse.org/reference/geom_text.html">geom_label()</a></code> or <code>geom_label_repel()</code>. But, if we want the user to be able to hover over any point in the scatterplot to see the name of the country, we can use <code>plotly</code>.</p>
+<p>If we were interested in labeling <strong>1</strong> particular country, then we can do so with <code><a href="https://ggplot2.tidyverse.org/reference/geom_text.html">geom_text()</a></code> or <code>geom_text_repel()</code>. But, if we want the user to be able to hover over any point in the scatterplot to see the name of the country, we can use <code>plotly</code>.</p>
 <p>First, we assign out plot a name so that we can reference it with a plotly function. In this example, we name our plot <code>plot1</code>.</p>
 <div class="cell" data-appendix="true">
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">plot1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">hpi_df</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">Footprint</span>, y <span class="op">=</span> <span class="va">Wellbeing</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>

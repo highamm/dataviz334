@@ -60,23 +60,23 @@ hpi_us <- hpi_df |> filter(Country == "United States of America")
 hpi_us
 ```
 
-Now that we have this new data set, we can use it within `geom_label()`. Recall that the `data =` argument in `ggplot()` carries on through **all** `geom`s **unless** we specify otherwise. Now is our chance to "specify otherwise" by including another `data =` argument within `geom_label()`:
+Now that we have this new data set, we can use it within `geom_text()`. Recall that the `data =` argument in `ggplot()` carries on through **all** `geom`s **unless** we specify otherwise. Now is our chance to "specify otherwise" by including another `data =` argument within `geom_text()`:
 
 ```{r, appendix = TRUE}
 ggplot(data = hpi_df, aes(x = Footprint, y = Wellbeing)) +
   geom_point() +
-  geom_label(data = hpi_us, aes(label = Country)) ## specify
-## data = hpi_us so geom_label only uses the observation in hpi_us
+  geom_text(data = hpi_us, aes(label = Country)) ## specify
+## data = hpi_us so geom_text only uses the observation in hpi_us
 ```
 
-But, it's not that clear which of the points is actual the United States. A trick used in the *R for Data Science* book is to surround the points that are being labeled with an open circle using an extra `geom_point()` function to distinguish them and to use `geom_label_repel()` in the `ggrepel` library instead of `geom_label()` to "repel" the label away from the point that it's labeling.
+But, it's not that clear which of the points is actual the United States. A trick used in the *R for Data Science* book is to surround the points that are being labeled with an open circle using an extra `geom_point()` function to distinguish them and to use `geom_text_repel()` in the `ggrepel` library instead of `geom_text()` to "repel" the label away from the point that it's labeling.
 
 ```{r, appendix = TRUE}
 ## install.packages("ggrepel")
 library(ggrepel)
 ggplot(data = hpi_df, aes(x = Footprint, y = Wellbeing)) +
   geom_point() +
-  geom_label_repel(data = hpi_us, aes(label = Country)) +
+  geom_text_repel(data = hpi_us, aes(label = Country)) +
   geom_point(data = hpi_us, size = 3, shape = 1) ## create a second point that is an open circle (shape = 1) with a larger size (size = 3) to surround the United States point on the scatterplot
 ```
 
@@ -87,7 +87,7 @@ To change labels and add titles to our `ggplot` graph, we can add `+ labs()` to 
 ```{r, appendix = TRUE}
 ggplot(data = hpi_df, aes(x = Footprint, y = Wellbeing)) +
   geom_point() +
-  geom_label_repel(data = hpi_us, aes(label = Country)) +
+  geom_text_repel(data = hpi_us, aes(label = Country)) +
   geom_point(data = hpi_us, size = 3, shape = 1) +
   labs(title = "Countries with a Higher Ecological Footprint Tend to Have Citizens with Higher Wellbeing", ## add title
     subtitle = "Wellbeing is on a 1-10 scale", ## add subtitle (smaller text size than the title)
