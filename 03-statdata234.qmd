@@ -284,7 +284,7 @@ df <- df |> mutate(across(everything(),
                           .fns = ~replace(., . ==  "STATS" , "STAT")))
 ```
 
-Using this data set, construct a visualization that shows the proportion of students within each major who identify as female. We will begin this exercise by sketching out what we want to create as a class.
+Using this data set, construct a visualization that explores gender balance within each of the majors at SLU. We will begin this exercise by sketching out what we want to create as a class.
 
 ```{r}
 #| echo: false
