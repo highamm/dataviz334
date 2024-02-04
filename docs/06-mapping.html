@@ -413,7 +413,7 @@ Note
 <p><strong>Exercise 1</strong>. The reading gave one example where the “best” graph to show woud not be a map. Think of a second example where, even though the data is spatial, the best graph to make a particular argument would <strong>not</strong> be a map.</p>
 <p><strong>Exercise 2</strong>. Refer back the United States examples that we completed. Choose a variable or two variables where a map makes the most sense to visualize that variable and explain your reasoning. Then, choose a variable or two variables where you might make a plot other than a map and explain your reasoning for why the map makes less sense for this variable.</p>
 <p><strong>Exercise 3</strong>. Which states had the fastest growth rate between 2000 and 2010? Make a variable for the percent change in population and then map this variable.</p>
-<p><strong>Exercise 4</strong>. To your map in Exercise 1, think about which type of colour scale makes the most sense to use (sequential, diverging, or unordered). Change the colour scale to match what makes the most sense.</p>
+<p><strong>Exercise 4</strong>. To your map in Exercise 3, think about which type of colour scale makes the most sense to use (sequential, diverging, or unordered). Change the colour scale to match what makes the most sense.</p>
 <p>You may have noticed a couple of additional problems in the United States maps we made in the previous section.</p>
 <ol type="1">
 <li><p>We ignored Alaska and Hawaii. Putting these on the map in their geographic locations would result in a tiny continental United States map that would be harder to read.</p></li>
@@ -464,11 +464,11 @@ Note
 </ul>
 <p>There is plenty we can do with this data set without mapping.</p>
 <p><strong>Exercise 1</strong>. Make a line plot that shows the number of <code>active_cases</code> in all of St.&nbsp;Lawrence County over time.</p>
-<p>But suppose that we now want to make a map of the current day’s <strong>active cases</strong> in the subregions of SLC like the <a href="https://www.stlawco.org/covid-19-daily-update-center" target="_blank">maps found here</a> . We need to tell <code>R</code> how to draw the lines that define the different subregions of SLC. To do so, we need to provide <code>R</code> with a <strong>shapefile</strong> that has directions on how to draw the spatial polygons.</p>
+<p>But suppose that we now want to make a map of the current day’s <strong>active cases</strong> in the subregions of SLC. We need to tell <code>R</code> how to draw the lines that define the different subregions of SLC. To do so, we need to provide <code>R</code> with a <strong>shapefile</strong> that has directions on how to draw the spatial polygons.</p>
 <p>How can we obtain this shapefile? There are two primary methods:</p>
 <ol type="1">
 <li><p>Through GIS. You can export a shapefile for a particular region using GIS software, something I am not that familiar with. But, Carol Cady at SLU has GIS expertise.</p></li>
-<li><p>Searching the Internet. In this case, Dr.&nbsp;Ramler found a shape file for the subregions of all counties in New York at <a href="https://gis.ny.gov/gisdata/inventories/details.cfm?DSID=927" target="_blank">this website</a>. He and Caroline Krall, a student, then had to subset the data there to only contain information for the subregions in St.&nbsp;Lawrence County.</p></li>
+<li><p>Searching the Internet. For example, a lot of the civic boundaries data for the state of New York can be found at <a href="https://gis.ny.gov/civil-boundaries" class="uri">https://gis.ny.gov/civil-boundaries</a>. There are other sources that provide county-level, state-level, and nation-level shapefiles, most of which are freely available to download, as they are government-owned.</p></li>
 </ol>
 <div class="callout callout-style-simple callout-important callout-titled">
 <div class="callout-header d-flex align-content-center">
@@ -516,7 +516,7 @@ Important
 </div>
 <p><strong>Exercise 2</strong>. Change the fill scale of the plot. Should you use an unordered, sequential, or diverging scale?</p>
 <p><strong>Exercise 3</strong>. Change the colour scale so that <code>active_cases</code> are put into different <strong>bins</strong> with <code><a href="https://ggplot2.tidyverse.org/reference/scale_viridis.html">scale_fill_viridis_b()</a></code>. What are some advantages and disadvantages of this?</p>
-<p><strong>Exercise 4</strong>. Explore the <code>?geom_sf_text()</code> function and add the actual number of cases to the subregions in the plot, as is done on the SLC website.</p>
+<p><strong>Exercise 4</strong>. Explore the <code>?geom_sf_text()</code> function and add the actual number of cases to the subregions in the plot, as was done on the SLC website.</p>
 </section><section id="your-turn" class="level2" data-number="6.3"><h2 data-number="6.3" class="anchored" data-anchor-id="your-turn">
 <span class="header-section-number">6.3</span> Your Turn</h2>
 <p>Consider again the Happy Planet Index data. Recall that the basic idea of a “happy planet index” is that it should be a metric that computes how happy and healthy a country’s citizens are, but adjusts that by that country’s ecological footprint (how much “damage” the country does to planet Earth). Variables in the data set are:</p>
@@ -550,7 +550,7 @@ Important
 <p><strong>Hint</strong>: You can read more about <strong>projections</strong> in <a href="https://mdsr-book.github.io/mdsr2e/ch-spatial.html" target="_blank">Section 17.3.2 of Modern Data Science with R</a></p>
 <p><strong>Exercise 2</strong>. You may notice that the United States does not get coloured in your map. Examine this issue further and fix the map so that the United States is coloured.</p>
 <p><strong>Exercise 3</strong>. You may have noticed that there are two horizontal stripes across your map. This is an issue that drove me nuts! Check out <a href="https://github.com/tidyverse/ggplot2/issues/1104" target="_blank">this submitted issue on ggplot2’s GitHub page</a> for the reason for the error as well as a fix. Use it to fix your plot.</p>
-<p><strong>Exercise 4</strong>. Read about Mercator projections in <a href="https://mdsr-book.github.io/mdsr2e/ch-spatial.html#sec:projections" target="_blank">this blog post</a>. What does this source say about the sizes of Greenland vs.&nbsp;Africa in a Mercator projection.</p>
+<p><strong>Exercise 4</strong>. Read about Mercator projections in <a href="https://mdsr-book.github.io/mdsr2e/ch-spatial.html#sec:projections" target="_blank">this blog post</a>. What does this source say about the sizes of Greenland vs.&nbsp;Africa in a Mercator projection?</p>
 <p><strong>Exercise 5</strong>. Examine all of the different options for map projection with <code>?mapproject</code>. Then, change the <code>projection</code> to <code>"globular"</code>. Change the <code>projection</code> again to <code>"gilbert"</code>. How does the relative size of Greenland to Africa change in the projections?</p>
 <div class="callout callout-style-simple callout-note callout-titled">
 <div class="callout-header d-flex align-content-center">

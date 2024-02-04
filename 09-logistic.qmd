@@ -182,7 +182,9 @@ __Exercise 1__. Examine the `.fitted` column in `aug_surv`. What are these value
 
 __Exercise 2__. Make a plot of the values of `.fitted` (without modifying them).
 
-```{r, eval = FALSE, echo = FALSE}
+```{r}
+#| echo: false
+#| eval: false
 ggplot(data = aug_surv, aes(x = Age, y = .fitted,
                             colour = Sex, group = Sex)) +
   geom_rug(data = titanic_df |> filter(Survived == 1),

@@ -97,7 +97,7 @@ ggplot(data = state_full, aes(x = long, y = lat, group = group)) +
 
 **Exercise 3**. Which states had the fastest growth rate between 2000 and 2010? Make a variable for the percent change in population and then map this variable.
 
-**Exercise 4**. To your map in Exercise 1, think about which type of colour scale makes the most sense to use (sequential, diverging, or unordered). Change the colour scale to match what makes the most sense.
+**Exercise 4**. To your map in Exercise 3, think about which type of colour scale makes the most sense to use (sequential, diverging, or unordered). Change the colour scale to match what makes the most sense.
 
 You may have noticed a couple of additional problems in the United States maps we made in the previous section.
 
@@ -151,13 +151,13 @@ There is plenty we can do with this data set without mapping.
 
 **Exercise 1**. Make a line plot that shows the number of `active_cases` in all of St. Lawrence County over time.
 
-But suppose that we now want to make a map of the current day's **active cases** in the subregions of SLC like the <a href="https://www.stlawco.org/covid-19-daily-update-center" target="_blank">maps found here</a> . We need to tell `R` how to draw the lines that define the different subregions of SLC. To do so, we need to provide `R` with a **shapefile** that has directions on how to draw the spatial polygons.
+But suppose that we now want to make a map of the current day's **active cases** in the subregions of SLC. We need to tell `R` how to draw the lines that define the different subregions of SLC. To do so, we need to provide `R` with a **shapefile** that has directions on how to draw the spatial polygons.
 
 How can we obtain this shapefile? There are two primary methods:
 
 1.  Through GIS. You can export a shapefile for a particular region using GIS software, something I am not that familiar with. But, Carol Cady at SLU has GIS expertise.
 
-2.  Searching the Internet. In this case, Dr. Ramler found a shape file for the subregions of all counties in New York at <a href="https://gis.ny.gov/gisdata/inventories/details.cfm?DSID=927" target="_blank">this website</a>. He and Caroline Krall, a student, then had to subset the data there to only contain information for the subregions in St. Lawrence County.
+2.  Searching the Internet. For example, a lot of the civic boundaries data for the state of New York can be found at <https://gis.ny.gov/civil-boundaries>. There are other sources that provide county-level, state-level, and nation-level shapefiles, most of which are freely available to download, as they are government-owned.
 
 ::: {.callout-important}
 ## Important
@@ -203,7 +203,17 @@ ggplot(data = full_df) +
 
 **Exercise 3**. Change the colour scale so that `active_cases` are put into different **bins** with `scale_fill_viridis_b()`. What are some advantages and disadvantages of this?
 
-**Exercise 4**. Explore the `?geom_sf_text()` function and add the actual number of cases to the subregions in the plot, as is done on the SLC website.
+**Exercise 4**. Explore the `?geom_sf_text()` function and add the actual number of cases to the subregions in the plot, as was done on the SLC website.
+
+```{r}
+#| echo: false
+#| output: false
+ggplot(data = full_df) +
+  geom_sf(aes(fill = active_cases)) +
+  scale_fill_viridis_c(option = "magma") +
+  geom_sf_text(aes(label = active_cases), colour = "grey50") +
+  theme_void()
+```
 
 ## Your Turn
 
@@ -252,9 +262,25 @@ ggplot(data = world_full, aes(x = long, y = lat, group = group)) +
 
 **Exercise 3**. You may have noticed that there are two horizontal stripes across your map. This is an issue that drove me nuts! Check out <a href="https://github.com/tidyverse/ggplot2/issues/1104" target="_blank">this submitted issue on ggplot2's GitHub page</a> for the reason for the error as well as a fix. Use it to fix your plot.
 
-**Exercise 4**. Read about Mercator projections in <a href="https://mdsr-book.github.io/mdsr2e/ch-spatial.html#sec:projections" target="_blank">this blog post</a>. What does this source say about the sizes of Greenland vs. Africa in a Mercator projection.
+**Exercise 4**. Read about Mercator projections in <a href="https://mdsr-book.github.io/mdsr2e/ch-spatial.html#sec:projections" target="_blank">this blog post</a>. What does this source say about the sizes of Greenland vs. Africa in a Mercator projection?
 
 **Exercise 5**. Examine all of the different options for map projection with `?mapproject`. Then, change the `projection` to `"globular"`. Change the `projection` again to `"gilbert"`. How does the relative size of Greenland to Africa change in the projections?
+
+```{r}
+#| echo: false
+#| output: false
+world_df |> distinct(region)
+hpi_df |> distinct(Country) |> print(n = Inf)
+hpi_df <- hpi_df |>
+  mutate(Country = fct_recode(Country, "USA" = "United States of America")) 
+world_full <- left_join(world_df, hpi_df, by = c("region" = "Country"))
+
+ggplot(data = world_full, aes(x = long, y = lat, group = group)) +
+  geom_polygon(colour = "black", aes(fill = Wellbeing)) +
+  coord_map(projection = "gilbert", xlim = c(-180, 180)) + ## default
+  theme_void() +
+  scale_fill_viridis_c()
+```
 
 ::: {.callout-note}
 ## Note
