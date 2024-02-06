@@ -20,7 +20,7 @@ We will assume each observation is independent in our linear model. For those of
 library(openintro)
 library(tidyverse)
 theme_set(theme_minimal())
-evals
+evals <- openintro::evals
 ```
 
 ## Basic Strategy (Class Prep)
@@ -116,13 +116,16 @@ This exercise is only to help us understand the steps to create the plot. For su
 
 **Exercise 2**. Modify the code so that the grey band reflects 95% prediction intervals instead of 95% confidence intervals for the mean.
 
-**Exercise 3**. By "hand", verify that the `.fitted` value in the first row of `aug_df` can be calculated simply by plugging in `29` into the fitted regression equation obtained from `mod_age`.
+**Exercise 3**. By "hand", verify that the `.fitted` value in the first row of `aug_age` can be calculated simply by plugging in `29` into the fitted regression equation obtained from `mod_age`.
 
 **Exercise 4**. In `data_grid(age = seq_range(age, n = 6))`, why does it not matter as much what value is chosen for `n` in this example? Change `n` to be a different integer and verify that the plot does not substantially change. 
 
 **Exercise 5**. Fit the following model, which includes an `age^2` term. Then, run the rest of the code in the chunk to obtain predictions for the `age` values in `grid` with both the `mod_age` model and the `mod_agesq` model. 
 
 ```{r}
+aug_age <- augment(mod_age, newdata = grid,
+                   interval = "confidence")
+
 mod_agesq <- lm(score ~ age + I(age ^ 2), data = evals) 
 
 grid <- evals |>
@@ -155,8 +158,6 @@ ggplot(data = evals, aes(x = age, y = score)) +
                                   fill = model),
               alpha = 0.4)
 ```
-
-**Exercise 6**. In Exercise 5, explain why the choice of `n` matters more for this model. Then, change `n` from `6` to a value that is more reasonable.
 
 ## Visualizing More Complex Models
 

@@ -101,8 +101,28 @@ Using this data set, we answer some interesting questions. First, is there evide
 ggplot(data = statsurvey_df, aes(x = time_both, fill = Tattoo)) +
   geom_bar(position = "fill")
 
-statsurvey_df <- statsurvey_df |> arrange(time_year, desc(time_semester)) |>
-  mutate(time_both = fct_inorder(time_both))
+statsurvey_nomiss <- statsurvey_df |> filter(!is.na(GPA))
+statsurvey_nomiss <- statsurvey_nomiss |>
+  mutate(time_year = as.numeric(time_year)) |> 
+  mutate(a_year = if_else(time_semester == "S",
+                          true = time_year - 1,
+                          false = time_year)) |>
+  filter(GPA <= 4.0)
+
+gpa_means <- statsurvey_nomiss |> group_by(a_year) |>
+  summarise(meanGPA = mean(GPA, na.rm = TRUE),
+            nstudent = n(),
+            sdGPA = sd(GPA, na.rm = TRUE)) |>
+  mutate(se = sdGPA / sqrt(nstudent),
+         l_se = meanGPA - se,
+         u_se = meanGPA + se)
+ggplot(data = gpa_means, aes(x = a_year, y = meanGPA)) +
+  geom_point() +
+  geom_errorbar(aes(ymin = l_se, ymax = u_se))
+# ggplot(data = statsurvey_df, aes(x = time_both, y = GPA)) +
+#   geom_point(alpha = 0.1) +
+#   geom_point(data = gpa_means, aes(x = time_both, y = meanGPA), colour = "red") +
+#   geom_errorbar(data = gpa_means, aes(y = meanGPA, ymin = l_se, ymax = u_se))
 ```
 
 ```{r, echo = FALSE, results = "hide", fig.keep = "none"}
@@ -122,26 +142,33 @@ ggplot(data = statsurvey_df |> filter(GPA <= 4.0), aes(x = time_both, y = GPA)) 
 
 ## Your Turn
 
-__Exercise 1__. Is there evidence from the STAT 113 survey that tattoos have become more or less common (at least among SLU students)? Construct a plot that shows the proportion of students who have a Tattoo in each semester from the STAT 113 survey, along with standard error bars for the estimate in each semester (calculated using the formula $SE  = \sqrt{\frac{\hat{p}(1 - \hat{p})}{n}}$).
+__Exercise 1__. Is there evidence from the STAT 113 survey that tattoos have become more or less common (at least among SLU students)? Construct a plot that shows the proportion of students who have a Tattoo in each semester from the STAT 113 survey, along with standard error bars for the estimate in each semester.
 
-```{r, echo = FALSE, eval = FALSE}
+<!-- (calculated using the formula $SE  = \sqrt{\frac{\hat{p}(1 - \hat{p})}{n}}$). -->
+
+```{r}
+#| echo: false
+#| eval: false
 ggplot(data = statsurvey_df, aes(x = time_both, fill = Tattoo)) +
   geom_bar(position = "fill")
 
 statsurvey_nomiss <- statsurvey_df |> filter(!is.na(Tattoo))
-
-tattoo_sum <- statsurvey_nomiss |> group_by(time_both, Tattoo) |>
+statsurvey_nomiss <- statsurvey_nomiss |>
+  mutate(time_year = as.numeric(time_year)) |> 
+  mutate(a_year = if_else(time_semester == "S",
+                          true = time_year - 1,
+                          false = time_year))
+tattoo_sum <- statsurvey_nomiss |> group_by(a_year, Tattoo) |>
   summarise(nstudents = n()) |>
   ungroup() |>
-  group_by(time_both) |>
-  mutate(totalstudents = sum(nstudents)) |>
-  ungroup() |> filter(Tattoo == "Yes") |>
-  mutate(prop_tattoo = nstudents / totalstudents) |>
-  mutate(se = sqrt(prop_tattoo * (1 - prop_tattoo) / totalstudents),
+  pivot_wider(names_from = Tattoo, values_from = nstudents) |>
+  mutate(n = Yes + No,
+         prop_tattoo = Yes / n,
+         se = sqrt(prop_tattoo * (1 - prop_tattoo) / n),
          l_se = prop_tattoo - se,
          u_se = prop_tattoo + se)
 
-ggplot(data = tattoo_sum, aes(x = time_both, y = prop_tattoo)) +
+ggplot(data = tattoo_sum, aes(x = a_year, y = prop_tattoo)) +
   geom_point() +
   geom_errorbar(aes(ymin = l_se, ymax = u_se))
 ```

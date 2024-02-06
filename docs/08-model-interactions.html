@@ -312,22 +312,7 @@ Note
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="http://openintrostat.github.io/openintro/">openintro</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://tidyverse.tidyverse.org">tidyverse</a></span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme_get.html">theme_set</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html">theme_minimal</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="va">evals</span></span>
-<span><span class="co">#&gt; # A tibble: 463 × 23</span></span>
-<span><span class="co">#&gt;   course_id prof_id score rank  ethnicity gender language   age cls_perc_eval</span></span>
-<span><span class="co">#&gt;       &lt;int&gt;   &lt;int&gt; &lt;dbl&gt; &lt;fct&gt; &lt;fct&gt;     &lt;fct&gt;  &lt;fct&gt;    &lt;int&gt;         &lt;dbl&gt;</span></span>
-<span><span class="co">#&gt; 1         1       1   4.7 tenu… minority  female english     36          55.8</span></span>
-<span><span class="co">#&gt; 2         2       1   4.1 tenu… minority  female english     36          68.8</span></span>
-<span><span class="co">#&gt; 3         3       1   3.9 tenu… minority  female english     36          60.8</span></span>
-<span><span class="co">#&gt; 4         4       1   4.8 tenu… minority  female english     36          62.6</span></span>
-<span><span class="co">#&gt; 5         5       2   4.6 tenu… not mino… male   english     59          85  </span></span>
-<span><span class="co">#&gt; 6         6       2   4.3 tenu… not mino… male   english     59          87.5</span></span>
-<span><span class="co">#&gt; # ℹ 457 more rows</span></span>
-<span><span class="co">#&gt; # ℹ 14 more variables: cls_did_eval &lt;int&gt;, cls_students &lt;int&gt;,</span></span>
-<span><span class="co">#&gt; #   cls_level &lt;fct&gt;, cls_profs &lt;fct&gt;, cls_credits &lt;fct&gt;, bty_f1lower &lt;int&gt;,</span></span>
-<span><span class="co">#&gt; #   bty_f1upper &lt;int&gt;, bty_f2upper &lt;int&gt;, bty_m1lower &lt;int&gt;,</span></span>
-<span><span class="co">#&gt; #   bty_m1upper &lt;int&gt;, bty_m2upper &lt;int&gt;, bty_avg &lt;dbl&gt;, pic_outfit &lt;fct&gt;,</span></span>
-<span><span class="co">#&gt; #   pic_color &lt;fct&gt;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="va">evals</span> <span class="op">&lt;-</span> <span class="fu">openintro</span><span class="fu">::</span><span class="va"><a href="https://openintrostat.github.io/openintro/reference/evals.html">evals</a></span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <section id="basic-strategy-class-prep" class="level2" data-number="9.1"><h2 data-number="9.1" class="anchored" data-anchor-id="basic-strategy-class-prep">
 <span class="header-section-number">9.1</span> Basic Strategy (Class Prep)</h2>
@@ -437,11 +422,14 @@ Important
 </div>
 <p><strong>Exercise 1</strong>. As we saw above, the grey “band” around the fitted regression line represents 95% confidence intervals for the mean response (score) for particular values of the predictor (age). In STAT 213, you also discussed 95% prediction intervals for a new observation’s response (score) for particular values of the predictor (age). What is the difference between a 95% confidence interval and a 95% prediction interval?</p>
 <p><strong>Exercise 2</strong>. Modify the code so that the grey band reflects 95% prediction intervals instead of 95% confidence intervals for the mean.</p>
-<p><strong>Exercise 3</strong>. By “hand”, verify that the <code>.fitted</code> value in the first row of <code>aug_df</code> can be calculated simply by plugging in <code>29</code> into the fitted regression equation obtained from <code>mod_age</code>.</p>
+<p><strong>Exercise 3</strong>. By “hand”, verify that the <code>.fitted</code> value in the first row of <code>aug_age</code> can be calculated simply by plugging in <code>29</code> into the fitted regression equation obtained from <code>mod_age</code>.</p>
 <p><strong>Exercise 4</strong>. In <code>data_grid(age = seq_range(age, n = 6))</code>, why does it not matter as much what value is chosen for <code>n</code> in this example? Change <code>n</code> to be a different integer and verify that the plot does not substantially change.</p>
 <p><strong>Exercise 5</strong>. Fit the following model, which includes an <code>age^2</code> term. Then, run the rest of the code in the chunk to obtain predictions for the <code>age</code> values in <code>grid</code> with both the <code>mod_age</code> model and the <code>mod_agesq</code> model.</p>
 <div class="cell">
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">mod_agesq</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/lm.html">lm</a></span><span class="op">(</span><span class="va">score</span> <span class="op">~</span> <span class="va">age</span> <span class="op">+</span> <span class="fu"><a href="https://rdrr.io/r/base/AsIs.html">I</a></span><span class="op">(</span><span class="va">age</span> <span class="op">^</span> <span class="fl">2</span><span class="op">)</span>, data <span class="op">=</span> <span class="va">evals</span><span class="op">)</span> </span>
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">aug_age</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://generics.r-lib.org/reference/augment.html">augment</a></span><span class="op">(</span><span class="va">mod_age</span>, newdata <span class="op">=</span> <span class="va">grid</span>,</span>
+<span>                   interval <span class="op">=</span> <span class="st">"confidence"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">mod_agesq</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/lm.html">lm</a></span><span class="op">(</span><span class="va">score</span> <span class="op">~</span> <span class="va">age</span> <span class="op">+</span> <span class="fu"><a href="https://rdrr.io/r/base/AsIs.html">I</a></span><span class="op">(</span><span class="va">age</span> <span class="op">^</span> <span class="fl">2</span><span class="op">)</span>, data <span class="op">=</span> <span class="va">evals</span><span class="op">)</span> </span>
 <span></span>
 <span><span class="va">grid</span> <span class="op">&lt;-</span> <span class="va">evals</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://modelr.tidyverse.org/reference/data_grid.html">data_grid</a></span><span class="op">(</span></span>
@@ -476,7 +464,6 @@ Important
 <span><span class="co">#&gt; 6 aug_age  73      4.03   3.89   4.16</span></span>
 <span><span class="co">#&gt; # ℹ 6 more rows</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p><strong>Exercise 6</strong>. In Exercise 5, explain why the choice of <code>n</code> matters more for this model. Then, change <code>n</code> from <code>6</code> to a value that is more reasonable.</p>
 </section><section id="visualizing-more-complex-models" class="level2" data-number="9.2"><h2 data-number="9.2" class="anchored" data-anchor-id="visualizing-more-complex-models">
 <span class="header-section-number">9.2</span> Visualizing More Complex Models</h2>
 <p>The power of this model visualization strategy in general can really be seen in models where the coefficients are more challenging to interpret. For example, suppose that we fit the following model to the <code>evals</code> data:</p>

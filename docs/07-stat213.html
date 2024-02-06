@@ -493,6 +493,7 @@ Y = \beta_0 + \beta_1 species + \beta_2 aroma + \beta_3 flavor + \beta_4 sweetne
 <p><img src="07-stat213_files/figure-html/unnamed-chunk-11-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
+<p>We won’t refit the model here after removing the data entry error to save time.</p>
 <p>We could also find observations with high leverage</p>
 <div class="cell" data-appendix="true">
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">augment_df</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="va">.hat</span> <span class="op">&gt;</span> <span class="fl">0.2</span><span class="op">)</span></span>
