@@ -267,4 +267,4 @@ ggplot(data = plot_df, aes(x = Age, y = .fittedprob,
            aes(y = Survived), sides = "b")
 ```
 
-__Exercise 4__. How would you incorporate uncertainty into your graph?
+__Exercise 4__. Which model is better? Use `glance()` on each model to obtain some model summary statistics and determine which model is the better "fit."

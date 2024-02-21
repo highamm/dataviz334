@@ -181,11 +181,9 @@ ggplot(data = stocks_spy, aes(x = start_date, y = Price)) +
 
 __Exercise 1__. For the three options for graphing outliers (removal, axis breaks, transforming the data), which do you think is best for the mammal data set? Give a one sentence reason.
 
-__Exercise 2__. Choose your own names to visualize in the `babynames` data set. Construct the line plot.
+__Exercise 2__. In your `filter()` step for the `babynames` visualization, remove the `sex == "F"` or `sex == "M"` for one of the names. Why is a line plot no longer a good way to visualize the new data set.
 
-__Exercise 3__. In your `filter()` step for your `babynames` visualization, remove the `sex == "F"` or `sex == "M"` for one of the names. Why is a line plot no longer a good way to visualize the new data set.
-
-__Exercise 4__. Construct an area plot that shows both the Gamestop stock price and the S and P 500 stock price, using different `colour`s and `fill`s for the two stocks. Why might a line plot be a better visualization for this example?
+__Exercise 3__. Construct an area plot that shows both the Gamestop stock price and the S and P 500 stock price, using different `colour`s and `fill`s for the two stocks. Why might a line plot be a better visualization for this example?
 
 ## Visualizing "Large" Data Sets
 
