@@ -185,6 +185,8 @@ __Exercise 2__. In your `filter()` step for the `babynames` visualization, remov
 
 __Exercise 3__. Construct an area plot that shows both the Gamestop stock price and the S and P 500 stock price, using different `colour`s and `fill`s for the two stocks. Why might a line plot be a better visualization for this example?
 
+__Hint__: In your `geom_area()` function, adding a `position = "identity"` will allow both areas to "start" at 0.
+
 ## Visualizing "Large" Data Sets
 
 A data set could be "large" if it has a very large number of observations (large n), if it has a very large number of variables (large p), or both. Let's start by looking at a data set with a somewhat large number of observations, the `diamonds` data set in the `ggplot2` package. The `diamonds` data set contains variables on characteristics of diamonds, like the diamond's price, cut, clarity, carat, etc.
@@ -335,6 +337,51 @@ __Exercise 2__. Construct a simple scatterplot of `y` vs. `x1`. Then, construct 
 
 __Exercise 3__. Using what you saw from the previous two exercises, explain why it is flawed to only look at a correlation plot to assess the relationship between variables.
 
+__Exercise 4__. Suppose that you have __paired data__, such that observations are not independent and each observation is "connected" to one another observation in the data set. Examples of paired data include pre/post measurements in a medical study (connected by patient), student exam data from two different exams in a semester (connected by student), and data collected on a single set of units at two points in time. For example, examine the `gapminder` data and suppose that we are only interested in seeing how much life expectancy has changed in countries throughout the world between `2002` and `2007`.
+
+```{r}
+#| output: false
+## install.packages("gapminder")
+library(gapminder)
+gapminder_df <- gapminder |> filter(year == 2002 | year == 2007)
+gapminder_df
+```
+
+a. Construct a set of side-by-side boxplots where the y-axis is `lifeExp` and the x-axis is `year`. What would you conclude? Why is the graph flawed?
+
+```{r}
+#| echo: false 
+#| output: false
+ggplot(data = gapminder_df, aes(x = factor(year), y = lifeExp)) +
+  geom_boxplot()
+```
+
+b. Another option in examining a change in `lifeExp` would be to construct a graph of the __differences__ in life expectancy for each country. Do so here. What information do we lose from the graph of differences?
+
+```{r}
+#| echo: false
+#| output: false
+gapminder_diffs <- gapminder_df |> group_by(country) |>
+  summarise(diff_life = diff(lifeExp))
+ggplot(data = gapminder_diffs, aes(x = diff_life)) +
+  geom_histogram(colour = "cyan4", fill = "cyan1", bins = 15)
+```
+
+c. A very common option for looking at paired data is a line plot. Construct a line plot for the life expectancy example here. To make the plot look a little nicer, try the following: (i) use `alpha`, (ii), colour the points one colour if the life expectancy increased between `2002` and `2007` and another colour if the life expectancy decreased.
+
+```{r}
+#| echo: false
+#| output: false
+gapminder_joined <- left_join(gapminder_df, gapminder_diffs) |> 
+  mutate(better_life = if_else(diff_life > 0,
+                               true = "increase",
+                               false = "decrease"))
+ggplot(data = gapminder_joined, aes(x = factor(year), y = lifeExp)) +
+  geom_line(aes(group = country, colour = better_life), alpha = 0.4) +
+  scale_colour_manual(values = c("red3", "lightslategrey"))
+```
+
+
 <!-- __Exercise 4__. The idea that summary statistics are often inferior to a plot of the data is shown in a "famous" example called Anscombe's quartet. Anscombe's quartet is a series of four plots where the x variables all have the same mean and spread, the y variables all have the same mean and spread, and the correlation between the y variable and the x variable is the same in all 4 plots. Using the `anscombe` data in the `datasets` package, construct the 4 plots `y1` vs. `x1`, `y2` vs. `x2`, etc. Fit a linear regression line on each plot. -->
 
 ```{r, eval = FALSE, echo = FALSE}
@@ -348,8 +395,6 @@ anscombe
 <!-- * introduction to `sf` package -->
 
 <!-- ## Visual Model Building with fat data set-->
-
-<!-- `modelr` modeling of residuals over and over again. -->
 
 <!-- * animation with `gganimate` -->
 

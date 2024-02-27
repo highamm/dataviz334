@@ -94,13 +94,11 @@ __Exercise 2b__.  Run `leaflet(beer_location) |> setView(lng = -98.583, lat = 39
 
 __Exercise 2c__. Run `leaflet(beer_location) |> setView(lng = -98.583, lat = 39.833, zoom = 4) |> addTiles() |> addProviderTiles(providers$Wikimedia)` and explain what the `addProviderTiles()` function does. You may also want to check out the help `?addProviderTiles`.
 
-__Exercise 2d__. Run `leaflet(beer_location) |> setView(lng = -98.583, lat = 39.833, zoom = 4) |> addTiles() |> addProviderTiles(providers$Wikimedia) |> addMarkers(lng = beer_location$Longitude, lat = beer_location$Latitude)` and explain what the `addMarkders()` function does.
+__Exercise 2d__. Run `leaflet(beer_location) |> setView(lng = -98.583, lat = 39.833, zoom = 4) |> addTiles() |> addProviderTiles(providers$Wikimedia) |> addMarkers(lng = beer_location$Longitude, lat = beer_location$Latitude)` and explain what the `addMarkers()` function does.
 
 __Exercise 2e__. Run the code in Exercise 2d, but add `clusterOptions = markerClusterOptions()` as an argument to `addMarkers()`. Explain what adding this argument does to the map.
 
 __Exercise 2f__. Finally, run the code in Exercise 2e but add `popup = content$popup` as an argument to `addMarkers()`. Explain what adding this argument does to the map.
-
-**Exercise 3**. Examine <a href="http://leaflet-extras.github.io/leaflet-providers/preview/" target="_blank">this link\></a> to look at various "provider" tiles (in the scroll bar on the right-hand side of the page). Choose one to change from Wikimedia and explain how the resulting map looks different.
 
 ## `plotly` Introduction
 

@@ -32,7 +32,7 @@ book:
       - 10-ethics.qmd
     - part: Interactive Visualization
       chapters:
-      - 11-when-to-use.qmd
+      - 11-interactivity-intro.qmd
       - 12-shiny-intro.qmd
       - 13-shiny-reactivity.qmd
 

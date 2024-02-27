@@ -247,7 +247,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">
 <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./11-when-to-use.html" class="sidebar-item-text sidebar-link">
+  <a href="./11-interactivity-intro.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Introduction to Interactivity</span></span></a>
   </div>
 </li>
@@ -514,6 +514,7 @@ Important
 <p><strong>Exercise 1</strong>. For the three options for graphing outliers (removal, axis breaks, transforming the data), which do you think is best for the mammal data set? Give a one sentence reason.</p>
 <p><strong>Exercise 2</strong>. In your <code><a href="https://dplyr.tidyverse.org/reference/filter.html">filter()</a></code> step for the <code>babynames</code> visualization, remove the <code>sex == "F"</code> or <code>sex == "M"</code> for one of the names. Why is a line plot no longer a good way to visualize the new data set.</p>
 <p><strong>Exercise 3</strong>. Construct an area plot that shows both the Gamestop stock price and the S and P 500 stock price, using different <code>colour</code>s and <code>fill</code>s for the two stocks. Why might a line plot be a better visualization for this example?</p>
+<p><strong>Hint</strong>: In your <code><a href="https://ggplot2.tidyverse.org/reference/geom_ribbon.html">geom_area()</a></code> function, adding a <code>position = "identity"</code> will allow both areas to “start” at 0.</p>
 </section></section><section id="visualizing-large-data-sets" class="level2" data-number="11.2"><h2 data-number="11.2" class="anchored" data-anchor-id="visualizing-large-data-sets">
 <span class="header-section-number">11.2</span> Visualizing “Large” Data Sets</h2>
 <p>A data set could be “large” if it has a very large number of observations (large n), if it has a very large number of variables (large p), or both. Let’s start by looking at a data set with a somewhat large number of observations, the <code>diamonds</code> data set in the <code>ggplot2</code> package. The <code>diamonds</code> data set contains variables on characteristics of diamonds, like the diamond’s price, cut, clarity, carat, etc.</p>
@@ -661,17 +662,23 @@ Warning
 </div>
 <p><strong>Exercise 2</strong>. Construct a simple scatterplot of <code>y</code> vs.&nbsp;<code>x1</code>. Then, construct a simple scatterplot of <code>y</code> vs.&nbsp;<code>x2</code>. Does it look like there is a relationship between <code>y</code> and <code>x1</code>? Between <code>y</code> and <code>x2</code>?</p>
 <p><strong>Exercise 3</strong>. Using what you saw from the previous two exercises, explain why it is flawed to only look at a correlation plot to assess the relationship between variables.</p>
-<!-- __Exercise 4__. The idea that summary statistics are often inferior to a plot of the data is shown in a "famous" example called Anscombe's quartet. Anscombe's quartet is a series of four plots where the x variables all have the same mean and spread, the y variables all have the same mean and spread, and the correlation between the y variable and the x variable is the same in all 4 plots. Using the `anscombe` data in the `datasets` package, construct the 4 plots `y1` vs. `x1`, `y2` vs. `x2`, etc. Fit a linear regression line on each plot. -->
-<!-- * two y-axes: when is that appropriate? -->
-<!-- * introduction to `sf` package -->
-<!-- ## Visual Model Building with fat data set-->
-<!-- `modelr` modeling of residuals over and over again. -->
-<!-- * animation with `gganimate` -->
-<!-- * visualizations to check model assumptions -->
-<!-- * network diagrams -->
-<!-- ## Round Robin Generator -->
-<!-- This is not anything specific to data visualization, but it was harder to think through how to write code to randomly assign partners for each class (to talk about your projects with) than I initially thought. If we want to ensure that you chat with a different person each time, then we can use strategies from developing a round robin tournament in sports. I borrowed some code from StackOverFlow to create a schedule: <https://stackoverflow.com/questions/46357278/create-round-robin-schedule-for-10-teams-and-6-rounds> -->
-
+<p><strong>Exercise 4</strong>. Suppose that you have <strong>paired data</strong>, such that observations are not independent and each observation is “connected” to one another observation in the data set. Examples of paired data include pre/post measurements in a medical study (connected by patient), student exam data from two different exams in a semester (connected by student), and data collected on a single set of units at two points in time. For example, examine the <code>gapminder</code> data and suppose that we are only interested in seeing how much life expectancy has changed in countries throughout the world between <code>2002</code> and <code>2007</code>.</p>
+<div class="cell">
+<div class="sourceCode" id="cb24"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co">## install.packages("gapminder")</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/jennybc/gapminder">gapminder</a></span><span class="op">)</span></span>
+<span><span class="va">gapminder_df</span> <span class="op">&lt;-</span> <span class="va">gapminder</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="va">year</span> <span class="op">==</span> <span class="fl">2002</span> <span class="op">|</span> <span class="va">year</span> <span class="op">==</span> <span class="fl">2007</span><span class="op">)</span></span>
+<span><span class="va">gapminder_df</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<ol type="a">
+<li>Construct a set of side-by-side boxplots where the y-axis is <code>lifeExp</code> and the x-axis is <code>year</code>. What would you conclude? Why is the graph flawed?</li>
+</ol>
+<ol start="2" type="a">
+<li>Another option in examining a change in <code>lifeExp</code> would be to construct a graph of the <strong>differences</strong> in life expectancy for each country. Do so here. What information do we lose from the graph of differences?</li>
+</ol>
+<ol start="3" type="a">
+<li>A very common option for looking at paired data is a line plot. Construct a line plot for the life expectancy example here. To make the plot look a little nicer, try the following: (i) use <code>alpha</code>, (ii), colour the points one colour if the life expectancy increased between <code>2002</code> and <code>2007</code> and another colour if the life expectancy decreased.</li>
+</ol>
+<!-- __Exercise 4__. The idea that summary statistics are often inferior to a plot of the data is shown in a "famous" example called Anscombe's quartet. Anscombe's quartet is a series of four plots where the x variables all have the same mean and spread, the y variables all have the same mean and spread, and the correlation between the y variable and the x variable is the same in all 4 plots. Using the `anscombe` data in the `datasets` package, construct the 4 plots `y1` vs. `x1`, `y2` vs. `x2`, etc. Fit a linear regression line on each plot. --><!-- * two y-axes: when is that appropriate? --><!-- * introduction to `sf` package --><!-- ## Visual Model Building with fat data set--><!-- * animation with `gganimate` --><!-- * visualizations to check model assumptions --><!-- * network diagrams --><!-- ## Round Robin Generator --><!-- This is not anything specific to data visualization, but it was harder to think through how to write code to randomly assign partners for each class (to talk about your projects with) than I initially thought. If we want to ensure that you chat with a different person each time, then we can use strategies from developing a round robin tournament in sports. I borrowed some code from StackOverFlow to create a schedule: <https://stackoverflow.com/questions/46357278/create-round-robin-schedule-for-10-teams-and-6-rounds> -->
 
 </section></main><!-- /main --><script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
