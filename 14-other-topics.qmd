@@ -360,7 +360,7 @@ majors_long <- df |> filter(!is.na(major3) | !is.na(major2)) |>
                names_to = "major_num",
                values_to = "major") |>
   filter(!is.na(major)) |>
-  select(-minor1, -sex, -minor2, -minor3, -graduation_year)
+  dplyr::select(-minor1, -sex, -minor2, -minor3, -graduation_year)
 ```
 
 The code creating `majors_long` essentially gets rid of any observation from a student with a single major, as that does not provide any "information" for a network graph looking at connectedness between majors.
@@ -373,7 +373,7 @@ network_df <- majors_long |>
   reframe(test = t(combn(major, 2))) |>
   mutate(vertex1 = test[ ,1],
          vertex2 = test[ ,2]) |>
-  select(-test)
+  dplyr::select(-test)
 network_df
 ```
 
@@ -392,7 +392,7 @@ network_sum <- network_df |> mutate(major_first = if_else(vertex1 > vertex2,
                      major_second = if_else(vertex1 > vertex2,
                                             true = vertex1,
                                             false = vertex2)) |>
-  select(-vertex1, -vertex2) |>
+  dplyr::select(-vertex1, -vertex2) |>
   group_by(major_first, major_second) |>
   summarise(n_majors = n()) |>
   filter(n_majors >= 5) ## only keep combos with 5 or more students
@@ -440,7 +440,7 @@ edges <- left_join(network_sum, nodes, by = join_by(major_first == label)) |>
   left_join(nodes, by = join_by(major_second == label)) |>
   rename(to = "id") |>
   ungroup() |>
-  select(to, from, n_majors)
+  dplyr::select(to, from, n_majors)
 edges
 ```
 
@@ -465,7 +465,8 @@ ggraph(network_obj |> mutate(centrality = centrality_authority()),
   geom_node_point(aes(colour = label,
                       size = centrality), show.legend = FALSE) +
   scale_edge_width(range = c(0.5, 3)) +
-  geom_node_text(aes(label = label), repel = TRUE) 
+  geom_node_text(aes(label = label), repel = TRUE) ##+
+  ##guides(size = "none")
 ```
 
 What edge has the largest thickness? Run through the plot code, slowly adding each new geom, to help understand what each geom is doing.
