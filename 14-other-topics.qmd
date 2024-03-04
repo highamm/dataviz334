@@ -288,9 +288,50 @@ __Exercise 1__. In the example where we sampled from the very large data set to 
 
 Some of you have enrolled in, are enrolled in, or will enroll in CS/DATA/STAT 352: Statistical and Machine Learning. We can use visualization to better communicate the results of each of the statistical learning methods you learn about, including k-nearest-neighbors, clustering algorithms, linear discriminant analysis, principal components analysis, decision trees, random forests, lasso regression, etc.
 
-However, because the course is neither a pre-requisite nor a co-requisite for this course, we will just give a short example. If you decide to use a statistical learning method for your final project, you should be able to use a search engine to help you see how others have visualized that particular method. Usually, someone will have written a package that can be used to help with the visualization.
+However, because the course is neither a pre-requisite nor a co-requisite for this course, we will just give a couple of short examples. Additionally, you will not be assessed on anything in this subsection. If you decide to use a statistical learning method for your final project, you should be able to use a search engine to help you see how others have visualized that particular method. Usually, someone will have written a package that can be used to help with the visualization.
 
-For a short example here, a quick google search on how to visualize the decision boundaries in a decision tree leads to <https://www.r-bloggers.com/2020/03/visualizing-decision-tree-partition-and-decision-boundaries/>. The `parttree` package, written by Grant McDermott can be used with the `rpart` package to construct:
+For the first short example, examine some code below that has been modified from Dr. Torrey. The model fit here uses the `ns()` function from the `splines` package. Notice that, besides the addition of `ns()` to the `lm()` function, the remaining steps in visualizing a "grid" of predictions remains the same.
+
+```{r}
+download.file("https://myslu.stlawu.edu/~ltorrey/ml/Auto.csv", "Auto.csv")
+library(tidyverse)
+library(splines)
+
+Auto <- read_csv("Auto.csv",
+                 col_types = list(origin = readr::col_factor()))
+
+## model code below from Dr. Torrey
+## dropping horsepower to keep the plot simpler
+gam.lm <- lm(mpg ~ ns(weight, df = 2) + year + origin, data = Auto)
+
+pure.lm <- lm(mpg ~  weight + year + origin, data = Auto)
+
+library(broom)
+library(modelr)
+
+grid <- Auto |>
+  data_grid(
+    weight = seq_range(weight, n = 20),
+    year = seq_range(year, n = 4),
+    origin = Auto |> pull(origin) |> levels()
+  )
+
+gam_aug <- broom::augment(gam.lm, newdata = grid)
+
+ggplot(data = gam_aug, aes(x = weight, y = .fitted)) +
+  geom_point(data = Auto, aes(y = mpg), alpha = 0.4) +
+  geom_line(aes(colour = factor(year)),
+            linewidth = 2) +
+  facet_wrap(~ origin) +
+  scale_colour_viridis_d() +
+  theme_minimal() +
+  labs(colour = "year",
+       y = "mpg")
+```
+
+We can see from the resulting plot that the usage of splines has allowed the relationship between `weight` and `mpg` to be non-linear.
+
+However, for other stat learning algorithms, extending what we've done is not as simple. In particular, many classification algorithms do not actually give a predicted probability like logistic regression does. So, we need to think about visualizing how observations are classified instead. For a short example here, a quick google search on how to visualize the decision boundaries in a decision tree leads to <https://www.r-bloggers.com/2020/03/visualizing-decision-tree-partition-and-decision-boundaries/>. The `parttree` package, written by Grant McDermott can be used with the `rpart` package to construct:
 
 ```{r}
 #| warning: false
@@ -452,6 +493,8 @@ network_obj <- tbl_graph(nodes = nodes, edges = edges, directed = FALSE)
 
 __Exercise 6__. Notice that we specified a third argument, `directed`, to be set to `FALSE`, indicating that we are not making a directed graph. Directed network graphs are more useful if it makes sense for the edges to follow a particular "direction." Would it make sense to use a directed network graph for the hypothetical hockey team pass example? Why or why not?
 
+### Creating the Network Graph
+
 Finally, we are ready to make an initial version of the network graph! Install the `ggraph` package and run the following code:
 
 ```{r}
@@ -465,18 +508,20 @@ ggraph(network_obj |> mutate(centrality = centrality_authority()),
   geom_node_point(aes(colour = label,
                       size = centrality), show.legend = FALSE) +
   scale_edge_width(range = c(0.5, 3)) +
-  geom_node_text(aes(label = label), repel = TRUE) ##+
-  ##guides(size = "none")
+  geom_node_text(aes(label = label), repel = TRUE) 
 ```
 
+<!-- ##+ -->
+  <!-- ##guides(size = "none") -->
+  
 What edge has the largest thickness? Run through the plot code, slowly adding each new geom, to help understand what each geom is doing.
 
-__Exercise 7__. Go back to the `nodes` data frame and create a new variable called `major_type` that is 
+__Exercise 7__. Something that can __really__ help the readability of these network graphs is to use colour to group nodes together in a logical way. Go back to the `nodes` data frame and create a new variable called `major_type` that is 
 
 * equal to `MCSS` for `MATH`, `CS`, `STAT`, and `EC_MA`, 
 * equal to `Science` for `BIOL`, `PSYC`, and `PHYS`,
 * equal to `Social Science` for `ECON`, `EN_EC`, `EC_SP`, `SOC`, `ANTH`, `GOVT`, and `BUSLA`
-* equal to `Arts and Humanities` for all other majors.
+* equal to `Arts and Humanities` for all other majors (can use the `.default` argument to `case_when()` for this).
 
 Then, use this new variable to colour the nodes, adjusting the default colour scale to be colour vision deficient friendly. Does it look like the network graph naturally groups together majors from similarly fields?
 
@@ -573,8 +618,6 @@ anscombe
 
 <!-- * introduction to `sf` package -->
 
-<!-- ## Visual Model Building with fat data set-->
-
 <!-- * animation with `gganimate` -->
 
 <!-- * visualizations to check model assumptions -->
@@ -630,36 +673,4 @@ date_indeces <- 1:12
 purrr::map(date_indeces, make_tab)
 ```
 
-```{r}
-#| echo: true
-#| output: false
-#| eval: false
 
-## will write this up in its own short section
-library(faraway)
-library(broom)
-library(modelr)
-
-mod1 <- lm(brozek ~ weight, data = fat)
-mod1 |> tidy()
-
-library(GGally)
-
-ggpairs(fat, columns = c("brozek", "weight", "thigh", "adipos"))
-mod <- lm(brozek ~ weight + thigh + adipos, data = fat)
-mod |> tidy()
-
-grid <- fat |>
-  data_grid(
-    weight = seq_range(weight, n = 10),
-    thigh = fat |> pull(thigh) |> median(),
-    adipos = fat |> pull(adipos) |> median()
-  ) 
-
-fat_aug <- augment(mod, newdata = grid, interval = "confidence")
-ggplot(data = fat_aug, aes(x = weight, y = .fitted)) +
-  geom_line(linewidth = 1.7, colour = "blue") +
-  geom_ribbon(aes(ymin = .lower, ymax = .upper), fill = "lightblue", alpha = 0.3) +
-  theme_minimal() +
-  geom_point(data = fat, aes(y = brozek), alpha = 0.7)
-```

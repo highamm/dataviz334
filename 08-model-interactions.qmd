@@ -295,3 +295,48 @@ ggplot(data = evals, aes(x = age, y = score)) +
 ```
 
 **Exercise 3**. Suppose that you want to visualize a regression model with a generic quantitative response variable $y$ and __10__ predictor variables $x_1$, $x_2$, ...., $x_{10}$. You are most interested in the visualizing the association between $x_4$ and $y$, after accounting for the effects of the other 9 predictors. Sketch an appropriate visualization for this setting. What should the values for the other 9 predictors be?
+
+**Exercise 4**. The purpose of this exercise is to explore what happens to the augmented predictions when there is a lot of __multicollinearity__ among the predictor variables. Recall that multicollinearity means that predictor variables are highly correlated with one another. The example below contains information on body measurements. The response variable, `brozek`, is a metric of body fat percentage while the predictor variables, `weight`, `thigh`, and `adipos`, all correspond to other body measurements that are much easier to obtain than `brozek` body fat percentage.
+
+a. Examine the following scatterplot matrix. Explain why the model has a large amount of multicollinearity.
+
+```{r}
+#| echo: true
+#| output: true
+
+## install.packages("faraway")
+library(faraway)
+library(broom)
+library(modelr)
+library(GGally)
+
+ggpairs(fat, columns = c("brozek", "weight", "thigh", "adipos"))
+```
+
+b. Examine the output from the following fitted model. What looks odd about the fitted model coefficients and about the p-values in the model?
+
+```{r}
+mod <- lm(brozek ~ weight + thigh + adipos, data = fat)
+mod |> tidy()
+```
+
+c. Before completing the next part, explain what you think a plot will look like that has `weight` on the x-axis and augmented predictions for `brozek` at the median values of `thigh` and `adipos` on the y-axis.
+
+d. Run the code below to construct the plot. Why does the model look like it fits the points very poorly?
+
+```{r}
+grid <- fat |>
+  data_grid(
+    weight = seq_range(weight, n = 10),
+    thigh = fat |> pull(thigh) |> median(),
+    adipos = fat |> pull(adipos) |> median()
+  ) 
+
+fat_aug <- augment(mod, newdata = grid, interval = "confidence")
+ggplot(data = fat_aug, aes(x = weight, y = .fitted)) +
+  geom_line(linewidth = 1.7, colour = "blue") +
+  geom_ribbon(aes(ymin = .lower, ymax = .upper),
+              fill = "lightblue", alpha = 0.3) +
+  theme_minimal() +
+  geom_point(data = fat, aes(y = brozek), alpha = 0.7)
+```
