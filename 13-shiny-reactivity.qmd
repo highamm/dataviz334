@@ -16,11 +16,9 @@ Read Sections 3.1 through 3.3 in <a href="https://mastering-shiny.org/basic-reac
 
 **Exercise 1**. 3.3.6 Exercise 1 in *Mastering Shiny*.
 
-**Exercise 2**. 3.3.6 Exercise 2 in *Mastering Shiny*.
+**Exercise 2**. 3.3.6 Exercise 2 in *Mastering Shiny*. You do not need to submit your sketches but you should bring them to class.
 
-In Wickham's *Mastering Shiny* book, there are a couple of sections on **reactive graphs**, which help conceptualize how `shiny` runs code. Read Section 3.4: <a href="https://mastering-shiny.org/basic-reactivity.html" target="_blank">the Basic Reactivity Chapter of Mastering Shiny</a>, and complete the following.
-
-__Exercise 3__. Sketch a reactive graph for the majors app in the previous section. Make sure to include all inputs, outputs, and reactive expressions in your graph. Instead of submitting this exercise, bring your sketch to class.
+<!-- In Wickham's *Mastering Shiny* book, there are a couple of sections on **reactive graphs**, which help conceptualize how `shiny` runs code. Read Section 3.4: <a href="https://mastering-shiny.org/basic-reactivity.html" target="_blank">the Basic Reactivity Chapter of Mastering Shiny</a>. -->
 
 ## Another Example Tennis App
 
@@ -93,9 +91,12 @@ We will discuss why we need to take some extra steps to perform the "user can se
 
 **Step 6**: Finally, we will add a third input that will let the user change the number of bins in the histogram.
 
-__Exercise 1__. If we move the `output$name_of_histogram <- ....` code to the very beginning of the server functino, do you think the app will still run? Give a reason. 
+__Exercise 1__. If we move the `output$name_of_histogram <- ....` code to the very beginning of the server function, do you think the app will still run? Give a reason. 
 
-__Exercise 2__. Draw the reactive graph for the Tennis app.
+__Exercise 2__. Draw the reactive graph for the Tennis app. Make sure to include all inputs, outputs, and reactive expressions in your graph. 
+
+__Exercise 3__. Sketch the reactive graph for the majors app in the previous section. Make sure to include all inputs, outputs, and reactive expressions in your graph. 
+
 
 ## Your Turn
 
@@ -418,12 +419,14 @@ It's a fairly simple function: you just put together text in `" "` and variable 
 
 ```{r}
 poke_df <- read_csv(here::here("data/pokemon_full.csv"))
-poke_long <- poke_df %>% pivot_longer(4:9, values_to = "value", 
+poke_long <- poke_df |> pivot_longer(4:9, values_to = "value", 
                                       names_to = "stat")
 
 poke_small <- poke_long %>% filter(Name == "Bulbasaur" | Name == "Ivysaur")
 ggplot(data = poke_small, aes(x = stat, y = value)) +
-  geom_col(aes(fill = Name), position = "dodge")
+  geom_col(aes(fill = Name), position = "dodge") +
+  scale_fill_viridis_d()
+
 library(shiny)
 
 ui <- fluidPage(
@@ -441,7 +444,7 @@ ui <- fluidPage(
 server <- function(input, output, session) {
   
   output$pokegraph <- renderPlot({
-    poke_react <- poke_long %>% filter(Name %in% input$pokechoose1)
+    poke_react <- poke_long |> filter(Name %in% input$pokechoose1)
     
     ggplot(data = poke_react, aes(x = stat, y = value)) +
       geom_point() +

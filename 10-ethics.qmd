@@ -106,7 +106,10 @@ __Exercise 3__. Construct a visualization of the fitted regression model on the 
 ```{r}
 #| echo: false
 #| eval: false
-mod <- glm(SuccessfulLaunch ~ Temperature, data = challenger_df) 
+mod <- glm(SuccessfulLaunch ~ Temperature, data = challenger_df,
+           family = "binomial") 
+library(broom)
+mod |> tidy()
 
 library(modelr)
 grid <- challenger_df |>

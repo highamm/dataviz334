@@ -64,7 +64,9 @@ df_nostat <- df_statfull |> filter(discipline != "STAT" &
   summarise(nstudent = n()) |>
   mutate(discipline = fct_reorder(discipline, nstudent))
 ggplot(data = df_nostat, aes(x = discipline, y = nstudent)) +
-  geom_col() +
+  geom_segment(aes(y = 0, yend = nstudent, xend = discipline),
+               colour = "brown") +
+  geom_point(colour = "darkred") + 
   coord_flip() +
   theme_minimal()
 ```
