@@ -76,7 +76,7 @@ library(leaflet)
 beer_map <- leaflet(beer_location) |>
   setView(lng = -98.583, lat = 39.833, zoom = 4) |>
   addTiles() |>
-  addProviderTiles(providers$Wikimedia) |>
+  addProviderTiles(providers$Esri.WorldGrayCanvas) |>
   addMarkers(lng = beer_location$Longitude, lat = beer_location$Latitude,
              clusterOptions = markerClusterOptions(),
              popup = content$popup)
