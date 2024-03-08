@@ -49,10 +49,12 @@ df <- df |> mutate(across(everything(),
 
 df_long <- df |> pivot_longer(4:9, names_to = "type",
                               values_to = "discipline")
+
 df_major <- df_long |>
   filter(type == "major1" | type == "major2" | type == "major3")
 
 df_stat <- df_major |> filter(discipline == "STAT") 
+
 df_statfull <- semi_join(df_long, df_stat, by = "adm_id") |>
   filter(type == "major1" |
            type == "major2" | 
@@ -63,6 +65,7 @@ df_nostat <- df_statfull |> filter(discipline != "STAT" &
   group_by(discipline) |>
   summarise(nstudent = n()) |>
   mutate(discipline = fct_reorder(discipline, nstudent))
+
 ggplot(data = df_nostat, aes(x = discipline, y = nstudent)) +
   geom_segment(aes(y = 0, yend = nstudent, xend = discipline),
                colour = "brown") +
@@ -110,7 +113,16 @@ The following gives a loose outline of how I would proceed to construct the SLU 
 
 **Step 1**: Build a static version of the app you want to create. Typically, to do this, you'll have to choose particular values for what you want the user of the app to eventually be able to change. We have already completed this step by making the graph for `STAT` majors.
 
-**Step 2**: Decide on and set up an input for the User Interface, UI. We will do this as a class.
+**Step 2**: Decide on and set up an input for the User Interface, UI. We will do this as a class. A common UI set-up is to use the `sidebarLayout()` that creates a side bar (that often has user inputs) and a main panel (that often has the resulting plots and tables).
+
+```{r}
+ui <- fluidPage(
+  sidebarLayout(
+    sidebarPanel(),
+    mainPanel()
+  )
+)
+```
 
 **Step 3**: Put the static graph (or table) in the server function.
 
@@ -118,20 +130,22 @@ The following gives a loose outline of how I would proceed to construct the SLU 
 
 ## Your Turn
 
-**Exercise 1**. Look at <a href="https://mastering-shiny.org/basic-ui.html#limited-choices" target="_blank">the limited choices section of the UI Chapter of Mastering Shiny</a>. In the SLU majors app, change the major input to `radioButtons()` so that the user can only select mathematics, statistics, computer science, or data science as the major.
+__Exercise 1__. Add an input option to the UI that gives the user control over how many double majors, at minimum, should be present to be included in the plot. Currently, that minimum is `1`. Then, update the server so that the app reflects the user's change.
 
-**Exercise 2**. Look at <a href="https://mastering-shiny.org/basic-ui.html?q=datatable#tables" target="_blank">the tables section of the UI Chapter of Mastering Shiny</a>. In the SLU majors app, add an output table with `tableOutput()` and `renderTable()` below the plot that shows the number of Female majors and the number of Male majors for a major that the user selects.
+**Exercise 2**. Look at <a href="https://mastering-shiny.org/basic-ui.html#limited-choices" target="_blank">the limited choices section of the UI Chapter of Mastering Shiny</a>. In the SLU majors app, add a `radioButtons` input that allows the user to select `major` or `minor`. Then, change the server of the app so that the resulting plot gives the double majors if the user selects `major` and the minors if the user selects `minor`. To accomplish this, you can either use a base `R` `if` `else` statement, or you can use `str_detect()`.
 
-__Exercise 3__. Look at <a href="https://mastering-shiny.org/basic-ui.html?q=datatable#tables" target="_blank">the tables section of the UI Chapter of Mastering Shiny</a>. In the SLU majors app, add a "searchable" data table of the original raw data `df` with the `dataTableOutput()` and `renderDataTable()` functions.
+**Exercise 3**. Look at <a href="https://mastering-shiny.org/basic-ui.html?q=datatable#tables" target="_blank">the tables section of the UI Chapter of Mastering Shiny</a>. In the SLU majors app, add an output table with `tableOutput()` and `renderTable()` below the plot that shows the number of Female majors and the number of Male majors for the major that the user selects.
 
-__Exercise 4__. Add an additional input and output of your choice to the majors app. 
+__Exercise 4__. Look at <a href="https://mastering-shiny.org/basic-ui.html?q=datatable#tables" target="_blank">the tables section of the UI Chapter of Mastering Shiny</a>. In the SLU majors app, add a "searchable" data table of the original raw data `df` with the `dataTableOutput()` and `renderDataTable()` functions.
+
+__Exercise 5__. Add an additional input and output of your choice to the majors app. 
 
 
 ```{r, eval = FALSE, echo = FALSE}
 ## step 2: input
 library(shiny)
 
-df_nomiss <- df_major %>% filter(!is.na(discipline)) %>%
+df_nomiss <- df_major |> filter(!is.na(discipline)) |>
   mutate(discipline = factor(discipline))
 majors <- levels(df_nomiss$discipline)
 
@@ -152,7 +166,8 @@ shinyApp(ui, server)
 
 ```{r, eval = FALSE, echo = FALSE}
 ## step 3: static graph
-df_nomiss <- df_major %>% filter(!is.na(discipline)) %>%
+df_nomiss <- df_major |>
+  filter(!is.na(discipline)) |>
   mutate(discipline = factor(discipline))
 majors <- levels(df_nomiss$discipline)
 
@@ -166,16 +181,16 @@ ui <- fluidPage(
 
 server <- function(input, output, session) {
   
-  df_stat <- df_major %>% filter(discipline == "STAT") 
-  df_statfull <- semi_join(df_long, df_stat, by = "adm_id") %>%
+  df_stat <- df_major |> filter(discipline == "STAT") 
+  df_statfull <- semi_join(df_long, df_stat, by = "adm_id") |>
     filter(type == "major1" |
              type == "major2" | 
              type == "major3")
   
-  df_nostat <- df_statfull %>% filter(discipline != "STAT" &
-                                        !is.na(discipline)) %>%
-    group_by(discipline) %>%
-    summarise(nstudent = n()) %>%
+  df_nostat <- df_statfull |> filter(discipline != "STAT" &
+                                        !is.na(discipline)) |>
+    group_by(discipline) |>
+    summarise(nstudent = n()) |>
     mutate(discipline = fct_reorder(discipline, nstudent))
   
   
@@ -195,15 +210,18 @@ shinyApp(ui, server)
 ## step 4: connect UI selection to server, creating a reactive value
 ## anything that is reactive must go inside a reactive({}) expression
 
-df_nomiss <- df_major %>% filter(!is.na(discipline)) %>%
+df_nomiss <- df_major |> filter(!is.na(discipline)) |>
   mutate(discipline = factor(discipline))
 majors <- levels(df_nomiss$discipline)
 
 ui <- fluidPage(
   sidebarLayout(
     sidebarPanel(selectInput("majorchoice", label = "Choose a Major",
-                             choices = majors)),
-    mainPanel(plotOutput("m_plot"))
+                             choices = majors),
+                 radioButtons("major_or_minor", label = "Plot Majors or Minors",
+                              choices = c("major", "minor"))),
+    mainPanel(plotOutput("m_plot"),
+              tableOutput("sex_table"))
   )
 )
 
@@ -212,17 +230,22 @@ server <- function(input, output, session) {
   
   major_reactive_df <- reactive({
     
-    df_stat <- df_major %>% filter(discipline == input$majorchoice) 
-  df_statfull <- semi_join(df_long, df_stat, by = "adm_id") %>%
-    filter(type == "major1" |
-             type == "major2" | 
-             type == "major3")
+    df_stat <- df_major |> filter(discipline == input$majorchoice) 
+    
+  df_statfull <- semi_join(df_long, df_stat, by = "adm_id") |>
+    mutate(filter_var = str_detect(type, input$major_or_minor)) |>
+    filter(filter_var == TRUE)
+    # filter(type == "major1" |
+    #          type == "major2" | 
+    #          type == "major3")
   
-  df_nostat <- df_statfull %>% filter(discipline != input$majorchoice &
-                                        !is.na(discipline)) %>%
-    group_by(discipline) %>%
-    summarise(nstudent = n()) %>%
+  df_nostat <- df_statfull |> filter(discipline != input$majorchoice &
+                                        !is.na(discipline)) |>
+    group_by(discipline) |>
+    summarise(nstudent = n()) |>
     mutate(discipline = fct_reorder(discipline, nstudent))
+  
+  df_nostat
   })
   
   
@@ -236,6 +259,13 @@ server <- function(input, output, session) {
   output$m_plot <- renderPlot({
     major_plot()
   })
+  
+  output$sex_table <- renderTable({
+      df_major |> filter(discipline == input$majorchoice) |>
+        group_by(sex) |>
+        summarise(n = n())
+    })
+  
 }
 
 shinyApp(ui, server)
