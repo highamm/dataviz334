@@ -92,9 +92,9 @@ __Exercise 2a__. Run `leaflet(beer_location) |> setView(lng = -98.583, lat = 39.
 
 __Exercise 2b__.  Run `leaflet(beer_location) |> setView(lng = -98.583, lat = 39.833, zoom = 4) |> addTiles()` and explain what the `addTiles()` function does.
 
-__Exercise 2c__. Run `leaflet(beer_location) |> setView(lng = -98.583, lat = 39.833, zoom = 4) |> addTiles() |> addProviderTiles(providers$Wikimedia)` and explain what the `addProviderTiles()` function does. You may also want to check out the help `?addProviderTiles`.
+__Exercise 2c__. Run `leaflet(beer_location) |> setView(lng = -98.583, lat = 39.833, zoom = 4) |> addTiles() |> addProviderTiles(providers$Esri.WorldGrayCanvas)` and explain what the `addProviderTiles()` function does. You may also want to check out the help `?addProviderTiles`.
 
-__Exercise 2d__. Run `leaflet(beer_location) |> setView(lng = -98.583, lat = 39.833, zoom = 4) |> addTiles() |> addProviderTiles(providers$Wikimedia) |> addMarkers(lng = beer_location$Longitude, lat = beer_location$Latitude)` and explain what the `addMarkers()` function does.
+__Exercise 2d__. Run `leaflet(beer_location) |> setView(lng = -98.583, lat = 39.833, zoom = 4) |> addTiles() |> addProviderTiles(providers$Esri.WorldGrayCanvas) |> addMarkers(lng = beer_location$Longitude, lat = beer_location$Latitude)` and explain what the `addMarkers()` function does.
 
 __Exercise 2e__. Run the code in Exercise 2d, but add `clusterOptions = markerClusterOptions()` as an argument to `addMarkers()`. Explain what adding this argument does to the map.
 
