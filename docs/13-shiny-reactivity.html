@@ -278,10 +278,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li>
 <a href="#other-useful-things-for-shiny" id="toc-other-useful-things-for-shiny" class="nav-link" data-scroll-target="#other-useful-things-for-shiny"><span class="header-section-number">15.4</span> Other Useful Things for <code>shiny</code></a>
   <ul class="collapse">
-<li><a href="#glueglue" id="toc-glueglue" class="nav-link" data-scroll-target="#glueglue"><span class="header-section-number">15.4.1</span> <code>glue::glue()</code></a></li>
-  <li><a href="#action-button" id="toc-action-button" class="nav-link" data-scroll-target="#action-button"><span class="header-section-number">15.4.2</span> Action Button</a></li>
-  <li><a href="#using-if-and-else" id="toc-using-if-and-else" class="nav-link" data-scroll-target="#using-if-and-else"><span class="header-section-number">15.4.3</span> Using <code>if</code> and <code>else</code></a></li>
-  <li><a href="#source-and-write_csv" id="toc-source-and-write_csv" class="nav-link" data-scroll-target="#source-and-write_csv"><span class="header-section-number">15.4.4</span> <code>source()</code> and <code>write_csv()</code></a></li>
+<li><a href="#tidy-evaluation" id="toc-tidy-evaluation" class="nav-link" data-scroll-target="#tidy-evaluation"><span class="header-section-number">15.4.1</span> Tidy Evaluation</a></li>
+  <li><a href="#glueglue" id="toc-glueglue" class="nav-link" data-scroll-target="#glueglue"><span class="header-section-number">15.4.2</span> <code>glue::glue()</code></a></li>
+  <li><a href="#action-button" id="toc-action-button" class="nav-link" data-scroll-target="#action-button"><span class="header-section-number">15.4.3</span> Action Button</a></li>
+  <li><a href="#using-if-and-else" id="toc-using-if-and-else" class="nav-link" data-scroll-target="#using-if-and-else"><span class="header-section-number">15.4.4</span> Using <code>if</code> and <code>else</code></a></li>
+  <li><a href="#source-and-write_csv" id="toc-source-and-write_csv" class="nav-link" data-scroll-target="#source-and-write_csv"><span class="header-section-number">15.4.5</span> <code>source()</code> and <code>write_csv()</code></a></li>
   </ul>
 </li>
   </ul></nav>
@@ -326,7 +327,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span><span class="va">both_long</span> <span class="op">&lt;-</span> <span class="va">both_df</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://tidyr.tidyverse.org/reference/pivot_longer.html">pivot_longer</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="va">winner_name</span>, <span class="va">loser_name</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co">## only keep players who have player over 50 matches</span></span>
-<span><span class="va">both_n50</span> <span class="op">&lt;-</span> <span class="va">both_long</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html">group_by</a></span><span class="op">(</span><span class="va">value</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/count.html">count</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span><span class="va">both_n50</span> <span class="op">&lt;-</span> <span class="va">both_long</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html">group_by</a></span><span class="op">(</span><span class="va">value</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html">summarise</a></span><span class="op">(</span>n <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/context.html">n</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="va">n</span> <span class="op">&gt;</span> <span class="fl">50</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co">## construct various statistics</span></span>
@@ -371,11 +372,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>We will try to use a similar workflow for this problem as we did for the majors app.</p>
 <p><strong>Step 1</strong>: Make a histogram of <strong>one</strong> variable for <strong>one</strong> specific player.</p>
 <p><strong>Step 2</strong>: Set up our <code>shiny</code> app inputs. Before, we just had a single input. Now, we will have two: one for player and one for variable. Let’s focus on one at a time, doing <code>player</code> first. Type <code>shinyapp</code> and click on the <code>R Studio</code> snippet to bring up a base app.</p>
-<p><strong>Step 3</strong>: Now that we have one of our inputs in the UI, let’s work on the server. First, we will ignore the <code>input$</code> selector and put in our graph of aces for Medvedev. We again use the <code><a href="https://rdrr.io/pkg/shiny/man/plotOutput.html">plotOutput()</a></code>, <code>renderPlot({})</code> combination.</p>
+<p><strong>Step 3</strong>: Now that we have one of our inputs in the UI, let’s work on the server. First, we will ignore the <code>input$</code> selector and put in our graph from step 1. We again use the <code><a href="https://rdrr.io/pkg/shiny/man/plotOutput.html">plotOutput()</a></code>, <code>renderPlot({})</code> combination.</p>
 <p><strong>Step 4</strong>: Now we want to connect the <code>input</code> defined in the UI to the server so that the graph changes depending on which player we select.</p>
 <p><strong>Step 5</strong>: Now we repeat some of these steps for a second input: a variable that the user selects. We will use <code><a href="https://rdrr.io/pkg/shiny/man/radioButtons.html">radioButtons()</a></code> as the input in the UI.</p>
 <p>We will discuss why we need to take some extra steps to perform the “user can select a variable” operation in class. In particular, we will need to briefly discuss <a href="https://mastering-shiny.org/action-tidy.html" target="_blank">tidy evaluation</a> to use some of the <code>tidyverse</code> functions in <code>shiny</code>.</p>
 <p><strong>Step 6</strong>: Finally, we will add a third input that will let the user change the number of bins in the histogram.</p>
+<p><strong>Step 7</strong>: Use the <code>glue()</code> function from the <code>glue</code> package to change the title of the histogram to include the name of the player in the plot.</p>
 <p><strong>Exercise 1</strong>. If we move the <code>output$name_of_histogram &lt;- ....</code> code to the very beginning of the server function, do you think the app will still run? Give a reason.</p>
 <p><strong>Exercise 2</strong>. Draw the reactive graph for the Tennis app. Make sure to include all inputs, outputs, and reactive expressions in your graph.</p>
 <p><strong>Exercise 3</strong>. Sketch the reactive graph for the majors app in the previous section. Make sure to include all inputs, outputs, and reactive expressions in your graph.</p>
@@ -392,13 +394,147 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section><section id="other-useful-things-for-shiny" class="level2" data-number="15.4"><h2 data-number="15.4" class="anchored" data-anchor-id="other-useful-things-for-shiny">
 <span class="header-section-number">15.4</span> Other Useful Things for <code>shiny</code>
 </h2>
-<section id="glueglue" class="level3" data-number="15.4.1"><h3 data-number="15.4.1" class="anchored" data-anchor-id="glueglue">
-<span class="header-section-number">15.4.1</span> <code>glue::glue()</code>
+<section id="tidy-evaluation" class="level3" data-number="15.4.1"><h3 data-number="15.4.1" class="anchored" data-anchor-id="tidy-evaluation">
+<span class="header-section-number">15.4.1</span> Tidy Evaluation</h3>
+<p>When using some tidyverse functions inside of a function environment, there are some issues in that we are mixing two different types of “variables” in <code>R</code>. In particular,</p>
+<ul>
+<li>an environmental variable is something created using <code>&lt;-</code>. The <code>input$name_of_var</code> are environmental variables.</li>
+<li>a data variable is a variable that is inside of a data frame.</li>
+</ul>
+<p>The same issues encountered with tidy evaluation in shiny are also encountered in more generic functions. Let’s examine this issue in functions first, as it’s a little bit quicker to see what’s happening (as opposed to shiny, where we have to run the entire app). But, keep in mind that the server part of shiny <strong>is a function</strong> itself, so we will have all of these same issues.</p>
+<p>The following are some toy functions performing various tasks on the <code>mtcars</code> data. Which ones work how you expect? Which ones do not?</p>
+<div class="cell">
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">subset_by_cyl</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">cyl_val</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="va">mtcars</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="va">cyl</span> <span class="op">==</span> <span class="va">cyl_val</span><span class="op">)</span></span>
+<span><span class="op">}</span></span>
+<span><span class="fu">subset_by_cyl</span><span class="op">(</span>cyl_val <span class="op">=</span> <span class="fl">8</span><span class="op">)</span></span>
+<span><span class="co">#&gt;                      mpg cyl  disp  hp drat    wt  qsec vs am gear carb</span></span>
+<span><span class="co">#&gt; Hornet Sportabout   18.7   8 360.0 175 3.15 3.440 17.02  0  0    3    2</span></span>
+<span><span class="co">#&gt; Duster 360          14.3   8 360.0 245 3.21 3.570 15.84  0  0    3    4</span></span>
+<span><span class="co">#&gt; Merc 450SE          16.4   8 275.8 180 3.07 4.070 17.40  0  0    3    3</span></span>
+<span><span class="co">#&gt; Merc 450SL          17.3   8 275.8 180 3.07 3.730 17.60  0  0    3    3</span></span>
+<span><span class="co">#&gt; Merc 450SLC         15.2   8 275.8 180 3.07 3.780 18.00  0  0    3    3</span></span>
+<span><span class="co">#&gt; Cadillac Fleetwood  10.4   8 472.0 205 2.93 5.250 17.98  0  0    3    4</span></span>
+<span><span class="co">#&gt; Lincoln Continental 10.4   8 460.0 215 3.00 5.424 17.82  0  0    3    4</span></span>
+<span><span class="co">#&gt; Chrysler Imperial   14.7   8 440.0 230 3.23 5.345 17.42  0  0    3    4</span></span>
+<span><span class="co">#&gt; Dodge Challenger    15.5   8 318.0 150 2.76 3.520 16.87  0  0    3    2</span></span>
+<span><span class="co">#&gt; AMC Javelin         15.2   8 304.0 150 3.15 3.435 17.30  0  0    3    2</span></span>
+<span><span class="co">#&gt; Camaro Z28          13.3   8 350.0 245 3.73 3.840 15.41  0  0    3    4</span></span>
+<span><span class="co">#&gt; Pontiac Firebird    19.2   8 400.0 175 3.08 3.845 17.05  0  0    3    2</span></span>
+<span><span class="co">#&gt; Ford Pantera L      15.8   8 351.0 264 4.22 3.170 14.50  0  1    5    4</span></span>
+<span><span class="co">#&gt; Maserati Bora       15.0   8 301.0 335 3.54 3.570 14.60  0  1    5    8</span></span>
+<span><span class="fu">subset_by_cyl</span><span class="op">(</span>cyl_val <span class="op">=</span> <span class="st">"8"</span><span class="op">)</span></span>
+<span><span class="co">#&gt;                      mpg cyl  disp  hp drat    wt  qsec vs am gear carb</span></span>
+<span><span class="co">#&gt; Hornet Sportabout   18.7   8 360.0 175 3.15 3.440 17.02  0  0    3    2</span></span>
+<span><span class="co">#&gt; Duster 360          14.3   8 360.0 245 3.21 3.570 15.84  0  0    3    4</span></span>
+<span><span class="co">#&gt; Merc 450SE          16.4   8 275.8 180 3.07 4.070 17.40  0  0    3    3</span></span>
+<span><span class="co">#&gt; Merc 450SL          17.3   8 275.8 180 3.07 3.730 17.60  0  0    3    3</span></span>
+<span><span class="co">#&gt; Merc 450SLC         15.2   8 275.8 180 3.07 3.780 18.00  0  0    3    3</span></span>
+<span><span class="co">#&gt; Cadillac Fleetwood  10.4   8 472.0 205 2.93 5.250 17.98  0  0    3    4</span></span>
+<span><span class="co">#&gt; Lincoln Continental 10.4   8 460.0 215 3.00 5.424 17.82  0  0    3    4</span></span>
+<span><span class="co">#&gt; Chrysler Imperial   14.7   8 440.0 230 3.23 5.345 17.42  0  0    3    4</span></span>
+<span><span class="co">#&gt; Dodge Challenger    15.5   8 318.0 150 2.76 3.520 16.87  0  0    3    2</span></span>
+<span><span class="co">#&gt; AMC Javelin         15.2   8 304.0 150 3.15 3.435 17.30  0  0    3    2</span></span>
+<span><span class="co">#&gt; Camaro Z28          13.3   8 350.0 245 3.73 3.840 15.41  0  0    3    4</span></span>
+<span><span class="co">#&gt; Pontiac Firebird    19.2   8 400.0 175 3.08 3.845 17.05  0  0    3    2</span></span>
+<span><span class="co">#&gt; Ford Pantera L      15.8   8 351.0 264 4.22 3.170 14.50  0  1    5    4</span></span>
+<span><span class="co">#&gt; Maserati Bora       15.0   8 301.0 335 3.54 3.570 14.60  0  1    5    8</span></span>
+<span></span>
+<span><span class="va">plot_mtscatter</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x_var</span>, <span class="va">y_var</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">mtcars</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">x_var</span>, y <span class="op">=</span> <span class="va">y_var</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html">geom_point</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
+<span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html">theme_minimal</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="op">}</span></span>
+<span></span>
+<span><span class="fu">plot_mtscatter</span><span class="op">(</span>x_var <span class="op">=</span> <span class="st">"hp"</span>, y_var <span class="op">=</span> <span class="st">"mpg"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="13-shiny-reactivity_files/figure-html/unnamed-chunk-12-1.png" class="img-fluid" width="672"></p>
+</div>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span></span>
+<span><span class="va">sort_mtcars</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">var_sort</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="va">mtcars</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/arrange.html">arrange</a></span><span class="op">(</span><span class="va">var_sort</span><span class="op">)</span></span>
+<span><span class="op">}</span></span>
+<span><span class="fu">sort_mtcars</span><span class="op">(</span>var_sort <span class="op">=</span> <span class="st">"mpg"</span><span class="op">)</span></span>
+<span><span class="co">#&gt;                      mpg cyl  disp  hp drat    wt  qsec vs am gear carb</span></span>
+<span><span class="co">#&gt; Mazda RX4           21.0   6 160.0 110 3.90 2.620 16.46  0  1    4    4</span></span>
+<span><span class="co">#&gt; Mazda RX4 Wag       21.0   6 160.0 110 3.90 2.875 17.02  0  1    4    4</span></span>
+<span><span class="co">#&gt; Datsun 710          22.8   4 108.0  93 3.85 2.320 18.61  1  1    4    1</span></span>
+<span><span class="co">#&gt; Hornet 4 Drive      21.4   6 258.0 110 3.08 3.215 19.44  1  0    3    1</span></span>
+<span><span class="co">#&gt; Hornet Sportabout   18.7   8 360.0 175 3.15 3.440 17.02  0  0    3    2</span></span>
+<span><span class="co">#&gt; Valiant             18.1   6 225.0 105 2.76 3.460 20.22  1  0    3    1</span></span>
+<span><span class="co">#&gt; Duster 360          14.3   8 360.0 245 3.21 3.570 15.84  0  0    3    4</span></span>
+<span><span class="co">#&gt; Merc 240D           24.4   4 146.7  62 3.69 3.190 20.00  1  0    4    2</span></span>
+<span><span class="co">#&gt; Merc 230            22.8   4 140.8  95 3.92 3.150 22.90  1  0    4    2</span></span>
+<span><span class="co">#&gt; Merc 280            19.2   6 167.6 123 3.92 3.440 18.30  1  0    4    4</span></span>
+<span><span class="co">#&gt; Merc 280C           17.8   6 167.6 123 3.92 3.440 18.90  1  0    4    4</span></span>
+<span><span class="co">#&gt; Merc 450SE          16.4   8 275.8 180 3.07 4.070 17.40  0  0    3    3</span></span>
+<span><span class="co">#&gt; Merc 450SL          17.3   8 275.8 180 3.07 3.730 17.60  0  0    3    3</span></span>
+<span><span class="co">#&gt; Merc 450SLC         15.2   8 275.8 180 3.07 3.780 18.00  0  0    3    3</span></span>
+<span><span class="co">#&gt; Cadillac Fleetwood  10.4   8 472.0 205 2.93 5.250 17.98  0  0    3    4</span></span>
+<span><span class="co">#&gt; Lincoln Continental 10.4   8 460.0 215 3.00 5.424 17.82  0  0    3    4</span></span>
+<span><span class="co">#&gt; Chrysler Imperial   14.7   8 440.0 230 3.23 5.345 17.42  0  0    3    4</span></span>
+<span><span class="co">#&gt; Fiat 128            32.4   4  78.7  66 4.08 2.200 19.47  1  1    4    1</span></span>
+<span><span class="co">#&gt; Honda Civic         30.4   4  75.7  52 4.93 1.615 18.52  1  1    4    2</span></span>
+<span><span class="co">#&gt; Toyota Corolla      33.9   4  71.1  65 4.22 1.835 19.90  1  1    4    1</span></span>
+<span><span class="co">#&gt; Toyota Corona       21.5   4 120.1  97 3.70 2.465 20.01  1  0    3    1</span></span>
+<span><span class="co">#&gt; Dodge Challenger    15.5   8 318.0 150 2.76 3.520 16.87  0  0    3    2</span></span>
+<span><span class="co">#&gt; AMC Javelin         15.2   8 304.0 150 3.15 3.435 17.30  0  0    3    2</span></span>
+<span><span class="co">#&gt; Camaro Z28          13.3   8 350.0 245 3.73 3.840 15.41  0  0    3    4</span></span>
+<span><span class="co">#&gt; Pontiac Firebird    19.2   8 400.0 175 3.08 3.845 17.05  0  0    3    2</span></span>
+<span><span class="co">#&gt; Fiat X1-9           27.3   4  79.0  66 4.08 1.935 18.90  1  1    4    1</span></span>
+<span><span class="co">#&gt; Porsche 914-2       26.0   4 120.3  91 4.43 2.140 16.70  0  1    5    2</span></span>
+<span><span class="co">#&gt; Lotus Europa        30.4   4  95.1 113 3.77 1.513 16.90  1  1    5    2</span></span>
+<span><span class="co">#&gt; Ford Pantera L      15.8   8 351.0 264 4.22 3.170 14.50  0  1    5    4</span></span>
+<span><span class="co">#&gt; Ferrari Dino        19.7   6 145.0 175 3.62 2.770 15.50  0  1    5    6</span></span>
+<span><span class="co">#&gt; Maserati Bora       15.0   8 301.0 335 3.54 3.570 14.60  0  1    5    8</span></span>
+<span><span class="co">#&gt; Volvo 142E          21.4   4 121.0 109 4.11 2.780 18.60  1  1    4    2</span></span>
+<span></span>
+<span><span class="va">select_mtcars</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">var_select</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="va">mtcars</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="va">var_select</span><span class="op">)</span></span>
+<span><span class="op">}</span></span>
+<span><span class="fu">select_mtcars</span><span class="op">(</span>var_select <span class="op">=</span> <span class="st">"mpg"</span><span class="op">)</span></span>
+<span><span class="co">#&gt;                      mpg</span></span>
+<span><span class="co">#&gt; Mazda RX4           21.0</span></span>
+<span><span class="co">#&gt; Mazda RX4 Wag       21.0</span></span>
+<span><span class="co">#&gt; Datsun 710          22.8</span></span>
+<span><span class="co">#&gt; Hornet 4 Drive      21.4</span></span>
+<span><span class="co">#&gt; Hornet Sportabout   18.7</span></span>
+<span><span class="co">#&gt; Valiant             18.1</span></span>
+<span><span class="co">#&gt; Duster 360          14.3</span></span>
+<span><span class="co">#&gt; Merc 240D           24.4</span></span>
+<span><span class="co">#&gt; Merc 230            22.8</span></span>
+<span><span class="co">#&gt; Merc 280            19.2</span></span>
+<span><span class="co">#&gt; Merc 280C           17.8</span></span>
+<span><span class="co">#&gt; Merc 450SE          16.4</span></span>
+<span><span class="co">#&gt; Merc 450SL          17.3</span></span>
+<span><span class="co">#&gt; Merc 450SLC         15.2</span></span>
+<span><span class="co">#&gt; Cadillac Fleetwood  10.4</span></span>
+<span><span class="co">#&gt; Lincoln Continental 10.4</span></span>
+<span><span class="co">#&gt; Chrysler Imperial   14.7</span></span>
+<span><span class="co">#&gt; Fiat 128            32.4</span></span>
+<span><span class="co">#&gt; Honda Civic         30.4</span></span>
+<span><span class="co">#&gt; Toyota Corolla      33.9</span></span>
+<span><span class="co">#&gt; Toyota Corona       21.5</span></span>
+<span><span class="co">#&gt; Dodge Challenger    15.5</span></span>
+<span><span class="co">#&gt; AMC Javelin         15.2</span></span>
+<span><span class="co">#&gt; Camaro Z28          13.3</span></span>
+<span><span class="co">#&gt; Pontiac Firebird    19.2</span></span>
+<span><span class="co">#&gt; Fiat X1-9           27.3</span></span>
+<span><span class="co">#&gt; Porsche 914-2       26.0</span></span>
+<span><span class="co">#&gt; Lotus Europa        30.4</span></span>
+<span><span class="co">#&gt; Ford Pantera L      15.8</span></span>
+<span><span class="co">#&gt; Ferrari Dino        19.7</span></span>
+<span><span class="co">#&gt; Maserati Bora       15.0</span></span>
+<span><span class="co">#&gt; Volvo 142E          21.4</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>We will spend a little time fixing the code that does not work.</p>
+</section><section id="glueglue" class="level3" data-number="15.4.2"><h3 data-number="15.4.2" class="anchored" data-anchor-id="glueglue">
+<span class="header-section-number">15.4.2</span> <code>glue::glue()</code>
 </h3>
 <p>The <code>glue()</code> function from the <code>glue</code> package is really useful for making plot titles, axis titles, etc. that depend on variables you have made. For example, you might want a title for <code>ggplot2</code> to change depending on which input a user selects.</p>
 <p>It’s a fairly simple function: you just put together text in <code>" "</code> and variable names, separated by commas.</p>
 <div class="cell">
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">poke_df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://readr.tidyverse.org/reference/read_delim.html">read_csv</a></span><span class="op">(</span><span class="fu">here</span><span class="fu">::</span><span class="fu"><a href="https://here.r-lib.org//reference/here.html">here</a></span><span class="op">(</span><span class="st">"data/pokemon_full.csv"</span><span class="op">)</span><span class="op">)</span></span>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">poke_df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://readr.tidyverse.org/reference/read_delim.html">read_csv</a></span><span class="op">(</span><span class="fu">here</span><span class="fu">::</span><span class="fu"><a href="https://here.r-lib.org//reference/here.html">here</a></span><span class="op">(</span><span class="st">"data/pokemon_full.csv"</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="va">poke_long</span> <span class="op">&lt;-</span> <span class="va">poke_df</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://tidyr.tidyverse.org/reference/pivot_longer.html">pivot_longer</a></span><span class="op">(</span><span class="fl">4</span><span class="op">:</span><span class="fl">9</span>, values_to <span class="op">=</span> <span class="st">"value"</span>, </span>
 <span>                                      names_to <span class="op">=</span> <span class="st">"stat"</span><span class="op">)</span></span>
 <span></span>
@@ -407,9 +543,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_bar.html">geom_col</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>fill <span class="op">=</span> <span class="va">Name</span><span class="op">)</span>, position <span class="op">=</span> <span class="st">"dodge"</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_viridis.html">scale_fill_viridis_d</a></span><span class="op">(</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="13-shiny-reactivity_files/figure-html/unnamed-chunk-12-1.png" class="img-fluid" width="672"></p>
+<p><img src="13-shiny-reactivity_files/figure-html/unnamed-chunk-14-1.png" class="img-fluid" width="672"></p>
 </div>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span></span>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://shiny.rstudio.com/">shiny</a></span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">ui</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/fluidPage.html">fluidPage</a></span><span class="op">(</span></span>
@@ -440,11 +576,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/pkg/shiny/man/shinyApp.html">shinyApp</a></span><span class="op">(</span><span class="va">ui</span>, <span class="va">server</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="13-shiny-reactivity_files/figure-html/unnamed-chunk-12-2.png" class="img-fluid" width="672"></p>
+<p><img src="13-shiny-reactivity_files/figure-html/unnamed-chunk-14-2.png" class="img-fluid" width="672"></p>
 </div>
 </div>
-</section><section id="action-button" class="level3" data-number="15.4.2"><h3 data-number="15.4.2" class="anchored" data-anchor-id="action-button">
-<span class="header-section-number">15.4.2</span> Action Button</h3>
+</section><section id="action-button" class="level3" data-number="15.4.3"><h3 data-number="15.4.3" class="anchored" data-anchor-id="action-button">
+<span class="header-section-number">15.4.3</span> Action Button</h3>
 <p>An action button is useful if you do not want your plot to update until the user clicks the button. There are a couple of useful cases for an action button:</p>
 <ul>
 <li>the code in your Shiny app takes a long time to run (so you don’t want it updating each time the user changes an input).</li>
@@ -452,7 +588,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </ul>
 <p>Take a look at this example for the Pokemon app:</p>
 <div class="cell">
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://shiny.rstudio.com/">shiny</a></span><span class="op">)</span></span>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://shiny.rstudio.com/">shiny</a></span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">ui</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/fluidPage.html">fluidPage</a></span><span class="op">(</span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/sidebarLayout.html">sidebarLayout</a></span><span class="op">(</span></span>
@@ -487,16 +623,16 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/pkg/shiny/man/shinyApp.html">shinyApp</a></span><span class="op">(</span><span class="va">ui</span>, <span class="va">server</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="13-shiny-reactivity_files/figure-html/unnamed-chunk-13-1.png" class="img-fluid" width="672"></p>
+<p><img src="13-shiny-reactivity_files/figure-html/unnamed-chunk-15-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 <p>You must often pair an <code>actionButton</code> with either <code><a href="https://rdrr.io/pkg/shiny/man/observeEvent.html">eventReactive()</a></code> or <code><a href="https://rdrr.io/pkg/shiny/man/observeEvent.html">observeEvent()</a></code>. The differences between the two are a little confusing but the primary difference is that <code><a href="https://rdrr.io/pkg/shiny/man/observeEvent.html">eventReactive()</a></code> is used to create a reactive expression when the action button is clicked while <code><a href="https://rdrr.io/pkg/shiny/man/observeEvent.html">observeEvent()</a></code> just runs some code when an action button is clicked.</p>
-</section><section id="using-if-and-else" class="level3" data-number="15.4.3"><h3 data-number="15.4.3" class="anchored" data-anchor-id="using-if-and-else">
-<span class="header-section-number">15.4.3</span> Using <code>if</code> and <code>else</code>
+</section><section id="using-if-and-else" class="level3" data-number="15.4.4"><h3 data-number="15.4.4" class="anchored" data-anchor-id="using-if-and-else">
+<span class="header-section-number">15.4.4</span> Using <code>if</code> and <code>else</code>
 </h3>
 <p>If we want our app do do something completely different when a user changes an input, we might consider using <code>if</code> and <code>else</code>. If we have time in class, we will do an example in <code>Shiny</code>: <code>if</code> an <code>input</code> is equal to some value, do something or make a certain plot; <code>else</code> make a different type of plot. Below is an example of the syntax in base <code>R</code>:</p>
 <div class="cell">
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fl">5</span></span>
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fl">5</span></span>
 <span><span class="kw">if</span> <span class="op">(</span><span class="va">x</span> <span class="op">&lt;</span> <span class="fl">10</span><span class="op">)</span> <span class="op">{</span></span>
 <span>  <span class="va">x</span> <span class="op">*</span> <span class="fl">2</span></span>
 <span><span class="op">}</span> <span class="kw">else</span> <span class="op">{</span></span>
@@ -504,8 +640,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span><span class="op">}</span></span>
 <span><span class="co">#&gt; [1] 10</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-</section><section id="source-and-write_csv" class="level3" data-number="15.4.4"><h3 data-number="15.4.4" class="anchored" data-anchor-id="source-and-write_csv">
-<span class="header-section-number">15.4.4</span> <code>source()</code> and <code>write_csv()</code>
+</section><section id="source-and-write_csv" class="level3" data-number="15.4.5"><h3 data-number="15.4.5" class="anchored" data-anchor-id="source-and-write_csv">
+<span class="header-section-number">15.4.5</span> <code>source()</code> and <code>write_csv()</code>
 </h3>
 <div class="callout callout-style-simple callout-important callout-titled">
 <div class="callout-header d-flex align-content-center">

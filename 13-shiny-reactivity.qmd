@@ -39,7 +39,7 @@ both_df <- bind_rows(atp_df, wta_df)
 both_long <- both_df |> pivot_longer(c(winner_name, loser_name))
 
 ## only keep players who have player over 50 matches
-both_n50 <- both_long |> group_by(value) |> count() |>
+both_n50 <- both_long |> group_by(value) |> summarise(n = n()) |>
   filter(n > 50)
 
 ## construct various statistics
@@ -81,7 +81,7 @@ We will try to use a similar workflow for this problem as we did for the majors 
 
 **Step 2**: Set up our `shiny` app inputs. Before, we just had a single input. Now, we will have two: one for player and one for variable. Let's focus on one at a time, doing `player` first. Type `shinyapp` and click on the `R Studio` snippet to bring up a base app.
 
-**Step 3**: Now that we have one of our inputs in the UI, let's work on the server. First, we will ignore the `input$` selector and put in our graph of aces for Medvedev. We again use the `plotOutput()`, `renderPlot({})` combination.
+**Step 3**: Now that we have one of our inputs in the UI, let's work on the server. First, we will ignore the `input$` selector and put in our graph from step 1. We again use the `plotOutput()`, `renderPlot({})` combination.
 
 **Step 4**: Now we want to connect the `input` defined in the UI to the server so that the graph changes depending on which player we select.
 
@@ -90,6 +90,8 @@ We will try to use a similar workflow for this problem as we did for the majors 
 We will discuss why we need to take some extra steps to perform the "user can select a variable" operation in class. In particular, we will need to briefly discuss <a href="https://mastering-shiny.org/action-tidy.html" target="_blank">tidy evaluation</a> to use some of the `tidyverse` functions in `shiny`.
 
 **Step 6**: Finally, we will add a third input that will let the user change the number of bins in the histogram.
+
+**Step 7**: Use the `glue()` function from the `glue` package to change the title of the histogram to include the name of the player in the plot.
 
 __Exercise 1__. If we move the `output$name_of_histogram <- ....` code to the very beginning of the server function, do you think the app will still run? Give a reason. 
 
@@ -345,7 +347,8 @@ server <- function(input, output, session) {
   hist_plot <- reactive({
     # ggplot(df_sub(), aes_string(x = input$varchoice)) +
     # geom_histogram(colour = "black", fill = "white", bins = 15)
-    base_plot <- ggplot(df_sub(), aes(x = .data[[input$varchoice]]))
+    base_plot <- ggplot(df_sub(),
+                        aes(x = .data[[input$varchoice]]))
     
     
     if (is.numeric(df_sub()[[input$varchoice]]) == TRUE) {
@@ -410,6 +413,69 @@ ggplot(data = janfeb_df, aes(x = tempmin)) +
 ```
 
 ## Other Useful Things for `shiny`
+
+### Tidy Evaluation
+
+When using some tidyverse functions inside of a function environment, there are some issues in that we are mixing two different types of "variables" in `R`. In particular,
+
+* an environmental variable is something created using `<-`. The `input$name_of_var` are environmental variables.
+* a data variable is a variable that is inside of a data frame.
+
+The same issues encountered with tidy evaluation in shiny are also encountered in more generic functions. Let's examine this issue in functions first, as it's a little bit quicker to see what's happening (as opposed to shiny, where we have to run the entire app). But, keep in mind that the server part of shiny __is a function__ itself, so we will have all of these same issues. 
+
+The following are some toy functions performing various tasks on the `mtcars` data. Which ones work how you expect? Which ones do not?
+
+```{r}
+#| error: true
+subset_by_cyl <- function(cyl_val) {
+  mtcars |> filter(cyl == cyl_val)
+}
+subset_by_cyl(cyl_val = 8)
+subset_by_cyl(cyl_val = "8")
+
+plot_mtscatter <- function(x_var, y_var) {
+  ggplot(data = mtcars, aes(x = x_var, y = y_var)) +
+    geom_point() +
+    theme_minimal()
+}
+
+plot_mtscatter(x_var = "hp", y_var = "mpg")
+
+sort_mtcars <- function(var_sort) {
+  mtcars |> arrange(var_sort)
+}
+sort_mtcars(var_sort = "mpg")
+
+select_mtcars <- function(var_select) {
+  mtcars |> select(var_select)
+}
+select_mtcars(var_select = "mpg")
+```
+
+We will spend a little time fixing the code that does not work.
+
+```{r}
+#| echo: false
+#| output: false
+plot_mtscatter <- function(x_var, y_var) {
+  ggplot(data = mtcars, aes(x = .data[[x_var]],
+                            y = .data[[y_var]])) +
+    geom_point() +
+    theme_minimal()
+}
+
+plot_mtscatter(x_var = "hp", y_var = "mpg")
+
+sort_mtcars <- function(var_sort) {
+  mtcars |> arrange(.data[[var_sort]])
+}
+sort_mtcars(var_sort = "mpg")
+
+select_mtcars <- function(var_select) {
+  mtcars |> select(any_of(var_select))
+}
+select_mtcars(var_select = "mpg")
+```
 
 ### `glue::glue()`
 
