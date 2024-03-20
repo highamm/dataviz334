@@ -152,15 +152,20 @@ ggplotly(plot1, tooltip = "label")
 
 Your plot should now be interactive and label the points by their country: sick! The syntax for `ggplotly()` might seem kind of odd now, but, because it's consistent for all types of plots (specifying a label aesthetic and then using `tooltip = "label"`), it's actually a pretty simple package to use!
 
-**Exercise 1**. Use the `ggplotly()` function on any bar plot that we've made so far in the course.
+**Exercise 1**. Using the `penguins` data set from the `palmerpenguins` package, create a simple bar plot of `species`. Then, use `ggplotly` on the bar plot.
 
-**Exercise 2**. Use the `ggplotly()` function on any side-by-side box plots that we've made so far in the course.
+```{r}
+#| echo: false
+#| output: false
+library(palmerpenguins)
+species_bar <- ggplot(penguins, aes(x = species)) +
+  geom_bar()
+ggplotly(species_bar)
+```
 
-**Exercise 3**. Use the `ggplotly()` function on any faceted plot that we've made so far in the course.
+**Exercise 2**. Use the `ggplotly()` function on the lollipop plot we made that showed the proportion of male (or female) students in particular majors. Then, modify the plot so that, when someone hovers over the point, the sample size is displayed.
 
-**Exercise 4**. Use the `ggplotly()` function on any plot of your choice that we've made so far in the course. For this exercise, really try to think about a plot that would benefit from becoming interactive.
-
-__Exercise 5__. You can also remove hover info for particular items with the `style()` function. In particular, specifying `hoverinfo == "none"` for particular `traces` removes the hover info for those `traces`. Modify one of the following examples so that hover info is __only__ displayed for the points (and not for the smoother or the standard error bar for the smoother).
+__Exercise 3__. You can also remove hover info for particular items with the `style()` function. In particular, specifying `hoverinfo == "none"` for particular `traces` removes the hover info for those `traces`. Modify one of the following examples so that hover info is __only__ displayed for the points (and not for the smoother or the standard error bar for the smoother).
 
 ```{r}
 plot_test <- ggplot(hpi_df, aes(x = Footprint, y = Wellbeing)) +
@@ -175,7 +180,27 @@ ggplotly(plot_test) |>
   style(hoverinfo = "none", traces = c(3)) ## remove hover info for se line
 ```
 
+**Exercise 4**. Use the `ggplotly()` function on any plot of your choice that we've made so far in the course or any plot that you've made for your blog. For this exercise, really try to think about a plot that would benefit from becoming interactive.
+
 ## Your Turn
 
 **Exercise 1**. What are some advantages of making a plot more interactive? What are some disadvantages of making a plot more interactive?
 
+```{r}
+#| echo: false
+#| output: false
+
+## advantages: 
+## it's cool!
+## people can be more engaged when they are interacting with something themselves
+## a lot more information can be shown
+
+## disadvantages:
+## can work against "data storytelling"- cannot assume the user
+## will interact in a way that reveals the message you want to get
+## across
+## limited by sharing online
+## can potentially make things more confusing/harder to interpret
+## with shiny, more care needs to be taken 
+## (what if the code breaks if the user selects one particular option)
+```
