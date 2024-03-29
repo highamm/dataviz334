@@ -448,7 +448,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span></span>
 <span><span class="fu">plot_mtscatter</span><span class="op">(</span>x_var <span class="op">=</span> <span class="st">"hp"</span>, y_var <span class="op">=</span> <span class="st">"mpg"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="13-shiny-reactivity_files/figure-html/unnamed-chunk-12-1.png" class="img-fluid" width="672"></p>
+<p><img src="13-shiny-reactivity_files/figure-html/unnamed-chunk-14-1.png" class="img-fluid" width="672"></p>
 </div>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span></span>
 <span><span class="va">sort_mtcars</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">var_sort</span><span class="op">)</span> <span class="op">{</span></span>
@@ -538,12 +538,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span><span class="va">poke_long</span> <span class="op">&lt;-</span> <span class="va">poke_df</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://tidyr.tidyverse.org/reference/pivot_longer.html">pivot_longer</a></span><span class="op">(</span><span class="fl">4</span><span class="op">:</span><span class="fl">9</span>, values_to <span class="op">=</span> <span class="st">"value"</span>, </span>
 <span>                                      names_to <span class="op">=</span> <span class="st">"stat"</span><span class="op">)</span></span>
 <span></span>
-<span><span class="va">poke_small</span> <span class="op">&lt;-</span> <span class="va">poke_long</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="va">Name</span> <span class="op">==</span> <span class="st">"Bulbasaur"</span> <span class="op">|</span> <span class="va">Name</span> <span class="op">==</span> <span class="st">"Ivysaur"</span><span class="op">)</span></span>
+<span><span class="va">poke_small</span> <span class="op">&lt;-</span> <span class="va">poke_long</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="va">Name</span> <span class="op">==</span> <span class="st">"Bulbasaur"</span> <span class="op">|</span> <span class="va">Name</span> <span class="op">==</span> <span class="st">"Ivysaur"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">poke_small</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">stat</span>, y <span class="op">=</span> <span class="va">value</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_bar.html">geom_col</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>fill <span class="op">=</span> <span class="va">Name</span><span class="op">)</span>, position <span class="op">=</span> <span class="st">"dodge"</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_viridis.html">scale_fill_viridis_d</a></span><span class="op">(</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="13-shiny-reactivity_files/figure-html/unnamed-chunk-14-1.png" class="img-fluid" width="672"></p>
+<p><img src="13-shiny-reactivity_files/figure-html/unnamed-chunk-16-1.png" class="img-fluid" width="672"></p>
 </div>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://shiny.rstudio.com/">shiny</a></span><span class="op">)</span></span>
@@ -576,7 +577,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/pkg/shiny/man/shinyApp.html">shinyApp</a></span><span class="op">(</span><span class="va">ui</span>, <span class="va">server</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="13-shiny-reactivity_files/figure-html/unnamed-chunk-14-2.png" class="img-fluid" width="672"></p>
+<p><img src="13-shiny-reactivity_files/figure-html/unnamed-chunk-16-2.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 </section><section id="action-button" class="level3" data-number="15.4.3"><h3 data-number="15.4.3" class="anchored" data-anchor-id="action-button">
@@ -586,18 +587,30 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li>the code in your Shiny app takes a long time to run (so you don’t want it updating each time the user changes an input).</li>
 <li>the output does not make sense unless the user changes multiple inputs (so again, you don’t want the shiny app to run each time the user changes an input).</li>
 </ul>
-<p>Take a look at this example for the Pokemon app:</p>
+<p>We will add an <code>actionButton</code> to the UI, paired with <code>eventReactive</code> in the server, to the following example that lets a user compare the statistics of a few different Pokemon.</p>
 <div class="cell">
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://shiny.rstudio.com/">shiny</a></span><span class="op">)</span></span>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">poke_df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://readr.tidyverse.org/reference/read_delim.html">read_csv</a></span><span class="op">(</span><span class="fu">here</span><span class="fu">::</span><span class="fu"><a href="https://here.r-lib.org//reference/here.html">here</a></span><span class="op">(</span><span class="st">"data/pokemon_full.csv"</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">poke_long</span> <span class="op">&lt;-</span> <span class="va">poke_df</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://tidyr.tidyverse.org/reference/pivot_longer.html">pivot_longer</a></span><span class="op">(</span><span class="fl">4</span><span class="op">:</span><span class="fl">9</span>, values_to <span class="op">=</span> <span class="st">"value"</span>, </span>
+<span>                                      names_to <span class="op">=</span> <span class="st">"stat"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">poke_small</span> <span class="op">&lt;-</span> <span class="va">poke_long</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="va">Name</span> <span class="op">==</span> <span class="st">"Bulbasaur"</span> <span class="op">|</span> <span class="va">Name</span> <span class="op">==</span> <span class="st">"Ivysaur"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">poke_small</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">stat</span>, y <span class="op">=</span> <span class="va">value</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_bar.html">geom_col</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>fill <span class="op">=</span> <span class="va">Name</span><span class="op">)</span>, position <span class="op">=</span> <span class="st">"dodge"</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_viridis.html">scale_fill_viridis_d</a></span><span class="op">(</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="13-shiny-reactivity_files/figure-html/unnamed-chunk-17-1.png" class="img-fluid" width="672"></p>
+</div>
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://shiny.rstudio.com/">shiny</a></span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">ui</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/fluidPage.html">fluidPage</a></span><span class="op">(</span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/sidebarLayout.html">sidebarLayout</a></span><span class="op">(</span></span>
 <span>    <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/sidebarLayout.html">sidebarPanel</a></span><span class="op">(</span></span>
 <span>      <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/selectInput.html">selectizeInput</a></span><span class="op">(</span><span class="st">"pokechoose1"</span>, label <span class="op">=</span> <span class="st">"Choose Pokemon"</span>,</span>
 <span>                     choices <span class="op">=</span> <span class="va">poke_df</span><span class="op">$</span><span class="va">Name</span>, selected <span class="op">=</span> <span class="st">"Bulbasaur"</span>,</span>
-<span>                     multiple <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>,</span>
-<span>      <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/actionButton.html">actionButton</a></span><span class="op">(</span><span class="st">"runappbutton"</span>, label <span class="op">=</span> <span class="st">"Update Stats"</span><span class="op">)</span></span>
-<span>    <span class="op">)</span>,</span>
+<span>                     multiple <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span>      <span class="op">)</span>,</span>
 <span>    <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/sidebarLayout.html">mainPanel</a></span><span class="op">(</span></span>
 <span>      <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/plotOutput.html">plotOutput</a></span><span class="op">(</span>outputId <span class="op">=</span> <span class="st">"pokegraph"</span><span class="op">)</span></span>
 <span>    <span class="op">)</span></span>
@@ -606,24 +619,26 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span></span>
 <span><span class="va">server</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">input</span>, <span class="va">output</span>, <span class="va">session</span><span class="op">)</span> <span class="op">{</span></span>
 <span>  </span>
-<span>  <span class="va">poke_react</span> <span class="op">&lt;-</span>  <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/observeEvent.html">eventReactive</a></span><span class="op">(</span><span class="va">input</span><span class="op">$</span><span class="va">runappbutton</span>, <span class="op">{</span></span>
-<span>    <span class="va">poke_long</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="va">Name</span> <span class="op"><a href="https://rdrr.io/r/base/match.html">%in%</a></span> <span class="va">input</span><span class="op">$</span><span class="va">pokechoose1</span><span class="op">)</span></span>
+<span>  <span class="va">poke_react</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/reactive.html">reactive</a></span><span class="op">(</span><span class="op">{</span></span>
+<span>    <span class="va">poke_long</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="va">Name</span> <span class="op"><a href="https://rdrr.io/r/base/match.html">%in%</a></span> <span class="va">input</span><span class="op">$</span><span class="va">pokechoose1</span><span class="op">)</span> </span>
 <span>  <span class="op">}</span><span class="op">)</span></span>
 <span>  </span>
 <span>  <span class="va">output</span><span class="op">$</span><span class="va">pokegraph</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/renderPlot.html">renderPlot</a></span><span class="op">(</span><span class="op">{</span></span>
 <span>    </span>
-<span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span>data <span class="op">=</span> <span class="fu">poke_react</span><span class="op">(</span><span class="op">)</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">stat</span>, y <span class="op">=</span> <span class="va">value</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
-<span>      <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_bar.html">geom_col</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>fill <span class="op">=</span> <span class="va">Name</span><span class="op">)</span>, position <span class="op">=</span> <span class="st">"dodge"</span><span class="op">)</span> <span class="op">+</span></span>
-<span>      <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/coord_flip.html">coord_flip</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
-<span>      <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_viridis.html">scale_fill_viridis_d</a></span><span class="op">(</span><span class="op">)</span></span>
-<span>  <span class="op">}</span></span>
-<span>  <span class="op">)</span></span>
+<span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span>data <span class="op">=</span> <span class="fu">poke_react</span><span class="op">(</span><span class="op">)</span>,</span>
+<span>           <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">value</span>, y <span class="op">=</span> <span class="va">stat</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>      <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_bar.html">geom_col</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>fill <span class="op">=</span> <span class="va">Name</span><span class="op">)</span>,</span>
+<span>               position <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/position_dodge.html">position_dodge2</a></span><span class="op">(</span>reverse <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>      <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_viridis.html">scale_fill_viridis_d</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
+<span>      <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html">theme_minimal</a></span><span class="op">(</span>base_size <span class="op">=</span> <span class="fl">34</span><span class="op">)</span></span>
+<span>    </span>
+<span>  <span class="op">}</span><span class="op">)</span></span>
 <span>  </span>
 <span><span class="op">}</span></span>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/pkg/shiny/man/shinyApp.html">shinyApp</a></span><span class="op">(</span><span class="va">ui</span>, <span class="va">server</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="13-shiny-reactivity_files/figure-html/unnamed-chunk-15-1.png" class="img-fluid" width="672"></p>
+<p><img src="13-shiny-reactivity_files/figure-html/unnamed-chunk-17-2.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 <p>You must often pair an <code>actionButton</code> with either <code><a href="https://rdrr.io/pkg/shiny/man/observeEvent.html">eventReactive()</a></code> or <code><a href="https://rdrr.io/pkg/shiny/man/observeEvent.html">observeEvent()</a></code>. The differences between the two are a little confusing but the primary difference is that <code><a href="https://rdrr.io/pkg/shiny/man/observeEvent.html">eventReactive()</a></code> is used to create a reactive expression when the action button is clicked while <code><a href="https://rdrr.io/pkg/shiny/man/observeEvent.html">observeEvent()</a></code> just runs some code when an action button is clicked.</p>
@@ -632,7 +647,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </h3>
 <p>If we want our app do do something completely different when a user changes an input, we might consider using <code>if</code> and <code>else</code>. If we have time in class, we will do an example in <code>Shiny</code>: <code>if</code> an <code>input</code> is equal to some value, do something or make a certain plot; <code>else</code> make a different type of plot. Below is an example of the syntax in base <code>R</code>:</p>
 <div class="cell">
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fl">5</span></span>
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fl">5</span></span>
 <span><span class="kw">if</span> <span class="op">(</span><span class="va">x</span> <span class="op">&lt;</span> <span class="fl">10</span><span class="op">)</span> <span class="op">{</span></span>
 <span>  <span class="va">x</span> <span class="op">*</span> <span class="fl">2</span></span>
 <span><span class="op">}</span> <span class="kw">else</span> <span class="op">{</span></span>

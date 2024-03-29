@@ -93,12 +93,181 @@ We will discuss why we need to take some extra steps to perform the "user can se
 
 **Step 7**: Use the `glue()` function from the `glue` package to change the title of the histogram to include the name of the player in the plot.
 
+```{r}
+#| echo: false
+#| eval: false
+library(tidyverse)
+
+theme_set(theme_minimal())
+
+atp_df <- read_csv("https://raw.githubusercontent.com/JeffSackmann/tennis_atp/master/atp_matches_2023.csv") |>
+  mutate(tour = "atp")
+wta_df <- read_csv("https://raw.githubusercontent.com/JeffSackmann/tennis_wta/master/wta_matches_2023.csv") |>
+  mutate(tour = "wta")
+
+both_df <- bind_rows(atp_df, wta_df)
+
+both_long <- both_df |> pivot_longer(c(winner_name, loser_name))
+
+## only keep players who have player over 50 matches
+both_n50 <- both_long |> group_by(value) |> summarise(n = n()) |>
+  filter(n > 50)
+
+## construct various statistics
+major_tennis <- semi_join(both_long, both_n50, by = c("value"))
+major_tennis <- major_tennis |> mutate(w_svperc = 100 * w_1stIn / w_svpt,
+                        l_svperc = 100 * l_1stIn / l_svpt,
+                        w_firstwon = 100 * w_1stWon / w_1stIn,
+                        l_firstwon = 100 * l_1stWon / l_1stIn,
+                        w_secondwon = 100 * w_2ndWon / (w_svpt - w_1stIn),
+                        l_secondwon = 100 * l_2ndWon / (l_svpt - l_1stIn))
+
+major_tennis_w <- major_tennis |> filter(name == "winner_name")
+major_tennis_l <- major_tennis |> filter(name == "loser_name")
+
+w_small <- major_tennis_w |> select(value, winner_seed, w_ace, w_df,
+                                    w_svperc, w_firstwon, w_secondwon, tour) |>
+  rename(seed = winner_seed, ace = w_ace, df = w_df, svperc = w_svperc,
+         firstwon = w_firstwon, secondwon = w_secondwon)
+
+l_small <- major_tennis_l |> select(value, loser_seed, l_ace, l_df,
+                                    l_svperc, l_firstwon, l_secondwon, tour) |>
+  rename(seed = loser_seed, ace = l_ace, df = l_df, svperc = l_svperc,
+         firstwon = l_firstwon, secondwon = l_secondwon)
+
+df <- bind_rows(w_small, l_small) |>
+  rename(player = "value")
+df
+
+df_oneplayer <- df |> filter(player == "Taylor Fritz")
+ggplot(df_oneplayer, aes(x = svperc)) +
+  geom_histogram(colour = "darkolivegreen4",
+                 fill = "darkolivegreen1",
+                 bins = 15)
+
+library(shiny)
+player_choices <- df |>
+  distinct(player) |> pull(player)
+
+## will not work as well because there are duplicate
+## players
+player_choices2 <- df$player
+
+var_choices <- names(df)[3:7]
+
+ui <- fluidPage(
+  sidebarLayout(
+    sidebarPanel(
+      radioButtons("tour_sel",
+                   label = "Select a Tour",
+                   choices = c("atp", "wta"),
+                   selected = "atp"),
+      selectInput("player_sel",
+                  label = "Choose a Player",
+                  choices = player_choices),
+      radioButtons("var_sel",
+                   label = "Choose a Variable",
+                   choices = var_choices),
+      sliderInput("nbins", label = "Choose Bins",
+                  min = 5, max = 30, value = 15)
+    ),
+    mainPanel(
+      plotOutput("hist_plot")
+    )
+  )
+)
+
+server <- function(input, output, session) {
+  
+  observeEvent(input$tour_sel, {
+    player_choices <- df |> filter(tour == input$tour_sel) |> 
+      distinct(player) |> pull(player)
+    updateSelectInput(inputId = "player_sel", choices = player_choices)
+  })
+  
+  tennis_reactive <- reactive({
+    df_oneplayer <- df |> filter(player == input$player_sel)
+    df_oneplayer
+  })
+  
+  output$hist_plot <- renderPlot({
+    ggplot(tennis_reactive(), aes(x = .data[[input$var_sel]])) +
+      geom_histogram(colour = "darkolivegreen4",
+                     fill = "darkolivegreen1",
+                     bins = input$nbins) +
+      labs(title = glue::glue(input$var_sel, " Stats for ",
+                              input$player_sel)) +
+      theme_minimal(base_size = 34)
+  })
+    
+
+}
+
+shinyApp(ui, server)
+```
+
+
 __Exercise 1__. If we move the `output$name_of_histogram <- ....` code to the very beginning of the server function, do you think the app will still run? Give a reason. 
 
 __Exercise 2__. Draw the reactive graph for the Tennis app. Make sure to include all inputs, outputs, and reactive expressions in your graph. 
 
 __Exercise 3__. Sketch the reactive graph for the majors app in the previous section. Make sure to include all inputs, outputs, and reactive expressions in your graph. 
 
+```{r}
+#| echo: false
+#| eval: false
+
+library(shiny)
+library(gapminder)
+gapminder
+continents <- unique(gapminder$continent)
+
+ui <- fluidPage(
+  selectInput("continent", "Continent", choices = continents), 
+  selectInput("country", "Country", choices = NULL),
+  tableOutput("data")
+)
+
+server <- function(input, output, session) {
+  observeEvent(input$continent, {
+    country_choices <- gapminder |> 
+      filter(continent == input$continent) |>
+      pull(country) |> unique()
+    updateSelectInput(inputId = "country", choices = country_choices)
+  })
+  output$data <- renderTable({
+    gapminder |> filter(country == input$country)
+  })
+}
+
+continents <- continents |> fct_expand("All")
+
+ui <- fluidPage(
+  selectInput("continent", "Continent", choices = levels(continents)), 
+  selectInput("country", "Country", choices = NULL),
+  tableOutput("data")
+)
+
+server <- function(input, output, session) {
+  observeEvent(input$continent, {
+    
+    if (input$continent == "All") {
+      country_choices <- gapminder |> pull(country) |>
+        unique()
+    } else {
+    country_choices <- gapminder |> 
+      filter(continent == input$continent) |>
+      pull(country) |> unique()
+    }
+    updateSelectInput(inputId = "country", choices = country_choices)
+  })
+  output$data <- renderTable({
+    gapminder |> filter(country == input$country)
+  })
+}
+
+shinyApp(ui, server)
+```
 
 ## Your Turn
 
@@ -472,7 +641,7 @@ sort_mtcars <- function(var_sort) {
 sort_mtcars(var_sort = "mpg")
 
 select_mtcars <- function(var_select) {
-  mtcars |> select(any_of(var_select))
+  mtcars |> select(all_of(var_select))
 }
 select_mtcars(var_select = "mpg")
 ```
@@ -488,7 +657,8 @@ poke_df <- read_csv(here::here("data/pokemon_full.csv"))
 poke_long <- poke_df |> pivot_longer(4:9, values_to = "value", 
                                       names_to = "stat")
 
-poke_small <- poke_long %>% filter(Name == "Bulbasaur" | Name == "Ivysaur")
+poke_small <- poke_long |>
+  filter(Name == "Bulbasaur" | Name == "Ivysaur")
 ggplot(data = poke_small, aes(x = stat, y = value)) +
   geom_col(aes(fill = Name), position = "dodge") +
   scale_fill_viridis_d()
@@ -531,9 +701,73 @@ An action button is useful if you do not want your plot to update until the user
 -   the code in your Shiny app takes a long time to run (so you don't want it updating each time the user changes an input).
 -   the output does not make sense unless the user changes multiple inputs (so again, you don't want the shiny app to run each time the user changes an input).
 
-Take a look at this example for the Pokemon app:
+We will add an `actionButton` to the UI, paired with `eventReactive` in the server, to the following example that lets a user compare the statistics of a few different Pokemon.
 
 ```{r}
+#| echo: true
+#| output: true
+
+poke_df <- read_csv(here::here("data/pokemon_full.csv"))
+poke_long <- poke_df |> pivot_longer(4:9, values_to = "value", 
+                                      names_to = "stat")
+
+poke_small <- poke_long |>
+  filter(Name == "Bulbasaur" | Name == "Ivysaur")
+ggplot(data = poke_small, aes(x = stat, y = value)) +
+  geom_col(aes(fill = Name), position = "dodge") +
+  scale_fill_viridis_d()
+
+library(shiny)
+
+ui <- fluidPage(
+  sidebarLayout(
+    sidebarPanel(
+      selectizeInput("pokechoose1", label = "Choose Pokemon",
+                     choices = poke_df$Name, selected = "Bulbasaur",
+                     multiple = TRUE)
+      ),
+    mainPanel(
+      plotOutput(outputId = "pokegraph")
+    )
+  )
+)
+
+server <- function(input, output, session) {
+  
+  poke_react <- reactive({
+    poke_long |> filter(Name %in% input$pokechoose1) 
+  })
+  
+  output$pokegraph <- renderPlot({
+    
+    ggplot(data = poke_react(),
+           aes(x = value, y = stat)) +
+      geom_col(aes(fill = Name),
+               position = position_dodge2(reverse = TRUE)) +
+      scale_fill_viridis_d() +
+      theme_minimal(base_size = 34)
+    
+  })
+  
+}
+
+shinyApp(ui, server)
+```
+
+```{r}
+#| echo: false
+#| eval: false
+
+poke_df <- read_csv(here::here("data/pokemon_full.csv"))
+poke_long <- poke_df |> pivot_longer(4:9, values_to = "value", 
+                                      names_to = "stat")
+
+poke_small <- poke_long |>
+  filter(Name == "Bulbasaur" | Name == "Ivysaur")
+ggplot(data = poke_small, aes(x = stat, y = value)) +
+  geom_col(aes(fill = Name), position = "dodge") +
+  scale_fill_viridis_d()
+
 library(shiny)
 
 ui <- fluidPage(
