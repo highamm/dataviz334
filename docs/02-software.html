@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.3.353">
+<meta name="generator" content="quarto-1.4.555">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 <title>DATA / STAT 334 - 4&nbsp; Software</title>
 <style>
@@ -42,7 +42,13 @@ ul.task-list li input[type="checkbox"] {
   "collapse-after": 3,
   "panel-placement": "start",
   "type": "textbox",
-  "limit": 20,
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
   "language": {
     "search-no-results-text": "No results",
     "search-matching-documents-text": "matching documents",
@@ -51,8 +57,10 @@ ul.task-list li input[type="checkbox"] {
     "search-more-match-text": "more match in this document",
     "search-more-matches-text": "more matches in this document",
     "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
     "search-detached-cancel-button-title": "Cancel",
-    "search-submit-button-title": "Submit"
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
   }
 }</script>
 </head>
@@ -60,19 +68,19 @@ ul.task-list li input[type="checkbox"] {
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top"><nav class="quarto-secondary-nav"><div class="container-fluid d-flex">
-      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./00-choose-viz.html">Getting Started</a></li><li class="breadcrumb-item"><a href="./02-software.html"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Software</span></a></li></ol></nav>
-      <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
-      </a>
-      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./00-choose-viz.html">Getting Started</a></li><li class="breadcrumb-item"><a href="./02-software.html"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Software</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
         <i class="bi bi-search"></i>
       </button>
     </div>
   </nav></header><!-- content --><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
 <!-- sidebar -->
-  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal sidebar-navigation floating overflow-auto"><div class="pt-lg-2 mt-2 text-left sidebar-header">
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto"><div class="pt-lg-2 mt-2 text-left sidebar-header">
     <div class="sidebar-title mb-0 py-0">
       <a href="./">DATA / STAT 334</a> 
         <div class="sidebar-tools-main">
@@ -233,7 +241,7 @@ ul.task-list li input[type="checkbox"] {
 </li>
     </ul>
 </div>
-</nav><div id="quarto-sidebar-glass" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass"></div>
+</nav><div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
         <nav id="TOC" role="doc-toc" class="toc-active"><h2 id="toc-title">Table of contents</h2>
@@ -250,10 +258,20 @@ ul.task-list li input[type="checkbox"] {
   </ul>
 </li>
   <li><a href="#using-git-and-github" id="toc-using-git-and-github" class="nav-link" data-scroll-target="#using-git-and-github"><span class="header-section-number">4.3</span> Using Git and GitHub</a></li>
+  <li>
+<a href="#creating-a-quarto-blogwebsite" id="toc-creating-a-quarto-blogwebsite" class="nav-link" data-scroll-target="#creating-a-quarto-blogwebsite"><span class="header-section-number">4.4</span> Creating a Quarto Blog/Website</a>
+  <ul class="collapse">
+<li><a href="#creating-the-blog" id="toc-creating-the-blog" class="nav-link" data-scroll-target="#creating-the-blog"><span class="header-section-number">4.4.1</span> Creating the Blog</a></li>
+  <li><a href="#connecting-to-github" id="toc-connecting-to-github" class="nav-link" data-scroll-target="#connecting-to-github"><span class="header-section-number">4.4.2</span> Connecting to GitHub</a></li>
+  <li><a href="#publishing-through-github-pages" id="toc-publishing-through-github-pages" class="nav-link" data-scroll-target="#publishing-through-github-pages"><span class="header-section-number">4.4.3</span> Publishing through GitHub Pages</a></li>
+  <li><a href="#creating-a-new-post" id="toc-creating-a-new-post" class="nav-link" data-scroll-target="#creating-a-new-post"><span class="header-section-number">4.4.4</span> Creating a New Post</a></li>
+  <li><a href="#unfreezing-output" id="toc-unfreezing-output" class="nav-link" data-scroll-target="#unfreezing-output"><span class="header-section-number">4.4.5</span> Unfreezing Output</a></li>
+  </ul>
+</li>
   </ul></nav>
     </div>
 <!-- main -->
-<main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block default"><div class="quarto-title">
+<main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./00-choose-viz.html">Getting Started</a></li><li class="breadcrumb-item"><a href="./02-software.html"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Software</span></a></li></ol></nav><div class="quarto-title">
 <h1 class="title"><span id="software" class="quarto-section-identifier"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Software</span></span></h1>
 </div>
 
@@ -266,6 +284,7 @@ ul.task-list li input[type="checkbox"] {
     
   </div>
   
+
 
 </header><p>In this section, we discuss two pieces of software that you will need to install on your laptop computer: <code>R</code> (and <code>R Studio</code>) and <code>Git</code>. We will begin with the far easier of the two: <code>R</code>.</p>
 <section id="installing-r-and-r-studio-class-prep" class="level2" data-number="4.1"><h2 data-number="4.1" class="anchored" data-anchor-id="installing-r-and-r-studio-class-prep">
@@ -348,9 +367,9 @@ Important
 </ul>
 </li>
 <li>
-<p>Install the <code>gitcreds</code> package with <code>install.packages("gitcreds")</code> and then, in <code>R</code>, run <code><a href="https://rdrr.io/pkg/gitcreds/man/gitcreds_get.html">gitcreds::gitcreds_set()</a></code> and paste in your PAT when prompted.</p>
+<p>Install the <code>gitcreds</code> package with <code>install.packages("gitcreds")</code> and then, in <code>R</code>, run <code><a href="https://gitcreds.r-lib.org/reference/gitcreds_get.html">gitcreds::gitcreds_set()</a></code> and paste in your PAT when prompted.</p>
 <ul>
-<li>Run <code><a href="https://rdrr.io/pkg/gitcreds/man/gitcreds_get.html">gitcreds::gitcreds_get()</a></code> or <code><a href="https://usethis.r-lib.org/reference/git_sitrep.html">usethis::git_sitrep()</a></code> to verify that your PAT was accepted.</li>
+<li>Run <code><a href="https://gitcreds.r-lib.org/reference/gitcreds_get.html">gitcreds::gitcreds_get()</a></code> or <code><a href="https://usethis.r-lib.org/reference/git_sitrep.html">usethis::git_sitrep()</a></code> to verify that your PAT was accepted.</li>
 </ul>
 </li>
 </ol></section><section id="create-a-repository" class="level3" data-number="4.2.3"><h3 data-number="4.2.3" class="anchored" data-anchor-id="create-a-repository">
@@ -378,9 +397,36 @@ Important
 </section></section><section id="using-git-and-github" class="level2" data-number="4.3"><h2 data-number="4.3" class="anchored" data-anchor-id="using-git-and-github">
 <span class="header-section-number">4.3</span> Using Git and GitHub</h2>
 <p>In class, we will discuss how to use <code>Git</code> and <code>GitHub</code> with <code>R Studio</code> as well as how we will use these tools to submit assignments in this course. By the end of the class in which we discuss <code>Git</code> and <code>GitHub</code>, at minimum you should be able to (1) locally commit a change to your files with a commit message, (2) push that local change to your remote GitHub repository, and (3) pull a change that someone else made to the remote GitHub repository.</p>
+</section><section id="creating-a-quarto-blogwebsite" class="level2" data-number="4.4"><h2 data-number="4.4" class="anchored" data-anchor-id="creating-a-quarto-blogwebsite">
+<span class="header-section-number">4.4</span> Creating a Quarto Blog/Website</h2>
+<p>The following site gives more detailed information about starting up a Quarto blog: <a href="https://quarto.org/docs/websites/website-blog.html" class="uri">https://quarto.org/docs/websites/website-blog.html</a>.</p>
+<section id="creating-the-blog" class="level3" data-number="4.4.1"><h3 data-number="4.4.1" class="anchored" data-anchor-id="creating-the-blog">
+<span class="header-section-number">4.4.1</span> Creating the Blog</h3>
+<p>To create a <code>Quarto</code> Blog in <code>R Studio</code>, go to <code>File -&gt; New Project -&gt; New Directory -&gt; Quarto Blog</code></p>
+<p>Check the “Create a Git repository” checkbox, give the project a name (without spaces), and select a directory for the project to be created in.</p>
+<p>Before moving on, make sure that you can Render the blog, by clicking the “Render Website” button in the “Build” tab in the upper-right window of <code>R Studio</code>.</p>
+</section><section id="connecting-to-github" class="level3" data-number="4.4.2"><h3 data-number="4.4.2" class="anchored" data-anchor-id="connecting-to-github">
+<span class="header-section-number">4.4.2</span> Connecting to GitHub</h3>
+<p>As long as you checked the “Create a Git repository” checkbox, you should see a Git pane in your top-right window. However, we have not yet connected this Git repository to your GitHub account. To do so,</p>
+<ol type="1">
+<li><p>Commit the files to your local Git repository by clicking “Commit” and writing a commit message.</p></li>
+<li><p>In the <code>R</code> console, type <code><a href="https://usethis.r-lib.org/reference/use_github.html">usethis::use_github()</a></code>. If done correctly, a web browser should open with your repository on your GitHub account.</p></li>
+</ol></section><section id="publishing-through-github-pages" class="level3" data-number="4.4.3"><h3 data-number="4.4.3" class="anchored" data-anchor-id="publishing-through-github-pages">
+<span class="header-section-number">4.4.3</span> Publishing through GitHub Pages</h3>
+<p>To publish your website, we can use GitHub pages. Before going to your GitHub account site, navigate to the <code>_quarto.yml</code> file in <code>R Studio</code> that stores information on how to build your blog. Below <code>type: website</code>, add <code>output-dir: docs</code>, keeping the same indentation that <code>type: website</code> has. Then, re-render your blog in the “Build” tab of <code>R Studio</code>. Specifying <code>output-dir</code> to <code>docs</code> says to output the blog to a new folder called <code>docs</code>, which will allow us to publish the blog more easily in GitHub pages.</p>
+<p>Then, on your GitHub account site, navigate to the repository you just created. Go to <code>Settings</code> -&gt; <code>Pages</code>. Under <code>Build and Deployment</code>, make sure <code>Source</code> is set to <code>Deploy from a branch</code>. Under Brand, select either <code>master</code> or <code>main</code> and under folder, select <code>/docs</code>, which corresponds to the folder we have the blog rendered to locally. After giving it a couple of minutes to build, you should be able to click the “Visit Site” button to see your blog, which is now published on the web.</p>
+</section><section id="creating-a-new-post" class="level3" data-number="4.4.4"><h3 data-number="4.4.4" class="anchored" data-anchor-id="creating-a-new-post">
+<span class="header-section-number">4.4.4</span> Creating a New Post</h3>
+<p>To create a new post, first create a new Folder in within the “Posts” folder of your Project. Then, create a new Quarto <code>.qmd</code> file (HTML), type some code into the file, and save the file as <code>index.qmd</code> within your new folder.</p>
+<p>Render the blog by again clicking the “Render Website” button in the “Build” tab to verify that your new post appears.</p>
+</section><section id="unfreezing-output" class="level3" data-number="4.4.5"><h3 data-number="4.4.5" class="anchored" data-anchor-id="unfreezing-output">
+<span class="header-section-number">4.4.5</span> Unfreezing Output</h3>
+<p>By default, this post is now “Frozen.” Changing code within a code chunk will not change the output. To change this behaviour, navigate to the “Posts” folder and click on the <code>_metadata.yml</code> file. In the file, change <code>freeze: true</code> to <code>freeze: false</code>, which will unfreeze the code in all of the posts in the “Posts” folder.</p>
+<p>We will change this option back in the future, after we discuss the benefits of <code>freeze: true</code>.</p>
+<p><br></p>
 
 
-</section></main><!-- /main --><script id="quarto-html-after-body" type="application/javascript">
+</section></section></main><!-- /main --><script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
   const toggleBodyColorMode = (bsSheetEl) => {
     const mode = bsSheetEl.getAttribute("data-mode");
@@ -459,10 +505,27 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     // clear code selection
     e.clearSelection();
   });
-  function tippyHover(el, contentFn) {
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
     const config = {
       allowHTML: true,
-      content: contentFn,
       maxWidth: 500,
       delay: 100,
       arrow: false,
@@ -472,8 +535,17 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       interactive: true,
       interactiveBorder: 10,
       theme: 'quarto',
-      placement: 'bottom-start'
+      placement: 'bottom-start',
     };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
     window.tippy(el, config); 
   }
   const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
@@ -485,7 +557,130 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       try { href = new URL(href).hash; } catch {}
       const id = href.replace(/^#\/?/, "");
       const note = window.document.getElementById(id);
-      return note.innerHTML;
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
     });
   }
       let selectedAnnoteEl;
@@ -529,6 +724,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
             }
             div.style.top = top - 2 + "px";
             div.style.height = height + 4 + "px";
+            div.style.left = 0;
             let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
             if (gutterDiv === null) {
               gutterDiv = window.document.createElement("div");
@@ -554,6 +750,32 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
         });
         selectedAnnoteEl = undefined;
       };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
       // Attach click handler to the DT
       const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
       for (const annoteDlNode of annoteDls) {
@@ -613,23 +835,27 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   }
 });
 </script><nav class="page-navigation"><div class="nav-page nav-page-previous">
-      <a href="./04-concepts-applied.html" class="pagination-link">
+      <a href="./04-concepts-applied.html" class="pagination-link" aria-label="Applied Concepts">
         <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Applied Concepts</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="./03-statdata234.html" class="pagination-link">
+      <a href="./03-statdata234.html" class="pagination-link" aria-label="DATA/STAT 234 Review">
         <span class="nav-page-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">DATA/STAT 234 Review</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>
 </div> <!-- /content -->
 <footer class="footer"><div class="nav-footer">
-    <div class="nav-footer-left">Course Materials were written by Matt Higham for STAT/DATA 334 at St.&nbsp;Lawrence University.</div>   
+    <div class="nav-footer-left">
+<p>Course Materials were written by Matt Higham for STAT/DATA 334 at St.&nbsp;Lawrence University.</p>
+</div>   
     <div class="nav-footer-center">
       &nbsp;
     </div>
-    <div class="nav-footer-right">This book was built with <a href="https://quarto.org/">Quarto</a>.</div>
+    <div class="nav-footer-right">
+<p>This book was built with <a href="https://quarto.org/">Quarto</a>.</p>
+</div>
   </div>
 </footer>
 

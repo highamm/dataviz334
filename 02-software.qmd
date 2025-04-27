@@ -145,4 +145,47 @@ After you are able to commit, push, and see that push show up on your remote Git
 
 In class, we will discuss how to use `Git` and `GitHub` with `R Studio` as well as how we will use these tools to submit assignments in this course. By the end of the class in which we discuss `Git` and `GitHub`, at minimum you should be able to (1) locally commit a change to your files with a commit message, (2) push that local change to your remote GitHub repository, and (3) pull a change that someone else made to the remote GitHub repository.
 
+## Creating a Quarto Blog/Website
+
+The following site gives more detailed information about starting up a Quarto blog: <https://quarto.org/docs/websites/website-blog.html>.
+
+### Creating the Blog
+
+To create a `Quarto` Blog in `R Studio`, go to `File -> New Project -> New Directory -> Quarto Blog`
+
+Check the "Create a Git repository" checkbox, give the project a name (without spaces), and select a directory for the project to be created in.
+
+Before moving on, make sure that you can Render the blog, by clicking the "Render Website" button in the "Build" tab in the upper-right window of `R Studio`.
+
+### Connecting to GitHub
+
+As long as you checked the "Create a Git repository" checkbox, you should see a Git pane in your top-right window. However, we have not yet connected this Git repository to your GitHub account. To do so,
+
+1. Commit the files to your local Git repository by clicking "Commit" and writing a commit message.
+
+2. In the `R` console, type `usethis::use_github()`. If done correctly, a web browser should open with your repository on your GitHub account.
+
+### Publishing through GitHub Pages
+
+To publish your website, we can use GitHub pages. Before going to your GitHub account site, navigate to the `_quarto.yml` file in `R Studio` that stores information on how to build your blog. Below `type: website`, add `output-dir: docs`, keeping the same indentation that `type: website` has. Then, re-render your blog in the "Build" tab of `R Studio`. Specifying `output-dir` to `docs` says to output the blog to a new folder called `docs`, which will allow us to publish the blog more easily in GitHub pages.
+
+Then, on your GitHub account site, navigate to the repository you just created. Go to `Settings` -> `Pages`. Under `Build and Deployment`, make sure `Source` is set to `Deploy from a branch`. Under Brand, select either `master` or `main` and under folder, select `/docs`, which corresponds to the folder we have the blog rendered to locally. After giving it a couple of minutes to build, you should be able to click the "Visit Site" button to see your blog, which is now published on the web.
+
+### Creating a New Post
+
+To create a new post, first create a new Folder in within the "Posts" folder of your Project. Then, create a new Quarto `.qmd` file (HTML), type some code into the file, and save the file as `index.qmd` within your new folder.
+
+Render the blog by again clicking the "Render Website" button in the "Build" tab to verify that your new post appears.
+
+### Unfreezing Output
+
+By default, this post is now "Frozen." Changing code within a code chunk will not change the output. To change this behaviour, navigate to the "Posts" folder and click on the `_metadata.yml` file. In the file, change `freeze: true` to `freeze: false`, which will unfreeze the code in all of the posts in the "Posts" folder.
+
+We will change this option back in the future, after we discuss the benefits of `freeze: true`. 
+
+<br>
+
+
+
+
 
