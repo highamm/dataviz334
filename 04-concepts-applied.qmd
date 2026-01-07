@@ -207,9 +207,25 @@ Which plot is preferable? Can you relate your choice to a concept in the reading
 
 <br>
 
-__Example 6__: The following plot uses the Happy Planet Index data to show the top 10 and bottom 10 countries for the `HappyPlanetIndex` variable, a variable that is meant to measure how "happy" its citizens while taking into account how the average citizen from that country affects our planet. 
+__Example 6__: Construct two different plots using the Happy Planet Index data to show the top 10 and bottom 10 countries for the `HappyPlanetIndex` variable, a variable that is meant to measure how "happy" its citizens while taking into account how the average citizen from that country affects our planet. 
+
+A short description of the Happy Planet Index data is given below. The Happy Planet Index (HPI) is a measure of how efficiently a country uses its ecological resources to give its citizens long "happy" lives.
+
+But, the basic idea is that the HPI is a metric that computes how happy and healthy a country’s citizens are, but adjusts that by that country’s ecological footprint (how much "damage" the country does to planet Earth). The data set was obtained from <https://github.com/aepoetry/happy_planet_index_2016>. Variables in the data set are:
+
+* `HPIRank`, the rank of the country’s Happy Planet Index (lower is better)
+* `Country`, the name of the country
+* `Region`, the area of the world the country is in
+* `HappyPlanetIndex`, our primary variable of interest, described above
 
 ```{r}
+hpi_df <- read_csv("https://raw.githubusercontent.com/highamm/ds234_quarto/main/data_online/hpi-tidy.csv")
+hpi_df
+```
+
+```{r}
+#| echo: false
+#| output: false
 library(tidyverse)
 library(here)
 hpi_df <- read_csv(here("data/hpi-tidy.csv"))
@@ -234,7 +250,7 @@ ggplot(data = hpi_extreme, aes(x = Country, y = HappyPlanetIndex,
   theme_minimal()
 ```
 
-Which plot is preferable? Can you relate your choice to a concept in the reading?
+Construct and examine each plot. Which plot is preferable? Can you relate your choice to a concept in the reading?
 
 <!-- The second: minimizes data to ink ratio. -->
 

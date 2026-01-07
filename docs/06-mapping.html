@@ -288,8 +288,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#mapping-common-areas" id="toc-mapping-common-areas" class="nav-link" data-scroll-target="#mapping-common-areas"><span class="header-section-number">6.1.2</span> Mapping Common Areas</a></li>
   </ul>
 </li>
-  <li><a href="#mapping-other-areas-sf-objects" id="toc-mapping-other-areas-sf-objects" class="nav-link" data-scroll-target="#mapping-other-areas-sf-objects"><span class="header-section-number">6.2</span> Mapping Other Areas: <code>sf</code> Objects</a></li>
-  <li><a href="#your-turn" id="toc-your-turn" class="nav-link" data-scroll-target="#your-turn"><span class="header-section-number">6.3</span> Your Turn</a></li>
+  <li>
+<a href="#mapping-other-areas-sf-objects" id="toc-mapping-other-areas-sf-objects" class="nav-link" data-scroll-target="#mapping-other-areas-sf-objects"><span class="header-section-number">6.2</span> Mapping Other Areas: <code>sf</code> Objects</a>
+  <ul class="collapse">
+<li><a href="#an-additional-example-with-sf" id="toc-an-additional-example-with-sf" class="nav-link" data-scroll-target="#an-additional-example-with-sf"><span class="header-section-number">6.2.1</span> An Additional Example with <code>sf</code></a></li>
+  </ul>
+</li>
+  <li><a href="#mapping-points" id="toc-mapping-points" class="nav-link" data-scroll-target="#mapping-points"><span class="header-section-number">6.3</span> Mapping Points</a></li>
+  <li><a href="#your-turn" id="toc-your-turn" class="nav-link" data-scroll-target="#your-turn"><span class="header-section-number">6.4</span> Your Turn</a></li>
   </ul></nav>
     </div>
 <!-- main -->
@@ -541,8 +547,90 @@ Important
 <p><strong>Exercise 2</strong>. Change the fill scale of the plot. Should you use an unordered, sequential, or diverging scale?</p>
 <p><strong>Exercise 3</strong>. Change the colour scale so that <code>active_cases</code> are put into different <strong>bins</strong> with <code><a href="https://ggplot2.tidyverse.org/reference/scale_viridis.html">scale_fill_viridis_b()</a></code>. What are some advantages and disadvantages of this?</p>
 <p><strong>Exercise 4</strong>. Explore the <code>?geom_sf_text()</code> function and add the actual number of cases to the subregions in the plot, as was done on the SLC website.</p>
-</section><section id="your-turn" class="level2" data-number="6.3"><h2 data-number="6.3" class="anchored" data-anchor-id="your-turn">
-<span class="header-section-number">6.3</span> Your Turn</h2>
+<section id="an-additional-example-with-sf" class="level3" data-number="6.2.1"><h3 data-number="6.2.1" class="anchored" data-anchor-id="an-additional-example-with-sf">
+<span class="header-section-number">6.2.1</span> An Additional Example with <code>sf</code>
+</h3>
+<p>In the prior example, we created an <code>sf</code> object from a shapefile obtained online. However, <code>sf</code> objects are widely used in both <code>R</code> and <code>Python</code> and are often already available to download as these objects directly. Consider the following example on Election results in the United States 2020 election, where the data were originally obtained from <a href="https://github.com/kjhealy/us_elections_2020_csv" class="uri">https://github.com/kjhealy/us_elections_2020_csv</a>. The variables in the data set include:</p>
+<ul>
+<li>
+<code>state_name</code>, the name of the state</li>
+<li>
+<code>county_name</code>, the name of the county</li>
+<li>
+<code>per_gop</code>, the proportion of the county who voted for the republican presidential candidate, Donald Trump</li>
+<li>
+<code>per_dem</code>, the proportion of the county who voted for the democratic presidential candidate, Joe Biden</li>
+<li>
+<code>per_point_diff</code>, the difference in the proportions who voted for Trump and Biden</li>
+</ul>
+<p>In your data folder, there is an <code>election_2020.rda</code> file. <code>rda</code> files are <code>R</code> data files that can be used to store a wide variety of <code>R</code> objects, including <code>sf</code> objects. Use <code><a href="https://rdrr.io/r/base/load.html">load()</a></code> to load in the <code>.rda</code> file and verify that it is an <code>sf</code> object (it is best practice that people who make an <code>.rda</code> file use the same name for the object itself as for the file extension, as is done below).</p>
+<div class="cell">
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/load.html">load</a></span><span class="op">(</span><span class="fu">here</span><span class="fu">::</span><span class="fu"><a href="https://here.r-lib.org/reference/here.html">here</a></span><span class="op">(</span><span class="st">"data/election_2020.rda"</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">election_2020</span></span>
+<span><span class="co">#&gt; Simple feature collection with 3108 features and 9 fields</span></span>
+<span><span class="co">#&gt; Geometry type: MULTIPOLYGON</span></span>
+<span><span class="co">#&gt; Dimension:     XY</span></span>
+<span><span class="co">#&gt; Bounding box:  xmin: -2356114 ymin: 269573.6 xmax: 2258200 ymax: 3172568</span></span>
+<span><span class="co">#&gt; Projected CRS: NAD83 / Conus Albers</span></span>
+<span><span class="co">#&gt; # A tibble: 3,108 × 10</span></span>
+<span><span class="co">#&gt;   state_name county_name    votes_gop votes_dem total_votes  diff per_gop</span></span>
+<span><span class="co">#&gt; * &lt;chr&gt;      &lt;chr&gt;              &lt;dbl&gt;     &lt;dbl&gt;       &lt;dbl&gt; &lt;dbl&gt;   &lt;dbl&gt;</span></span>
+<span><span class="co">#&gt; 1 Alabama    Autauga County     19838      7503       27770 12335   0.714</span></span>
+<span><span class="co">#&gt; 2 Alabama    Baldwin County     83544     24578      109679 58966   0.762</span></span>
+<span><span class="co">#&gt; 3 Alabama    Barbour County      5622      4816       10518   806   0.535</span></span>
+<span><span class="co">#&gt; 4 Alabama    Bibb County         7525      1986        9595  5539   0.784</span></span>
+<span><span class="co">#&gt; 5 Alabama    Blount County      24711      2640       27588 22071   0.896</span></span>
+<span><span class="co">#&gt; 6 Alabama    Bullock County      1146      3446        4613 -2300   0.248</span></span>
+<span><span class="co">#&gt; # ℹ 3,102 more rows</span></span>
+<span><span class="co">#&gt; # ℹ 3 more variables: per_dem &lt;dbl&gt;, per_point_diff &lt;dbl&gt;,</span></span>
+<span><span class="co">#&gt; #   geometry &lt;MULTIPOLYGON [m]&gt;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>What is the coordinate reference system? Use Google to figure out if this is an appropriate coordinate reference system for the United States.</p>
+<p><strong>Exercise</strong>. Construct a map of the <code>per_gop</code> variable, the proportion of people in the county who voted for Trump in 2020. What colour scale makes sense here? <strong>Careful</strong>: there are a lot of counties so making a plot will take a while!</p>
+</section></section><section id="mapping-points" class="level2" data-number="6.3"><h2 data-number="6.3" class="anchored" data-anchor-id="mapping-points">
+<span class="header-section-number">6.3</span> Mapping Points</h2>
+<p>Constructing choropleth maps for data collected on polygons (states, counties, etc.) is not the only data type that can be mapped! In some cases, we have:</p>
+<ul>
+<li>data that are collected at <strong>point</strong> locations in larger areas of geographic space, like the <code>ozone</code> pollution data in the state of California described below,</li>
+<li>data that are collected at <strong>point</strong> locations in tiny areas of geographic space, like the <code>soto</code> baseball data described below.</li>
+</ul>
+<p>Mapping this data type has the same benefits and drawbacks as choropleth maps. With mapping, we gain an idea of how a variable of interest changes with geographic space. But, often more specific questions of interest are better answered with other plot types.</p>
+<p><strong>Exercise</strong>. Ozone pollution data was collected in 2025 in April at various pollution monitoring stations in the state of California. The data set contains the amount of ozone detected (in parts per billion), the <code>source</code>, the measurement source (either from an <code>AirNow</code> device or an <code>AQS</code> device), and coordinates (either <code>lon</code>, <code>lat</code> or projected <code>x</code>, <code>y</code> coordinates).</p>
+<p><code>ozone</code> is not an <code>sf</code> object (though it can be made into one if desired). Make a map of the ozone pollution in the state of California.</p>
+<div class="cell">
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/load.html">load</a></span><span class="op">(</span><span class="fu">here</span><span class="fu">::</span><span class="fu"><a href="https://here.r-lib.org/reference/here.html">here</a></span><span class="op">(</span><span class="st">"data/ozone.rda"</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">ozone</span></span>
+<span><span class="co">#&gt; # A tibble: 145 × 6</span></span>
+<span><span class="co">#&gt;   ozone source   lon   lat         x        y</span></span>
+<span><span class="co">#&gt;   &lt;dbl&gt; &lt;chr&gt;  &lt;dbl&gt; &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt;</span></span>
+<span><span class="co">#&gt; 1    38 AirNow -122.  37.7 -2255465. 1946556.</span></span>
+<span><span class="co">#&gt; 2    35 AirNow -122.  37.8 -2262711. 1956962.</span></span>
+<span><span class="co">#&gt; 3    43 AQS    -122.  39.8 -2167015. 2156718.</span></span>
+<span><span class="co">#&gt; 4    41 AQS    -122.  39.8 -2148102. 2151026.</span></span>
+<span><span class="co">#&gt; 5    38 AQS    -121.  38.2 -2116863. 1961881.</span></span>
+<span><span class="co">#&gt; 6    43 AirNow -122.  39.2 -2197300. 2098568.</span></span>
+<span><span class="co">#&gt; # ℹ 139 more rows</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p><strong>Exercise</strong>. What is a question about the ozone data that would be better answered with a plot other than a map?</p>
+<p><strong>Exercise</strong>. Data were obtained from Baseball Savant’s <strong>StatCast</strong> (<a href="https://baseballsavant.mlb.com/" class="uri">https://baseballsavant.mlb.com/</a>) on Juan Soto’s batting data in the 2025 season from the start of the season through mid-May. Each row corresponds to one pitch where Soto is at-bat. There are <strong>a ton</strong> of variables that Baseball Savant provides, but we will focus on just a few here:</p>
+<ul>
+<li>
+<code>plate_x</code>, where the ball crossed the plate in the horizontal direction (in feet, where 0 feet is at the center of home plate).</li>
+<li>
+<code>plate_z</code>, where the ball crossed the plate in the vertical direction (in feet above the ground).</li>
+<li>
+<code>type</code>, a factor that gives the outcome of the pitch, either <code>"X"</code> for putting the ball into the field of play, <code>"S"</code> for a strike or foul ball, and <code>"B"</code> for a ball.</li>
+<li>
+<code>pitch_type</code>, a factor that gives the type of pitch.</li>
+</ul>
+<p>Read in the data and construct a “map” of the pitches against Soto, colouring by the type. What can we do to make the plot look nicer and be more informative?</p>
+<div class="cell">
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">baseball_soto</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://readr.tidyverse.org/reference/read_delim.html">read_csv</a></span><span class="op">(</span><span class="st">"data/baseball_soto25.csv"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/relocate.html">relocate</a></span><span class="op">(</span><span class="va">plate_x</span>, <span class="va">plate_z</span>, <span class="va">type</span>, <span class="va">pitch_type</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p><strong>Exercise</strong>. What is a question about the baseball data that would be better answered with a plot other than a “map?”</p>
+</section><section id="your-turn" class="level2" data-number="6.4"><h2 data-number="6.4" class="anchored" data-anchor-id="your-turn">
+<span class="header-section-number">6.4</span> Your Turn</h2>
 <p>Consider again the Happy Planet Index data. Recall that the basic idea of a “happy planet index” is that it should be a metric that computes how happy and healthy a country’s citizens are, but adjusts that by that country’s ecological footprint (how much “damage” the country does to planet Earth). Variables in the data set are:</p>
 <ul>
 <li>
@@ -565,9 +653,9 @@ Important
 <code>Region</code>, the region the country is in</li>
 </ul>
 <div class="cell">
-<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://tidyverse.tidyverse.org">tidyverse</a></span><span class="op">)</span></span>
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://tidyverse.tidyverse.org">tidyverse</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://here.r-lib.org/">here</a></span><span class="op">)</span></span>
-<span><span class="va">hpi_df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://readr.tidyverse.org/reference/read_delim.html">read_csv</a></span><span class="op">(</span><span class="fu"><a href="https://here.r-lib.org//reference/here.html">here</a></span><span class="op">(</span><span class="st">"data/hpi-tidy.csv"</span><span class="op">)</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="va">hpi_df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://readr.tidyverse.org/reference/read_delim.html">read_csv</a></span><span class="op">(</span><span class="fu"><a href="https://here.r-lib.org/reference/here.html">here</a></span><span class="op">(</span><span class="st">"data/hpi-tidy.csv"</span><span class="op">)</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p><strong>Exericse 1</strong>. Make a map of a variable of your choosing. In <code><a href="https://ggplot2.tidyverse.org/reference/coord_map.html">coord_map()</a></code>, use <code>projection = "mercator"</code>, which is also the default (we will see in a later exercise that this probably is not the best choice).</p>
 <p><strong>Hint</strong>: in <code>ggplot2</code>’s <code><a href="https://ggplot2.tidyverse.org/reference/map_data.html">map_data()</a></code> function, there is a built in map of the <code>"world"</code>.</p>

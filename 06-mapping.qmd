@@ -215,6 +215,137 @@ ggplot(data = full_df) +
   theme_void()
 ```
 
+### An Additional Example with `sf`
+
+```{r}
+#| echo: false
+#| warning: false
+#| eval: false
+library(tidycensus)
+library(spData)
+
+age_18plus_vars <- c(
+  paste0("B01001_", str_pad(7:25, 3, "left", "0")),
+  paste0("B01001_", str_pad(31:49, 3, "left", "0"))
+)
+
+age_data <- get_acs(
+  geography = "county",
+  ##state = "TX",
+  variables = age_18plus_vars,
+  year = 2020,
+  geometry = TRUE,
+  survey = "acs5"
+)
+
+## only a few problematic counties: counties in Alaska that have
+## no voter turnout data
+## and a Missouri, SD, and Virginia county that have no shape file data,
+## though the virginia county looks like it might have dissolved, so I
+## am going to remove it
+
+county_shapes <- age_data |> group_by(GEOID) |> slice(1) |>
+  st_transform(crs = 5070)
+
+data_2020 <- read_csv(here::here("data/2020_county_pres.csv"))
+election_2020 <- inner_join(county_shapes, data_2020,
+                           join_by(GEOID == county_fips)) |>
+  select(state_name, county_name, votes_gop,
+         votes_dem, total_votes, diff, per_gop, per_dem, per_point_diff) |>
+  filter(state_name != "Alaska" & state_name != "Hawaii")
+save(election_2020, file = here::here("data/election_2020.rda"))
+
+```
+
+In the prior example, we created an `sf` object from a shapefile obtained online. However, `sf` objects are widely used in both `R` and `Python` and are often already available to download as these objects directly. Consider the following example on Election results in the United States 2020 election, where the data were originally obtained from <https://github.com/kjhealy/us_elections_2020_csv>. The variables in the data set include:
+
+* `state_name`, the name of the state
+* `county_name`, the name of the county
+* `per_gop`, the proportion of the county who voted for the republican presidential candidate, Donald Trump
+* `per_dem`, the proportion of the county who voted for the democratic presidential candidate, Joe Biden
+* `per_point_diff`, the difference in the proportions who voted for Trump and Biden
+
+In your data folder, there is an `election_2020.rda` file. `rda` files are `R` data files that can be used to store a wide variety of `R` objects, including `sf` objects. Use `load()` to load in the `.rda` file and verify that it is an `sf` object (it is best practice that people who make an `.rda` file use the same name for the object itself as for the file extension, as is done below).
+
+```{r}
+load(here::here("data/election_2020.rda"))
+election_2020
+```
+
+What is the coordinate reference system? Use Google to figure out if this is an appropriate coordinate reference system for the United States.
+
+__Exercise__. Construct a map of the `per_gop` variable, the proportion of people in the county who voted for Trump in 2020. What colour scale makes sense here? __Careful__: there are a lot of counties so making a plot will take a while!
+
+```{r}
+#| echo: false
+#| eval: false
+election_2020 |> filter(is.na(per_gop))
+ggplot(data = election_2020) +
+  geom_sf(aes(fill = per_gop)) +
+  scale_fill_gradient2(
+    low = "blue",
+    mid = "white",
+    high = "red",
+    midpoint = 0.5)
+```
+
+## Mapping Points
+
+Constructing choropleth maps for data collected on polygons (states, counties, etc.) is not the only data type that can be mapped! In some cases, we have:
+
+* data that are collected at __point__ locations in larger areas of geographic space, like the `ozone` pollution data in the state of California described below,
+* data that are collected at __point__ locations in tiny areas of geographic space, like the `soto` baseball data described below.
+
+Mapping this data type has the same benefits and drawbacks as choropleth maps. With mapping, we gain an idea of how a variable of interest changes with geographic space. But, often more specific questions of interest are better answered with other plot types.
+
+__Exercise__. Ozone pollution data was collected in 2025 in April at various pollution monitoring stations in the state of California. The data set contains the amount of ozone detected (in parts per billion), the `source`, the measurement source (either from an `AirNow` device or an `AQS` device), and coordinates (either `lon`, `lat` or projected `x`, `y` coordinates).
+
+`ozone` is not an `sf` object (though it can be made into one if desired). Make a map of the ozone pollution in the state of California.
+
+```{r}
+load(here::here("data/ozone.rda"))
+ozone
+```
+
+__Exercise__. What is a question about the ozone data that would be better answered with a plot other than a map? 
+
+__Exercise__. Data were obtained from Baseball Savant's __StatCast__ (<https://baseballsavant.mlb.com/>) on Juan Soto's batting data in the 2025 season from the start of the season through mid-May. Each row corresponds to one pitch where Soto is at-bat. There are __a ton__ of variables that Baseball Savant provides, but we will focus on just a few here:
+
+* `plate_x`, where the ball crossed the plate in the horizontal direction (in feet, where 0 feet is at the center of home plate).
+* `plate_z`, where the ball crossed the plate in the vertical direction (in feet above the ground).
+* `type`, a factor that gives the outcome of the pitch, either `"X"` for putting the ball into the field of play, `"S"` for a strike or foul ball, and `"B"` for a ball.
+* `pitch_type`, a factor that gives the type of pitch.
+
+Read in the data and construct a "map" of the pitches against Soto, colouring by the type. What can we do to make the plot look nicer and be more informative?
+
+```{r}
+baseball_soto <- read_csv("data/baseball_soto25.csv") |>
+  relocate(plate_x, plate_z, type, pitch_type)
+```
+
+```{r}
+#| echo: false
+#| eval: false
+## horizontal: 20 inches
+## vertical: 18.3 inches to 44.1 inches
+ggplot(data = baseball_soto, aes(x = plate_x, y = plate_z,
+                                 colour = type)) +
+  geom_point() +
+  facet_wrap(~ pitch_type) +
+  scale_colour_viridis_d() +
+  theme_minimal() +
+  geom_vline(xintercept = -10/12, linetype = "dashed") +
+  geom_vline(xintercept = 10/12, linetype = "dashed") +
+  geom_hline(yintercept = 18.3/12, linetype = "dashed") +
+  geom_hline(yintercept = 44.1/12, linetype = "dashed")
+
+ggplot(data = baseball_soto, aes(x = plate_x, y = plate_z,
+                                 colour = bb_type)) +
+  geom_point()
+```
+
+__Exercise__. What is a question about the baseball data that would be better answered with a plot other than a "map?" 
+
 ## Your Turn
 
 Consider again the Happy Planet Index data. Recall that the basic idea of a "happy planet index" is that it should be  a metric that computes how happy and healthy a country’s citizens are, but adjusts that by that country’s ecological footprint (how much “damage” the country does to planet Earth). Variables in the data set are:

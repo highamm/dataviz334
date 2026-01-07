@@ -321,7 +321,7 @@ df_major |> filter(!is.na(discipline)) |>
 library(tidyverse)
 library(readxl)
 library(here)
-df <- read_excel(here::here("data/slu_graduates_17_23.xlsx"))
+df <- read_excel(here::here("data/slu_graduates_17_25.xlsx"))
 
 ## fixes error in the data
 df <- df |> mutate(across(everything(),
@@ -336,7 +336,7 @@ majors_plot <- df |> select(-starts_with("minor")) |>
   pivot_wider(names_from = sex, values_from = n_majors) |>
   mutate(prop_male = M / (`F` + M),
          total_students = `F` + M) |>
-  filter(total_students >= 70) |>
+  filter(total_students >= 30) |>
   mutate(major = fct_reorder(major, prop_male))
 
 mcss_df <- majors_plot |> filter(major %in% c("STAT", "MATH", "CS",

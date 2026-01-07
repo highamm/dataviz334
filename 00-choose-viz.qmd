@@ -7,15 +7,58 @@ source("_common.R")
 
 <!-- day 1 -->
 
-In this section, we will review commonly used graphics, introduce a few new graphics, and articulate some of the benefits and drawbacks of the various graphics given below. Note that some graphs (looking at your, pie chart) mainly have drawbacks, with very few benfits. We will complete most of this with a pen-and-paper handout, but the code for many of the visualizations we will discuss is given here for reference. 
+In this section, we will review commonly used graphics, introduce a few new graphics, and articulate some of the benefits and drawbacks of the various graphics given below. Note that some graphs (looking at you, pie chart) mainly have drawbacks, with very few benefits. We will complete most of this with a pen-and-paper handout, but the code for many of the visualizations we will discuss is given here for reference. 
 
 ## Why Visualize Data?
 
 Data visualization is important in many aspects of statistics and data science. Often, people can see patterns in data and understand the underlying data better with a visualization instead of numerical summary statistics.
 
-But, isn't it obvious how to create a "good" data visualization? Why should there be an entire course on the subject? Part of the answer is that there is some code that we need to learn to create flexible data visualizations. However, even if that were not the case, people are not necessarily good at constructing informative data visuals.
+But, isn't it obvious how to create a "good" data visualization? Why should there be an entire course on the subject? Part of the answer is that there is some code that we need to learn to create flexible data visualizations. However, even if that were not the case, people are not necessarily innately good at constructing informative data visuals.
 
-Examine the <a href="https://www.reddit.com/r/dataisugly/" target="_blank">data is ugly subreddit</a> for a couple of minutes to see why this data visualization is **not** necessarily simply a natural talent for people.
+Before we examine some common visualizations in this section, we will do a very quick `tidyverse` review problem to help us answer the question "What are the most commonly used `geom`'s in the `ggplot2` package?" To help us answer this question, data was collected by @michistoelzle (the account no longer on the web) from searching github repositories for any uses of the various `ggplot2` `geom`'s. The data set below gives the number of times the terms appeared on a subset of public github repositories (Git and GitHub is something we will learn to use in this class for version control).
+
+```{r}
+#| output: false
+#| warning: false
+library(tidyverse)
+popularity_df <- read_csv("https://raw.githubusercontent.com/highamm/ds234_quarto/main/data_online/geom_popularity.csv")
+popularity_df
+```
+
+What do you think the most used `geom` is? And what would be a useful graph that you would have encountered in DATA/STAT 234 to visualize the popularity of the most popular `geom`s?
+
+```{r}
+#| echo: false
+#| warning: false
+#| output: false
+
+popularity_df <- popularity_df |>
+  mutate(geom_name = fct_reorder(geom_name, github_hits))
+
+library(scales)
+
+
+ggplot(data = popularity_df,
+       aes(x = github_hits, y = geom_name)) +
+  geom_segment(aes(yend = geom_name, x = 0, xend = github_hits),
+               colour = "seagreen1") +
+  geom_point(colour = "seagreen4") +
+  theme_minimal() 
+
+## then do the scaling
+## then do the colour modification
+
+ggplot(data = popularity_df,
+       aes(x = github_hits, y = geom_name)) +
+  geom_segment(aes(yend = geom_name, x = 0, xend = github_hits,
+                   colour = log(github_hits, base = 10)),
+               show.legend = FALSE) +
+  geom_point(aes(colour = log(github_hits, base = 10)),
+             show.legend = FALSE) +
+  theme_minimal() +
+  scale_colour_viridis_c() +
+  scale_x_log10(labels = label_number(big.mark = ","))
+```
 
 Throughout the rest of this section, we will use the `Salaries` data set from the `carData` package, which contains variables on the salaries of professors at a particular institution (not this institution though!), including the professor's `rank` (`AsstProf`, `AssocProf`, or `Prof`), `discipline` (`A` for theoretical and `B` for applied), `yrs.service`, the years of service, `sex` (treated as binary in this data set: `Male` or `Female`), and `salary` (in dollars).
 
@@ -88,7 +131,8 @@ ggplot(data = salaries_sum, aes(x = rank, y = n)) +
   geom_segment(aes(xend = rank, y = 0, yend = n),
                colour = "mediumpurple1") +
   geom_point(colour = "mediumpurple4") +
-  labs(title = "Lollipop Plot")
+  labs(title = "Lollipop Plot",
+       y = "count")
 ```
 
 <br>

@@ -17,8 +17,10 @@ We will assume each observation is independent in our linear model. For those of
 :::
 
 ```{r}
+## install.packages("ggeffects")
 library(openintro)
 library(tidyverse)
+library(ggeffects)
 theme_set(theme_minimal())
 evals <- openintro::evals
 ```
@@ -27,11 +29,11 @@ evals <- openintro::evals
 
 Our basic strategy for visualizing models is to
 
-1.  fit the model of interest with `lm()`.
+1.  fit the model of interest with `lm()` and check model assumptions.
 
-2.  construct a grid of predictor values with the `data_grid()` function from the `modelr` package.
+2.  Either specify model terms that we want to make predictions for within `ggpredict()` from the `ggeffects` package or make a data grid explicitly with `expand_grid()`.
 
-3.  Use the `augment()` function from the `broom` package on the data grid in (2) to predict the response variable according to the model for each row in the grid.
+3.  Use `ggpredict()` to predict the response variable according to the model for each row in the grid.
 
 4.  Use `ggplot2` to construct a meaningful plot with the model predictions from (3).
 
@@ -53,54 +55,78 @@ mod_age <- lm(score ~ age, data = evals)
 mod_age |> tidy()
 ```
 
-**Step 2**: Create a grid of predictor values.
+**Steps 2 and 3**: Create a grid of predictor values and use `ggpredict()` to obtain predictions.
 
-In this simple example, we only have one predictor: `age`. So, we want to create a `tibble` that has a few values of `age` to plug into the fitted model. The `seq_range()` function can help with this. In the code below, we are creating a `tibble` called `grid` that contains `6` values of `age`: the minimum `age` in `evals`, the maximum `age` in `evals`, and four other values that are equally spaced between the minimum and the maximum. The `seq_range()` and `data_grid()` functions come from the `modelr` package.
-
-```{r}
-library(modelr)
-grid <- evals |>
-  data_grid(
-    age = seq_range(age, n = 6)
-  ) 
-grid
-```
-
-**Step 3**: `augment()`.
-
-Next, we want to use the `augment()` function from `broom` to use the `mod_age` model to predict course `score` for each row in `grid`. We will name this new `tibble` `aug_age`.
+In this simple example, we only have one predictor: `age`. So, we want to create a `tibble` that has a few values of `age` to plug into the fitted model and obtain the predicted score for each value of `age` that we provide. We can do this with `ggpredict()` by providing the name of our fitted model object and the terms for which we would like to create predictions from (here, `terms = "age"` since `age` is our only predictor).
 
 ```{r}
-aug_age <- augment(mod_age, newdata = grid,
-                   interval = "confidence")
-aug_age
+ggpredict(mod_age, terms = "age")
 ```
 
-`augment()` takes the name of the model and the name of the gridded data frame we created in the previous step. We can also obtain 95% confidence intervals for the mean response at each value of `age` in `grid` if we specify the `interval = "confidence"` argument.
+What do we see in the output? We see that `ggpredict()` has constructed the predicted response (score) for eight different ages. Verify that you can obtain the first "prediction" of 4.30 by doing a by hand calculation with the fitted model object, plugging in `age = 28` in the fitted regression equation. 
+
+You should also notice that there is a message in `ggpredict()` that there are actually more rows than the 8 rows we see here. We can convert the output to a `tibble()` and rename some of the terms in the output with:
+
+```{r}
+ggpredict(mod_age, terms = "age") |> as.data.frame(terms_to_colnames = TRUE) |>
+  as_tibble()
+```
+
+So `ggpredict()` actually constructed 24 predictions. While `ggpredict()` chooses which values of `age` are in our grid through a default mechanism, we can also more explicitly give the function values of `age` that we want in our grid:
+
+```{r}
+ggpredict(mod_age, terms = "age [28:74]") |> as.data.frame(terms_to_colnames = TRUE) |>
+  as_tibble()
+```
+
+This constructs a predicted score for a sequence of ages from 28, 29, 30, ...., 72, 73, 74.
+
+There are also certain "helper" arguments that `ggpredict()` provides. A few of the more useful ones are:
+
+* `meansd` (provide predictions at the mean age and at one standard deviation above and below the mean age)
+* `threenum` (provides predictions at the median age, Q1, and Q3).
+* `fivenum` (provides predictions at the median age, Q1, Q3, the minimum age, and the maximum age)
+* `all` (provides predictions for all values of age in the original data set).
+
+The syntax for overriding the default behavior of `ggpredict()` is to use `[ ]` following the predictor in the `terms` argument. Below, we obtain predictions for score at the minimum, Q1, median, Q3, and maximum values for age:
+
+```{r}
+ggpredict(mod_age, terms = "age [fivenum]") |>
+  as.data.frame(terms_to_colnames = TRUE) |>
+  as_tibble()
+```
+
+Note also that we obtain 95% confidence intervals for the mean response at each value of `age` in our grid: the lower bounds are in a column called `conf.low` while the upper bounds are in a column called `conf.high`.
 
 **Step 4**: Use `ggplot2`.
 
-The last step is to use `ggplot2` to make a meaningful plot. In this case, we can construct a plot with `score` on the y-axis and `age` on the x-axis.
+The last step is to use `ggplot2` to make a meaningful plot. In this case, we can construct a plot with `score` on the y-axis and `age` on the x-axis using the default predictions from `ggpredict()`.
+
+```{r}
+pred_evals <- ggpredict(mod_age, terms = "age") |>
+  as.data.frame(terms_to_colnames = TRUE) |>
+  as_tibble()
+```
 
 ```{r}
 ggplot(data = evals, aes(x = age, y = score)) +
   geom_point() +
-  geom_line(data = aug_age, aes(x = age, y = .fitted),
+  geom_line(data = pred_evals, aes(x = age, y = predicted),
             colour = "blue", linewidth = 1.2)
 ```
 
-Note that, because the original data and the grid used for the predictions are different data frames, we have to remember to adjust the data used for each geom appropriately, taking advantage of the fact that a local `data` argument and local `aes()` aesthetics will overrid the global arguments in the `ggplot()` function.
+Note that, because the original data and the grid used for the predictions are different data frames, we have to remember to adjust the data used for each geom appropriately, taking advantage of the fact that a local `data` argument and local `aes()` aesthetics will override the global arguments in the `ggplot()` function.
 
 We can then use the `geom_ribbon()` function to add a measure of uncertainty to our plot and generate the 95% confidence band:
 
 ```{r}
 ggplot(data = evals, aes(x = age, y = score)) +
   geom_point() +
-  geom_line(data = aug_age, aes(x = age, y = .fitted),
+  geom_line(data = pred_evals, aes(x = age, y = predicted),
             colour = "blue", linewidth = 1.2) +
-  geom_ribbon(data = aug_age, aes(y = .fitted,
-                                  ymin = .lower,
-                                  ymax = .upper), 
+  geom_ribbon(data = pred_evals, aes(y = predicted,
+                                  ymin = conf.low,
+                                  ymax = conf.high), 
               alpha = 0.4)
 ```
 
@@ -109,39 +135,33 @@ So, we finally get a plot of the fitted model that matches with the default plot
 ::: {.callout-important}
 ## Important
 
-This exercise is only to help us understand the steps to create the plot. For such a simple example, we would not go through the trouble of using this workflow to create this plot when it can easily be created without it.
+This exercise is only to help us understand the steps to create the plot. For such a simple example, we would not go through the trouble of using this workflow to create this plot when it can easily be created without it. We will take advantage of this workflow to help us visualize more complex models.
 :::
 
 **Exercise 1**. As we saw above, the grey "band" around the fitted regression line represents 95% confidence intervals for the mean response (score) for particular values of the predictor (age). In STAT 213, you also discussed 95% prediction intervals for a new observation's response (score) for particular values of the predictor (age). What is the difference between a 95% confidence interval and a 95% prediction interval?
 
-**Exercise 2**. Modify the code so that the grey band reflects 95% prediction intervals instead of 95% confidence intervals for the mean.
+**Exercise 2**. Modify the code so that the grey band reflects 95% prediction intervals instead of 95% confidence intervals for the mean. __Hint__: there is an `interval` argument in `ggpredict()`.
 
-**Exercise 3**. By "hand", verify that the `.fitted` value in the first row of `aug_age` can be calculated simply by plugging in `29` into the fitted regression equation obtained from `mod_age`.
+**Exercise 3**. By "hand", verify that the `predicted` value in the first row of `pred_evals` can be calculated simply by plugging in `28` into the fitted regression equation obtained from `mod_age`.
 
-**Exercise 4**. In `data_grid(age = seq_range(age, n = 6))`, why does it not matter as much what value is chosen for `n` in this example? Change `n` to be a different integer and verify that the plot does not substantially change. 
-
-**Exercise 5**. Fit the following model, which includes an `age^2` term. Then, run the rest of the code in the chunk to obtain predictions for the `age` values in `grid` with both the `mod_age` model and the `mod_agesq` model. 
+**Exercise 4**. Fit the following model, which includes an `age^2` term. Then, run the rest of the code in the chunk to obtain predictions for the `age` values in `grid` with both the `mod_age` model and the `mod_age_sq` model. 
 
 ```{r}
-aug_age <- augment(mod_age, newdata = grid,
-                   interval = "confidence")
+pred_evals
 
-mod_agesq <- lm(score ~ age + I(age ^ 2), data = evals) 
+mod_age_sq <- lm(score ~ age + I(age ^ 2), data = evals) 
 
-grid <- evals |>
-  data_grid(
-    age = seq_range(age, n = 6)
-  ) 
+pred_evals_sq <- ggpredict(mod_age_sq, terms = "age") |>
+  as.data.frame(terms_to_colnames = TRUE) |>
+  as_tibble()
 
-aug_agesq <- augment(mod_agesq, newdata = grid,
-                     interval = "confidence")
-aug_agesq
+pred_evals_sq
 ```
 
-Use `ggplot` to make a plot that has (1) the fitted line from `mod_age` and the fitted curve from `mod_agesq`, where the line/curves are coloured by the `model` type and (2) has the data points in the background of the plot. The code below stacks the two augmented data frames on top of each other and creates a new column called `model` that gives the names of the data frames as its levels.
+Use `ggplot` to make a plot that has (1) the fitted line from `mod_age` and the fitted curve from `mod_age_sq`, where the line/curves are coloured by the `model` type and (2) has the data points in the background of the plot. The code below stacks the two predicted data frames on top of each other and creates a new column called `model` that gives the names of the data frames as its levels.
 
 ```{r}
-plot_df <- bind_rows(lst(aug_age, aug_agesq), .id = "model")
+plot_df <- bind_rows(lst(pred_evals, pred_evals_sq), .id = "model")
 plot_df
 ```
 
@@ -149,15 +169,17 @@ plot_df
 #| echo: false
 #| output: false
 ggplot(data = evals, aes(x = age, y = score)) +
-  geom_point() +
-  geom_line(data = plot_df, aes(y = .fitted, colour = model),
+  geom_point(alpha = 0.7) +
+  geom_line(data = plot_df, aes(y = predicted, colour = model),
             linewidth = 1.3) +
-  geom_ribbon(data = plot_df, aes(y = .fitted,
-                                   ymin = .lower, 
-                                   ymax = .upper,
+  geom_ribbon(data = plot_df, aes(y = predicted,
+                                  ymin = conf.low, 
+                                  ymax = conf.high,
                                   fill = model),
               alpha = 0.4)
 ```
+
+Is there evidence that a squared term is useful to include in this model?
 
 ## Visualizing More Complex Models
 
@@ -171,25 +193,17 @@ mod_comp |> tidy()
 
 The model contains an interaction between `age` and `bty_avg` so the coefficients involving these two terms are very tough to interpret. Our goal is to create a plot that helps interpret this model.
 
-We will use the same strategy outlined in the previous section to create a data frame with predictions for various values of `age`, `bty_avg`, and `gender`. In `data_grid()`, we now need to give values not only for `age`, but also for `bty_avg`, and `gender`. Note that `gender`, the categorical predictor is a vector of its possible levels.
+We will use the same strategy outlined in the previous section to create a data frame with predictions for various values of `age`, `bty_avg`, and `gender`. In the `terms` argument, we now need to give values not only for `age`, but also for `bty_avg`, and `gender`. Note that we could provide specific values of `gender` for which we want to predict for with `"gender [male]"`, but it is much more common to want predictions for each level of a categorical predictor. 
 
 ```{r}
-grid <- evals |>
-  data_grid(
-    age = seq_range(age, n = 6),
-    bty_avg = seq_range(bty_avg, n = 6),
-    gender = c("female", "male")
-  ) 
-grid
+pred_comp <- ggpredict(mod_comp, terms = c("bty_avg",
+                              "age [threenum]",
+                              "gender")) |>
+  as.data.frame(terms_to_colnames = TRUE) |>
+  as_tibble()
 ```
 
-`data_grid()` creates one row for each `age`-`bty_avg`-`gender` combination. With 6 values for `age`, 6 values for `bty_avg`, and 2 values for `gender`, `grid` has 72 rows. We then gather the predictions from this `grid` with the `mod_comp` model:
-
-```{r}
-aug_int <- augment(mod_comp, newdata = grid,
-                   interval = "confidence")
-aug_int
-```
+We obtain 90 predictions: there are 3 unique values for age, 2 unique values for gender, and 15 unique values for beauty average (3 * 2 * 15 = 90). Note that `ggpredict()` will "assume" that the first term provided in `terms` is the term that we plan on putting on the x-axis of our plot, giving a relatively large number of unique values to make predictions for (15 here). Any subsequent terms are assumed to be grouping variables and are given fewer unique values (we specified 3 here for age and gender has 2 levels).
 
 And the final step is to create a plot of the resulting model predictions. This is the step that requires the most critical thinking, as the plot will change depending on (1) how many models we fit (just 1 in this example) and (2) how many predictor variables we have.
 
@@ -201,35 +215,33 @@ And the final step is to create a plot of the resulting model predictions. This 
 #| echo: false
 #| output: false
 ggplot(data = evals, aes(x = bty_avg, y = score)) +
-  geom_point() + 
+  geom_point(alpha = 0.7) + 
   facet_wrap(~ gender) +
-  geom_line(data = aug_int, aes(y = .fitted, 
-                                colour = factor(age)),
+  geom_line(data = pred_comp, aes(y = predicted, 
+                                colour = age),
             linewidth = 1.2) +
   scale_colour_viridis_d() +
   theme_minimal() 
 
 ggplot(data = evals, aes(x = bty_avg, y = score)) +
-  geom_point() + 
+  geom_point(alpha = 0.7) + 
   facet_wrap(~ gender) +
-  geom_line(data = aug_int, aes(y = .fitted, 
-                                colour = factor(age)),
+  geom_line(data = pred_comp, aes(y = predicted, 
+                                colour = age),
             linewidth = 1.2) +
   scale_colour_viridis_d() +
   scale_fill_viridis_d() +
   theme_minimal() +
-  geom_ribbon(data = aug_int, aes(y = .fitted,
-                                  fill = factor(age),
-                                  ymin = .lower,
-                                  ymax = .upper),
+  geom_ribbon(data = pred_comp, aes(y = predicted,
+                                  fill = age,
+                                  ymin = conf.low,
+                                  ymax = conf.high),
               alpha = 0.2)
 ```
 
-**Exercise 3**. We've discussed in this class the importance of showing uncertainty, when possible, using our visualizations. However, if you attempt to show uncertainty using `geom_ribbon()` on the plot you created, you end up with a mess. How could you modify the plot so that uncertainty is shown?
+**Exercise 3**. We've discussed in this class the importance of showing uncertainty, when possible, using our visualizations. How could you modify the plot so that uncertainty is shown?
 
-**Exercise 4**. Adjust one of the values for `n` to modify the plot in the previous exercise.
-
-**Exercise 5**. Look at the help in `?seq_range` and use it to adjust the `trim` option for `age`.
+**Exercise 4**. Adjust the number of unique age values for which predictions are computed, and reconstruct the plot. Does it still make sense to use `geom_ribbon()` in the resulting plot?
 
 ## Your Turn
 
@@ -242,21 +254,15 @@ mod_cat <- lm(score ~ gender + ethnicity + age + age:gender,
                data = evals)
 mod_cat |> tidy()
 
-grid <- evals |>
-  data_grid(
-    age = seq_range(age, n = 6),
-    ethnicity = c("minority", "not minority"),
-    gender = c("female", "male")
-  ) 
-
-aug_cat_int <- augment(mod_cat, newdata = grid,
-                       interval = "confidence")
+preds_cat <- ggpredict(mod_cat, terms = c("age", "ethnicity", "gender")) |>
+  as.data.frame(terms_to_colnames = TRUE) |>
+  as_tibble()
 
 ggplot(data = evals, aes(x = age, y = score)) +
-  geom_point() + 
+  geom_point(alpha = 0.5) + 
   facet_wrap( ~ gender) +
-  geom_line(data = aug_cat_int,
-            aes(y = .fitted, colour = ethnicity),
+  geom_line(data = preds_cat,
+            aes(y = predicted, colour = ethnicity),
             linewidth = 1.2) +
   scale_colour_viridis_d() +
   theme_minimal() 
@@ -268,35 +274,63 @@ ggplot(data = evals, aes(x = age, y = score)) +
 #| echo: false
 #| output: false
 mod_cat_noint <- lm(score ~ gender + ethnicity + age,
-               data = evals)
+                    data = evals)
 mod_cat_noint |> tidy()
 
-grid <- evals |>
-  data_grid(
-    age = seq_range(age, n = 6),
-    ethnicity = c("minority", "not minority"),
-    gender = c("female", "male")
-  ) 
+preds_cat_noint <- ggpredict(mod_cat_noint, terms = c("age", "ethnicity", "gender")) |>
+  as.data.frame(terms_to_colnames = TRUE) |>
+  as_tibble()
 
-aug_cat_noint <- augment(mod_cat_noint, newdata = grid,
-                       interval = "confidence")
-
-cat_plot <- bind_rows(lst(aug_cat_int, aug_cat_noint),
+cat_plot <- bind_rows(lst(preds_cat, preds_cat_noint),
                       .id = "model")
 
 ggplot(data = evals, aes(x = age, y = score)) +
-  geom_point() + 
+  geom_point(alpha = 0.5) + 
   facet_wrap(ethnicity ~ gender) +
   geom_line(data = cat_plot,
-            aes(y = .fitted, colour = model),
+            aes(y = predicted, colour = model),
             linewidth = 1.2) +
   scale_colour_viridis_d() +
   theme_minimal() 
 ```
 
-**Exercise 3**. Suppose that you want to visualize a regression model with a generic quantitative response variable $y$ and __10__ predictor variables $x_1$, $x_2$, ...., $x_{10}$. You are most interested in the visualizing the association between $x_4$ and $y$, after accounting for the effects of the other 9 predictors. Sketch an appropriate visualization for this setting. What should the values for the other 9 predictors be?
+**Exercise 3**. The purpose of this exercise is to visualize a model that has more predictors than we can reasonably plot. 
 
-**Exercise 4**. The purpose of this exercise is to explore what happens to the augmented predictions when there is a lot of __multicollinearity__ among the predictor variables. Recall that multicollinearity means that predictor variables are highly correlated with one another. The example below contains information on body measurements. The response variable, `brozek`, is a metric of body fat percentage while the predictor variables, `weight`, `thigh`, and `adipos`, all correspond to other body measurements that are much easier to obtain than `brozek` body fat percentage.
+Consider the `RailsTrails` data set from the `Stat2Data` package. This data set contains house prices on a sample of homes in the Northampton, Massachusetts area. Suppose that we are interested in constructing a model to predict home price (`Price2014`, in thousands of dollars) with the following predictors:
+
+* `Distance`: the distance to the nearest entry point in the railstrails network, in miles,
+* `GarageSpaces`: the number of garage spaces the home has,
+* `NumRooms`: the number of rooms the home has,
+* `BikeScore`: the bike friendliness of the home, on a scale from 0 to 100,
+* `SquareFeet`: the square footage of the house (in hundreds of square feet),
+* `Zip`: the zip code (either 1060 for Northampton or 1062 for Florence).
+
+Suppose that all model assumptions hold. How would we be able to visualize this model? 
+
+We will make a sketch, talk through limitations, and construct a visualization in class.
+
+```{r}
+## install.packages("Stat2Data")
+library(Stat2Data)
+data("RailsTrails")
+rails_trails <- RailsTrails |> as_tibble() |>
+  mutate(Zip = factor(Zip)) ## convert zip code to a factor
+```
+
+```{r}
+#| echo: false
+#| output: false
+rails_mod <- lm(Price2014 ~ Distance + GarageSpaces + NumRooms + BikeScore + SquareFeet + Zip,
+   data = rails_trails)
+ggpredict(rails_mod, terms = c("Distance", "GarageSpaces",
+                               "Zip")) |>
+  as.data.frame(terms_to_colnames = TRUE) |>
+  as_tibble()
+```
+
+**Exercise 4**. In all of our above models, we have assumed that there is not a lot of multicollinearity among the predictors in the model. The purpose of this exercise is to explore how a visualization of predictions when there is a lot of __multicollinearity__ among the predictor variables is problematic. Recall that multicollinearity means that predictor variables are highly correlated with one another. The example below contains information on body measurements. The response variable, `brozek`, is a metric of body fat percentage while the predictor variables, `weight`, `thigh`, and `adipos`, all correspond to other body measurements that are much easier to obtain than `brozek` body fat percentage.
+
+To do so, we will use a data set on body measurements, using `brozek`, a measure of body fat percentage, as the response variable and `weight`, `thigh`, and `adipos` as predictors.
 
 a. Examine the following scatterplot matrix. Explain why the model has a large amount of multicollinearity.
 
@@ -307,7 +341,6 @@ a. Examine the following scatterplot matrix. Explain why the model has a large a
 ## install.packages("faraway")
 library(faraway)
 library(broom)
-library(modelr)
 library(GGally)
 
 ggpairs(fat, columns = c("brozek", "weight", "thigh", "adipos"))
@@ -320,22 +353,18 @@ mod <- lm(brozek ~ weight + thigh + adipos, data = fat)
 mod |> tidy()
 ```
 
-c. Before completing the next part, explain what you think a plot will look like that has `weight` on the x-axis and augmented predictions for `brozek` at the median values of `thigh` and `adipos` on the y-axis.
+c. Before completing the next part, explain what you think a plot will look like that has `weight` on the x-axis and augmented predictions for `brozek` at specific values of `thigh` and `adipos` on the y-axis.
 
 d. Run the code below to construct the plot. Why does the model look like it fits the points very poorly?
 
 ```{r}
-grid <- fat |>
-  data_grid(
-    weight = seq_range(weight, n = 10),
-    thigh = fat |> pull(thigh) |> median(),
-    adipos = fat |> pull(adipos) |> median()
-  ) 
+fat_preds <- ggpredict(mod, terms = c("weight")) |>
+  as.data.frame(terms_to_colnames = TRUE) |>
+  as_tibble()
 
-fat_aug <- augment(mod, newdata = grid, interval = "confidence")
-ggplot(data = fat_aug, aes(x = weight, y = .fitted)) +
+ggplot(data = fat_preds, aes(x = weight, y = predicted)) +
   geom_line(linewidth = 1.7, colour = "blue") +
-  geom_ribbon(aes(ymin = .lower, ymax = .upper),
+  geom_ribbon(aes(ymin = conf.low, ymax = conf.high),
               fill = "lightblue", alpha = 0.3) +
   theme_minimal() +
   geom_point(data = fat, aes(y = brozek), alpha = 0.7)

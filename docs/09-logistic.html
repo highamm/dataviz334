@@ -354,9 +354,9 @@ window.Quarto = {
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://tidyverse.tidyverse.org">tidyverse</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://here.r-lib.org/">here</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://broom.tidymodels.org/">broom</a></span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme_get.html">theme_set</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html">theme_minimal</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/get_theme.html">theme_set</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html">theme_minimal</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
-<span><span class="va">titanic_df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://readr.tidyverse.org/reference/read_delim.html">read_csv</a></span><span class="op">(</span><span class="fu"><a href="https://here.r-lib.org//reference/here.html">here</a></span><span class="op">(</span><span class="st">"data/titanic.csv"</span><span class="op">)</span>,</span>
+<span><span class="va">titanic_df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://readr.tidyverse.org/reference/read_delim.html">read_csv</a></span><span class="op">(</span><span class="fu"><a href="https://here.r-lib.org/reference/here.html">here</a></span><span class="op">(</span><span class="st">"data/titanic.csv"</span><span class="op">)</span>,</span>
 <span>                       col_types <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>Pclass <span class="op">=</span> <span class="fu"><a href="https://readr.tidyverse.org/reference/parse_factor.html">col_factor</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span>Pclass <span class="op">=</span> <span class="fu"><a href="https://forcats.tidyverse.org/reference/fct_recode.html">fct_recode</a></span><span class="op">(</span><span class="va">Pclass</span>,</span>
 <span>                             <span class="st">"1st"</span> <span class="op">=</span> <span class="st">"1"</span>,</span>
@@ -461,12 +461,12 @@ Warning
 <p><strong>Warm Up Exercise</strong>. Jittering allowed us to see the data points on the logistic regression plot of <code>Survival</code> vs.&nbsp;<code>Age</code> earlier, but, another option, is to generate a rug plot with <code><a href="https://ggplot2.tidyverse.org/reference/geom_rug.html">geom_rug()</a></code>. Examine the link <a href="https://ggplot2.tidyverse.org/reference/geom_rug.html" class="uri">https://ggplot2.tidyverse.org/reference/geom_rug.html</a> and modify the plot to have the “rug” tick marks on the top and bottom of the graph instead of the points.</p>
 <p><br></p>
 <p><br></p>
-<p>To help communicate what a fitted logistic regression model means, in terms of predicted probability (as opposed to predicted odds or log-odds), we will again make use of the <code>modelr</code> package. We will use the same overall strategy as the previous section on using <code>modelr</code> to visualize models from standard linear regression models.</p>
+<p>To help communicate what a fitted logistic regression model means, in terms of predicted probability (as opposed to predicted odds or log-odds), we will again make use again of the <code>ggeffects</code> package. We will use the same overall strategy as the previous section on using <code>ggeffects</code> to visualize models from standard linear regression models.</p>
 <p>Our basic strategy for visualizing models is to</p>
 <ol type="1">
 <li><p>fit the model with <code><a href="https://rdrr.io/r/stats/glm.html">glm()</a></code>.</p></li>
-<li><p>construct a grid of predictor values with the <code><a href="https://modelr.tidyverse.org/reference/data_grid.html">data_grid()</a></code> function from the <code>modelr</code> package.</p></li>
-<li><p>Use the <code><a href="https://generics.r-lib.org/reference/augment.html">augment()</a></code> function from the <code>broom</code> package on the data grid in (2) to to obtain predicted probabilities according to the model for each row in the grid.</p></li>
+<li><p>construct a grid of predictor values with the <code><a href="https://strengejacke.github.io/ggeffects/reference/ggpredict.html">ggpredict()</a></code> function from the <code>ggeffects</code> package.</p></li>
+<li><p>Obtain predicted probabilities for the response variable at the values specified in our grid using <code><a href="https://strengejacke.github.io/ggeffects/reference/ggpredict.html">ggpredict()</a></code>.</p></li>
 <li><p>Use <code>ggplot2</code> to construct a meaningful plot with the predicted probabilities.</p></li>
 </ol>
 <div class="callout callout-style-simple callout-important callout-titled">
@@ -509,54 +509,83 @@ Note
 <p>Let’s take a moment to appreciate that interpreting these coefficients in terms of a multiplicative change in odds of survival would not be that informative.</p>
 </div>
 </div>
-<p>We next use <code>modelr</code> to create a grid of predictors that we want to make predictions for and then gather these predictions using the <code>titanic_large</code> model:</p>
+<p>We next use <code>ggeffects</code> to create a grid of predictors that we want to make predictions for and then obtain predictions at values in the grid:</p>
 <div class="cell">
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://modelr.tidyverse.org">modelr</a></span><span class="op">)</span></span>
-<span><span class="va">grid</span> <span class="op">&lt;-</span> <span class="va">titanic_df</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu"><a href="https://modelr.tidyverse.org/reference/data_grid.html">data_grid</a></span><span class="op">(</span></span>
-<span>    Age <span class="op">=</span> <span class="fu"><a href="https://modelr.tidyverse.org/reference/seq_range.html">seq_range</a></span><span class="op">(</span><span class="va">Age</span>, n <span class="op">=</span> <span class="fl">10</span><span class="op">)</span>,</span>
-<span>    Sex <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"female"</span>, <span class="st">"male"</span><span class="op">)</span>,</span>
-<span>    Pclass <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"1st"</span>, <span class="st">"2nd"</span>, <span class="st">"3rd"</span><span class="op">)</span></span>
-<span>  <span class="op">)</span> </span>
-<span><span class="va">grid</span></span>
-<span><span class="co">#&gt; # A tibble: 60 × 3</span></span>
-<span><span class="co">#&gt;     Age Sex    Pclass</span></span>
-<span><span class="co">#&gt;   &lt;dbl&gt; &lt;chr&gt;  &lt;chr&gt; </span></span>
-<span><span class="co">#&gt; 1  0.42 female 1st   </span></span>
-<span><span class="co">#&gt; 2  0.42 female 2nd   </span></span>
-<span><span class="co">#&gt; 3  0.42 female 3rd   </span></span>
-<span><span class="co">#&gt; 4  0.42 male   1st   </span></span>
-<span><span class="co">#&gt; 5  0.42 male   2nd   </span></span>
-<span><span class="co">#&gt; 6  0.42 male   3rd   </span></span>
-<span><span class="co">#&gt; # ℹ 54 more rows</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<div class="cell">
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">aug_surv</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://generics.r-lib.org/reference/augment.html">augment</a></span><span class="op">(</span><span class="va">titanic_large</span>, newdata <span class="op">=</span> <span class="va">grid</span>,</span>
-<span>                    se_fit <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
-<span><span class="va">aug_surv</span></span>
-<span><span class="co">#&gt; # A tibble: 60 × 5</span></span>
-<span><span class="co">#&gt;     Age Sex    Pclass .fitted .se.fit</span></span>
-<span><span class="co">#&gt;   &lt;dbl&gt; &lt;chr&gt;  &lt;chr&gt;    &lt;dbl&gt;   &lt;dbl&gt;</span></span>
-<span><span class="co">#&gt; 1  0.42 female 1st     3.76     0.399</span></span>
-<span><span class="co">#&gt; 2  0.42 female 2nd     2.45     0.317</span></span>
-<span><span class="co">#&gt; 3  0.42 female 3rd     1.18     0.250</span></span>
-<span><span class="co">#&gt; 4  0.42 male   1st     1.24     0.357</span></span>
-<span><span class="co">#&gt; 5  0.42 male   2nd    -0.0711   0.296</span></span>
-<span><span class="co">#&gt; 6  0.42 male   3rd    -1.34     0.246</span></span>
-<span><span class="co">#&gt; # ℹ 54 more rows</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://strengejacke.github.io/ggeffects/">ggeffects</a></span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://strengejacke.github.io/ggeffects/reference/ggpredict.html">ggpredict</a></span><span class="op">(</span><span class="va">titanic_large</span>, terms <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"Age"</span>, <span class="st">"Sex"</span>, <span class="st">"Pclass"</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt; # Predicted probabilities of Survived</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Sex: male</span></span>
+<span><span class="co">#&gt; Pclass: 3rd</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Age | Predicted |     95% CI</span></span>
+<span><span class="co">#&gt; ----------------------------</span></span>
+<span><span class="co">#&gt;   0 |      0.21 | 0.14, 0.30</span></span>
+<span><span class="co">#&gt;  20 |      0.11 | 0.08, 0.15</span></span>
+<span><span class="co">#&gt;  40 |      0.06 | 0.04, 0.09</span></span>
+<span><span class="co">#&gt;  80 |      0.01 | 0.01, 0.03</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Sex: male</span></span>
+<span><span class="co">#&gt; Pclass: 1st</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Age | Predicted |     95% CI</span></span>
+<span><span class="co">#&gt; ----------------------------</span></span>
+<span><span class="co">#&gt;   0 |      0.78 | 0.63, 0.88</span></span>
+<span><span class="co">#&gt;  20 |      0.63 | 0.51, 0.73</span></span>
+<span><span class="co">#&gt;  40 |      0.44 | 0.36, 0.54</span></span>
+<span><span class="co">#&gt;  80 |      0.15 | 0.08, 0.27</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Sex: male</span></span>
+<span><span class="co">#&gt; Pclass: 2nd</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Age | Predicted |     95% CI</span></span>
+<span><span class="co">#&gt; ----------------------------</span></span>
+<span><span class="co">#&gt;   0 |      0.49 | 0.35, 0.63</span></span>
+<span><span class="co">#&gt;  20 |      0.31 | 0.23, 0.41</span></span>
+<span><span class="co">#&gt;  40 |      0.18 | 0.12, 0.25</span></span>
+<span><span class="co">#&gt;  80 |      0.05 | 0.02, 0.10</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Sex: female</span></span>
+<span><span class="co">#&gt; Pclass: 3rd</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Age | Predicted |     95% CI</span></span>
+<span><span class="co">#&gt; ----------------------------</span></span>
+<span><span class="co">#&gt;   0 |      0.77 | 0.67, 0.84</span></span>
+<span><span class="co">#&gt;  20 |      0.61 | 0.53, 0.69</span></span>
+<span><span class="co">#&gt;  40 |      0.43 | 0.33, 0.54</span></span>
+<span><span class="co">#&gt;  80 |      0.15 | 0.06, 0.30</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Sex: female</span></span>
+<span><span class="co">#&gt; Pclass: 1st</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Age | Predicted |     95% CI</span></span>
+<span><span class="co">#&gt; ----------------------------</span></span>
+<span><span class="co">#&gt;   0 |      0.98 | 0.95, 0.99</span></span>
+<span><span class="co">#&gt;  20 |      0.95 | 0.92, 0.97</span></span>
+<span><span class="co">#&gt;  40 |      0.91 | 0.86, 0.94</span></span>
+<span><span class="co">#&gt;  80 |      0.69 | 0.52, 0.83</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Sex: female</span></span>
+<span><span class="co">#&gt; Pclass: 2nd</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Age | Predicted |     95% CI</span></span>
+<span><span class="co">#&gt; ----------------------------</span></span>
+<span><span class="co">#&gt;   0 |      0.92 | 0.86, 0.96</span></span>
+<span><span class="co">#&gt;  20 |      0.85 | 0.78, 0.90</span></span>
+<span><span class="co">#&gt;  40 |      0.73 | 0.63, 0.81</span></span>
+<span><span class="co">#&gt;  80 |      0.38 | 0.20, 0.59</span></span>
+<span></span>
+<span><span class="va">preds_titanic_large</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://strengejacke.github.io/ggeffects/reference/ggpredict.html">ggpredict</a></span><span class="op">(</span><span class="va">titanic_large</span>, terms <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"Age"</span>, <span class="st">"Sex"</span>, <span class="st">"Pclass"</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html">as.data.frame</a></span><span class="op">(</span>terms_to_colnames <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://tibble.tidyverse.org/reference/as_tibble.html">as_tibble</a></span><span class="op">(</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>We will complete the rest of this exercise as a class.</p>
-<p><strong>Exercise 1</strong>. Examine the <code>.fitted</code> column in <code>aug_surv</code>. What are these values? Why are they not between <code>0</code> and <code>1</code>?</p>
-<p><strong>Exercise 2</strong>. Make a plot of the values of <code>.fitted</code> (without modifying them).</p>
-<p><strong>Exercise 3</strong>. Convert <code>.fitted</code> to predicted probabilities <span class="math inline">\(\hat{\pi}\)</span> with the following formula. Note that <code>exp(3.2)</code> is <code>R</code> code for <span class="math inline">\(e^{3.2}\)</span></p>
-<p><span class="math display">\[
-\hat{\pi} = \frac{e^{pred}}{(1 + e^{pred})}
-\]</span></p>
-<p><strong>Exercise 4</strong>: Make the plot again, using predicted probabilities instead of <code>.fitted</code> values.</p>
+<p><strong>Exercise 1</strong>. Examine the <code>predicted</code> column in <code>aug_surv</code>. Can you calculate one of these values using the model output “by hand?”</p>
+<p><strong>Exercise 2</strong>. Make a plot of the values of <code>predicted</code> that lets you explore how our predictors are associated with the survival on the Titanic.</p>
 </section><section id="your-turn" class="level2" data-number="10.3"><h2 data-number="10.3" class="anchored" data-anchor-id="your-turn">
 <span class="header-section-number">10.3</span> Your Turn</h2>
 <p><strong>Exercise 1</strong>. Add an <code>Sex:Pclass</code> interaction term to the previous model and fit the model with <code><a href="https://rdrr.io/r/stats/glm.html">glm()</a></code>.</p>
-<p><strong>Exercise 2</strong>. Obtain model predictions for both the previous model (without the interaction) and the new model (with the interaction). Convert the resulting <code>.fitted</code> column to predicted probabilities.</p>
+<p><strong>Exercise 2</strong>. Obtain model predictions for both the previous model (without the interaction) and the new model (with the interaction).</p>
 <p><strong>Exercise 3</strong>. Construct a graphic that shows how the two models differ.</p>
 <p><strong>Exercise 4</strong>. Which model is better? Use <code><a href="https://generics.r-lib.org/reference/glance.html">glance()</a></code> on each model to obtain some model summary statistics and determine which model is the better “fit.”</p>
 

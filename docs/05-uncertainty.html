@@ -312,10 +312,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>I would be remiss if I did not include the Pokemon data set at least once in this course. So, here it is! Suppose that we want to compare heights of a few different types of pokemon: <code>Bug</code>, <code>Electric</code>, <code>Fighting</code>, <code>Flying</code>, <code>Grass</code>, and <code>Steel</code> pokemon. To do so, we will make a bar plot of the average height of each type with the code below:</p>
 <div class="cell" data-appendix="true">
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://tidyverse.tidyverse.org">tidyverse</a></span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme_get.html">theme_set</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html">theme_minimal</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/get_theme.html">theme_set</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html">theme_minimal</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://here.r-lib.org/">here</a></span><span class="op">)</span></span>
-<span><span class="va">pokemon_df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://readr.tidyverse.org/reference/read_delim.html">read_csv</a></span><span class="op">(</span><span class="fu"><a href="https://here.r-lib.org//reference/here.html">here</a></span><span class="op">(</span><span class="st">"data/pokemon_full.csv"</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">pokemon_df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://readr.tidyverse.org/reference/read_delim.html">read_csv</a></span><span class="op">(</span><span class="fu"><a href="https://here.r-lib.org/reference/here.html">here</a></span><span class="op">(</span><span class="st">"data/pokemon_full.csv"</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="va">pokemon_height</span> <span class="op">&lt;-</span> <span class="va">pokemon_df</span> <span class="op">|&gt;</span> </span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="va">Type</span> <span class="op"><a href="https://rdrr.io/r/base/match.html">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"Bug"</span>, <span class="st">"Electric"</span>, <span class="st">"Fighting"</span>, <span class="st">"Flying"</span>,</span>
 <span>                     <span class="st">"Grass"</span>, <span class="st">"Steel"</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
@@ -369,7 +369,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>To begin, read in the data set:</p>
 <div class="cell" data-appendix="true">
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://here.r-lib.org/">here</a></span><span class="op">)</span></span>
-<span><span class="va">statsurvey_df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://readr.tidyverse.org/reference/read_delim.html">read_csv</a></span><span class="op">(</span><span class="fu"><a href="https://here.r-lib.org//reference/here.html">here</a></span><span class="op">(</span><span class="st">"data/stat113_survey.csv"</span><span class="op">)</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="va">statsurvey_df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://readr.tidyverse.org/reference/read_delim.html">read_csv</a></span><span class="op">(</span><span class="fu"><a href="https://here.r-lib.org/reference/here.html">here</a></span><span class="op">(</span><span class="st">"data/stat113_survey.csv"</span><span class="op">)</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>The data set has many variables. Some that we will use are:</p>
 <ul>
@@ -385,9 +385,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <code>Facebook</code>, the number of Facebook friends</li>
 </ul>
 <p>Using this data set, we answer some interesting questions. First, is there evidence of grade inflation at SLU? That is, is there evidence that student GPAs have increased over time? We will start this problem by making a sketch of a couple of visualizations we might want to create.</p>
+<!-- What is the assumption that we need to make when constructing standard error bars in this way? -->
 </section><section id="your-turn" class="level2" data-number="7.3"><h2 data-number="7.3" class="anchored" data-anchor-id="your-turn">
 <span class="header-section-number">7.3</span> Your Turn</h2>
 <p><strong>Exercise 1</strong>. Is there evidence from the STAT 113 survey that tattoos have become more or less common (at least among SLU students)? Construct a plot that shows the proportion of students who have a Tattoo in each semester from the STAT 113 survey, along with standard error bars for the estimate in each semester.</p>
+<p>What is the assumption that we need to make when constructing standard error bars in this way?</p>
 <!-- (calculated using the formula $SE  = \sqrt{\frac{\hat{p}(1 - \hat{p})}{n}}$). -->
 
 

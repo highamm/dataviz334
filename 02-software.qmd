@@ -10,7 +10,7 @@ In this section, we discuss two pieces of software that you will need to install
 
 ## Installing `R` and `R Studio` (Class Prep)
 
-If you had Professor Higham for STAT/DATA 234, you should already have `R` and `R Studio` installed on your laptop computer. You may also already have these installed from another course or an independent study. Even though you might already have these installed, it might be time for an update: if you have not reinstalled these in a year, updating would be a good idea.
+You likely already have `R` and `R Studio` installed on your laptop computer from DATA/STAT 234. You may also already have these installed from another course or an independent study. Even though you might already have these installed, it might be time for an update: if you have not reinstalled these in a year, updating would be a good idea.
 
 The following videos provide instructions on how to install `R` and `R Studio` to your laptop computer. It will be easiest if you complete all of these steps consecutively in one sitting. So, you should ideally have about 45 minutes to an hour of your time blocked off to complete the "getting started" process using the videos below.
 
@@ -19,6 +19,8 @@ The following videos provide instructions on how to install `R` and `R Studio` t
 <input type="checkbox"> Watch and follow along with a <a href="https://www.youtube.com/watch?v=urw6AMOzAUo" target="_blank">video on installing R Studio</a>. </input>
 
 <input type="checkbox"> Watch and follow along with a <a href="https://www.youtube.com/watch?v=IaONPkvjNZM" target="_blank">video on installing R packages and changing other options</a>. </input>
+
+Finally, download the `data.zip` file from Canvas (in Modules), unzip it, and put the data folder in the same folder that your new R Project is in. This `data` folder contains many data sets that we will use throughout the semester!
 
 After you install `R Studio`, create a new Quarto file (File -> New File -> Quarto Document), and answer the following questions within the file. At the top of the file, you should change the YAML header to something like
 
@@ -42,23 +44,19 @@ b.  What is/are your major(s) and minor(s), either actual or intended?
 
 c.  Why did you decide to take this course?
 
-d.  In what semester and year did you take STAT/DATA 234? STAT 213?
+d.  In what semester and year did you take DATA/STAT 234?
 
-e.  Have you taken CS 140?
+e.  Have you used Git before? If so, in what context?
 
-f.  Have you used Git before? If so, in what context?
+f.  What is your hometown: city, state, country?
 
-g.  Before this course, did you use `R Studio` on your desktop?
+g.  Do you play a sport on campus? If so, what sport? If not, what is an activity that you do on or off-campus?
 
-h.  What is your hometown: city, state, country?
+h.  What is your favorite TV show or movie or band/musical artist?
 
-i.  Do you play a sport on campus? If so, what sport? If not, what is an activity that you do on or off-campus?
+i.  Tell me something about yourself.
 
-j.  What is your favorite TV show or movie or band/musical artist?
-
-k.  Tell me something about yourself.
-
-l.  What are your expectations for this class and/or what do you hope to gain from this class?
+j.  What are your expectations for this class and/or what do you hope to gain from this class?
 
 
 

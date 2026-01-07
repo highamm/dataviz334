@@ -97,6 +97,8 @@ The data set has many variables. Some that we will use are:
 
 Using this data set, we answer some interesting questions. First, is there evidence of grade inflation at SLU? That is, is there evidence that student GPAs have increased over time? We will start this problem by making a sketch of a couple of visualizations we might want to create.
 
+<!-- What is the assumption that we need to make when constructing standard error bars in this way? -->
+
 ```{r, echo = FALSE, results = "hide", fig.keep = "none"}
 ggplot(data = statsurvey_df, aes(x = time_both, fill = Tattoo)) +
   geom_bar(position = "fill")
@@ -107,7 +109,8 @@ statsurvey_nomiss <- statsurvey_nomiss |>
   mutate(a_year = if_else(time_semester == "S",
                           true = time_year - 1,
                           false = time_year)) |>
-  filter(GPA <= 4.0)
+  filter(GPA <= 4.0) |>
+  mutate(a_year = a_year + 2000)
 
 gpa_means <- statsurvey_nomiss |> group_by(a_year) |>
   summarise(meanGPA = mean(GPA, na.rm = TRUE),
@@ -118,7 +121,11 @@ gpa_means <- statsurvey_nomiss |> group_by(a_year) |>
          u_se = meanGPA + se)
 ggplot(data = gpa_means, aes(x = a_year, y = meanGPA)) +
   geom_point() +
-  geom_errorbar(aes(ymin = l_se, ymax = u_se))
+  geom_errorbar(aes(ymin = l_se, ymax = u_se)) +
+  labs(x = "Academic Year",
+       y = "GPA")
+
+ggsave("grades.pdf", width = 8, height = 5)
 # ggplot(data = statsurvey_df, aes(x = time_both, y = GPA)) +
 #   geom_point(alpha = 0.1) +
 #   geom_point(data = gpa_means, aes(x = time_both, y = meanGPA), colour = "red") +
@@ -143,6 +150,8 @@ ggplot(data = statsurvey_df |> filter(GPA <= 4.0), aes(x = time_both, y = GPA)) 
 ## Your Turn
 
 __Exercise 1__. Is there evidence from the STAT 113 survey that tattoos have become more or less common (at least among SLU students)? Construct a plot that shows the proportion of students who have a Tattoo in each semester from the STAT 113 survey, along with standard error bars for the estimate in each semester.
+
+What is the assumption that we need to make when constructing standard error bars in this way?
 
 <!-- (calculated using the formula $SE  = \sqrt{\frac{\hat{p}(1 - \hat{p})}{n}}$). -->
 

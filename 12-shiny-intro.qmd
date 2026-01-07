@@ -41,7 +41,7 @@ library(tidyverse)
 library(readxl)
 theme_set(theme_minimal())
 
-df <- read_excel("data/slu_graduates_17_23.xlsx")
+df <- read_excel("data/slu_graduates_17_25.xlsx")
 
 ## fixes error in the data
 df <- df |> mutate(across(everything(),

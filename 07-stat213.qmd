@@ -44,21 +44,39 @@ $$
 Y = \beta_0 + \beta_1 species + \beta_2 aroma + \beta_3 flavor + \beta_4 sweetness + \beta_5 moisture + \epsilon,
 $$
 
-where $Y$ is the rating of the coffee (`total_cup_points`), `species` is an indicator variable equal to `1` if the species is `Robusta` and a `0` if the species is `Arabica`, and $epsilon$ are the random errors, which follow the usual assumptions that they are independent and normally distributed with constant variance.
+where $Y$ is the rating of the coffee (`total_cup_points`), `species` is an indicator variable equal to `1` if the species is `Robusta` and a `0` if the species is `Arabica`, and $\epsilon$ are the random errors, which follow the usual assumptions that they are independent and normally distributed with constant variance.
 
 ### `tidy()`
 
 `tidy()` is analagous to `summary()` for a linear model object. Let's start by fitting a linear model with `lm()` with `total_cup_points` as the response and `species`, `aroma`, `flavor`, `sweetness`, and `moisture` as predictors.
 
-Read in the data, load the `broom` package (and install it with `install.packages("broom")`), and fit the model with
+Read in the data and make a couple of quick exploratory plots:
 
-```{r, appendix = TRUE}
+```{r}
 library(tidyverse)
-library(broom)
 library(here)
 theme_set(theme_minimal())
 
 coffee_df <- read_csv(here("data/coffee_ratings.csv"))
+ggplot(data = coffee_df, aes(x = total_cup_points)) +
+  geom_histogram(colour = "skyblue4", fill = "skyblue1", bins = 20)
+```
+
+We see from the histogram that there are a couple of coffees that were given ratings of 0: these seem to be data entry errors so we will remove them from the coffee data set before making a pairs plot:
+
+```{r}
+coffee_df <- coffee_df |> filter(total_cup_points > 0)
+library(GGally)
+ggpairs(coffee_df, columns = c("species", "aroma", "flavor", "sweetness",
+                               "moisture", "total_cup_points"))
+```
+
+What do you see from the pairs plot?
+
+Then, load the `broom` package (and install it with `install.packages("broom")`), and fit the model with
+
+```{r, appendix = TRUE}
+library(broom)
 coffee_mod <- lm(total_cup_points ~ species + aroma + flavor +
                    sweetness + moisture,
    data = coffee_df)
@@ -118,17 +136,10 @@ augment(coffee_mod)
 
 ```{r, appendix = TRUE}
 augment_df <- augment(coffee_mod)
-augment_df |> filter(.cooksd > 1)
+augment_df |> filter(.cooksd > 0.5)
 ```
 
-We see right away that there is a potentially influential observation with `0` `total_cup_points`. Examining this variable further, we see that it is probably a data entry error that can be removed from the data.
-
-```{r, appendix = TRUE}
-ggplot(data = coffee_df, aes(x = total_cup_points)) +
-  geom_histogram(bins = 15, fill = "white", colour = "black")
-```
-
-We won't refit the model here after removing the data entry error to save time.
+We see right away that there are not any potentially influential observations (using a Cook's distance of 0.5 as a cut-off value). 
 
 We could also find observations with high leverage
 
@@ -142,10 +153,10 @@ or observations that are outliers:
 augment_df |> filter(.std.resid > 3 | .std.resid < -3)
 ```
 
-Finally, we can use our `ggplot2` skills to construct plots like a residuals versus fitted values plot (filtering out the outlying observation first):
+Finally, we can use our `ggplot2` skills to construct plots like a residuals versus fitted values plot:
 
 ```{r, appendix = TRUE}
-ggplot(data = augment_df |> filter(.fitted > 25),
+ggplot(data = augment_df,
        aes(x = .fitted, y = .resid)) +
   geom_point() 
 ```

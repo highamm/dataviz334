@@ -389,26 +389,51 @@ Note
 <p><span class="math display">\[
 Y = \beta_0 + \beta_1 species + \beta_2 aroma + \beta_3 flavor + \beta_4 sweetness + \beta_5 moisture + \epsilon,
 \]</span></p>
-<p>where <span class="math inline">\(Y\)</span> is the rating of the coffee (<code>total_cup_points</code>), <code>species</code> is an indicator variable equal to <code>1</code> if the species is <code>Robusta</code> and a <code>0</code> if the species is <code>Arabica</code>, and <span class="math inline">\(epsilon\)</span> are the random errors, which follow the usual assumptions that they are independent and normally distributed with constant variance.</p>
+<p>where <span class="math inline">\(Y\)</span> is the rating of the coffee (<code>total_cup_points</code>), <code>species</code> is an indicator variable equal to <code>1</code> if the species is <code>Robusta</code> and a <code>0</code> if the species is <code>Arabica</code>, and <span class="math inline">\(\epsilon\)</span> are the random errors, which follow the usual assumptions that they are independent and normally distributed with constant variance.</p>
 <section id="tidy" class="level3" data-number="8.1.1"><h3 data-number="8.1.1" class="anchored" data-anchor-id="tidy">
 <span class="header-section-number">8.1.1</span> <code>tidy()</code>
 </h3>
 <p><code><a href="https://generics.r-lib.org/reference/tidy.html">tidy()</a></code> is analagous to <code><a href="https://rdrr.io/r/base/summary.html">summary()</a></code> for a linear model object. Let’s start by fitting a linear model with <code><a href="https://rdrr.io/r/stats/lm.html">lm()</a></code> with <code>total_cup_points</code> as the response and <code>species</code>, <code>aroma</code>, <code>flavor</code>, <code>sweetness</code>, and <code>moisture</code> as predictors.</p>
-<p>Read in the data, load the <code>broom</code> package (and install it with <code>install.packages("broom")</code>), and fit the model with</p>
-<div class="cell" data-appendix="true">
+<p>Read in the data and make a couple of quick exploratory plots:</p>
+<div class="cell">
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://tidyverse.tidyverse.org">tidyverse</a></span><span class="op">)</span></span>
-<span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://broom.tidymodels.org/">broom</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://here.r-lib.org/">here</a></span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme_get.html">theme_set</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html">theme_minimal</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/get_theme.html">theme_set</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html">theme_minimal</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
-<span><span class="va">coffee_df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://readr.tidyverse.org/reference/read_delim.html">read_csv</a></span><span class="op">(</span><span class="fu"><a href="https://here.r-lib.org//reference/here.html">here</a></span><span class="op">(</span><span class="st">"data/coffee_ratings.csv"</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">coffee_df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://readr.tidyverse.org/reference/read_delim.html">read_csv</a></span><span class="op">(</span><span class="fu"><a href="https://here.r-lib.org/reference/here.html">here</a></span><span class="op">(</span><span class="st">"data/coffee_ratings.csv"</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">coffee_df</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">total_cup_points</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_histogram.html">geom_histogram</a></span><span class="op">(</span>colour <span class="op">=</span> <span class="st">"skyblue4"</span>, fill <span class="op">=</span> <span class="st">"skyblue1"</span>, bins <span class="op">=</span> <span class="fl">20</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure"><p><img src="07-stat213_files/figure-html/unnamed-chunk-2-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>We see from the histogram that there are a couple of coffees that were given ratings of 0: these seem to be data entry errors so we will remove them from the coffee data set before making a pairs plot:</p>
+<div class="cell">
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">coffee_df</span> <span class="op">&lt;-</span> <span class="va">coffee_df</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="va">total_cup_points</span> <span class="op">&gt;</span> <span class="fl">0</span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://ggobi.github.io/ggally/">GGally</a></span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://ggobi.github.io/ggally/reference/ggpairs.html">ggpairs</a></span><span class="op">(</span><span class="va">coffee_df</span>, columns <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"species"</span>, <span class="st">"aroma"</span>, <span class="st">"flavor"</span>, <span class="st">"sweetness"</span>,</span>
+<span>                               <span class="st">"moisture"</span>, <span class="st">"total_cup_points"</span><span class="op">)</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure"><p><img src="07-stat213_files/figure-html/unnamed-chunk-3-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>What do you see from the pairs plot?</p>
+<p>Then, load the <code>broom</code> package (and install it with <code>install.packages("broom")</code>), and fit the model with</p>
+<div class="cell" data-appendix="true">
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://broom.tidymodels.org/">broom</a></span><span class="op">)</span></span>
 <span><span class="va">coffee_mod</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/lm.html">lm</a></span><span class="op">(</span><span class="va">total_cup_points</span> <span class="op">~</span> <span class="va">species</span> <span class="op">+</span> <span class="va">aroma</span> <span class="op">+</span> <span class="va">flavor</span> <span class="op">+</span></span>
 <span>                   <span class="va">sweetness</span> <span class="op">+</span> <span class="va">moisture</span>,</span>
 <span>   data <span class="op">=</span> <span class="va">coffee_df</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>In STAT 213, you likely used <code><a href="https://rdrr.io/r/base/summary.html">summary()</a></code> to look at the model output:</p>
 <div class="cell" data-appendix="true">
-<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">coffee_mod</span><span class="op">)</span></span>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">coffee_mod</span><span class="op">)</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Call:</span></span>
 <span><span class="co">#&gt; lm(formula = total_cup_points ~ species + aroma + flavor + sweetness + </span></span>
@@ -416,72 +441,72 @@ Y = \beta_0 + \beta_1 species + \beta_2 aroma + \beta_3 flavor + \beta_4 sweetne
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Residuals:</span></span>
 <span><span class="co">#&gt;     Min      1Q  Median      3Q     Max </span></span>
-<span><span class="co">#&gt; -9.5132 -0.3705  0.0726  0.5610  5.5844 </span></span>
+<span><span class="co">#&gt; -9.7029 -0.3452  0.0907  0.5372  4.7968 </span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; Coefficients:</span></span>
 <span><span class="co">#&gt;                Estimate Std. Error t value Pr(&gt;|t|)    </span></span>
-<span><span class="co">#&gt; (Intercept)     7.04039    0.77377   9.099  &lt; 2e-16 ***</span></span>
-<span><span class="co">#&gt; speciesRobusta  2.85365    0.26861  10.624  &lt; 2e-16 ***</span></span>
-<span><span class="co">#&gt; aroma           1.95188    0.14575  13.392  &lt; 2e-16 ***</span></span>
-<span><span class="co">#&gt; flavor          5.09440    0.14042  36.281  &lt; 2e-16 ***</span></span>
-<span><span class="co">#&gt; sweetness       2.23956    0.06553  34.173  &lt; 2e-16 ***</span></span>
-<span><span class="co">#&gt; moisture       -1.88033    0.67368  -2.791  0.00533 ** </span></span>
+<span><span class="co">#&gt; (Intercept)     12.2113     1.0000  12.211  &lt; 2e-16 ***</span></span>
+<span><span class="co">#&gt; speciesRobusta   2.3953     0.2689   8.906  &lt; 2e-16 ***</span></span>
+<span><span class="co">#&gt; aroma            1.6508     0.1475  11.192  &lt; 2e-16 ***</span></span>
+<span><span class="co">#&gt; flavor           5.0066     0.1377  36.350  &lt; 2e-16 ***</span></span>
+<span><span class="co">#&gt; sweetness        2.0166     0.0700  28.808  &lt; 2e-16 ***</span></span>
+<span><span class="co">#&gt; moisture        -2.0665     0.6591  -3.135  0.00175 ** </span></span>
 <span><span class="co">#&gt; ---</span></span>
 <span><span class="co">#&gt; Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; Residual standard error: 1.168 on 1333 degrees of freedom</span></span>
-<span><span class="co">#&gt; Multiple R-squared:  0.8891, Adjusted R-squared:  0.8887 </span></span>
-<span><span class="co">#&gt; F-statistic:  2137 on 5 and 1333 DF,  p-value: &lt; 2.2e-16</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="co">#&gt; Residual standard error: 1.142 on 1332 degrees of freedom</span></span>
+<span><span class="co">#&gt; Multiple R-squared:   0.82,  Adjusted R-squared:  0.8194 </span></span>
+<span><span class="co">#&gt; F-statistic:  1214 on 5 and 1332 DF,  p-value: &lt; 2.2e-16</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>However, there are a few inconveniences involving <code><a href="https://rdrr.io/r/base/summary.html">summary()</a></code>. First, it’s just not that nice to look at: the output isn’t formatted in a way that is easy to look at. Second, it can be challenging to pull items from the summary output with code. For example, if you want to pull the p-value for <code>moisture</code>, you would need to write something like:</p>
 <div class="cell" data-appendix="true">
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">coffee_mod</span><span class="op">)</span><span class="op">$</span><span class="va">coefficients</span><span class="op">[</span><span class="st">"moisture"</span>, <span class="fl">4</span><span class="op">]</span></span>
-<span><span class="co">#&gt; [1] 0.005327594</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">coffee_mod</span><span class="op">)</span><span class="op">$</span><span class="va">coefficients</span><span class="op">[</span><span class="st">"moisture"</span>, <span class="fl">4</span><span class="op">]</span></span>
+<span><span class="co">#&gt; [1] 0.001753522</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p><code><a href="https://generics.r-lib.org/reference/tidy.html">tidy()</a></code> is an alternative that puts the model coefficients, standard errors, t-stats, and p-values in a tidy tibble:</p>
 <div class="cell" data-appendix="true">
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://generics.r-lib.org/reference/tidy.html">tidy</a></span><span class="op">(</span><span class="va">coffee_mod</span><span class="op">)</span></span>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://generics.r-lib.org/reference/tidy.html">tidy</a></span><span class="op">(</span><span class="va">coffee_mod</span><span class="op">)</span></span>
 <span><span class="co">#&gt; # A tibble: 6 × 5</span></span>
 <span><span class="co">#&gt;   term           estimate std.error statistic   p.value</span></span>
 <span><span class="co">#&gt;   &lt;chr&gt;             &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;</span></span>
-<span><span class="co">#&gt; 1 (Intercept)        7.04    0.774       9.10 3.23e- 19</span></span>
-<span><span class="co">#&gt; 2 speciesRobusta     2.85    0.269      10.6  2.31e- 25</span></span>
-<span><span class="co">#&gt; 3 aroma              1.95    0.146      13.4  1.82e- 38</span></span>
-<span><span class="co">#&gt; 4 flavor             5.09    0.140      36.3  4.73e-201</span></span>
-<span><span class="co">#&gt; 5 sweetness          2.24    0.0655     34.2  2.41e-184</span></span>
-<span><span class="co">#&gt; 6 moisture          -1.88    0.674      -2.79 5.33e-  3</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="co">#&gt; 1 (Intercept)       12.2     1.000      12.2  1.39e- 32</span></span>
+<span><span class="co">#&gt; 2 speciesRobusta     2.40    0.269       8.91 1.69e- 18</span></span>
+<span><span class="co">#&gt; 3 aroma              1.65    0.147      11.2  7.45e- 28</span></span>
+<span><span class="co">#&gt; 4 flavor             5.01    0.138      36.4  1.46e-201</span></span>
+<span><span class="co">#&gt; 5 sweetness          2.02    0.0700     28.8  2.92e-142</span></span>
+<span><span class="co">#&gt; 6 moisture          -2.07    0.659      -3.14 1.75e-  3</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>The advantage of this format of output is that we can now use other <code>tidyverse</code> functions on the output. To pull the p-values,</p>
 <div class="cell" data-appendix="true">
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://generics.r-lib.org/reference/tidy.html">tidy</a></span><span class="op">(</span><span class="va">coffee_mod</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="va">p.value</span><span class="op">)</span></span>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://generics.r-lib.org/reference/tidy.html">tidy</a></span><span class="op">(</span><span class="va">coffee_mod</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="va">p.value</span><span class="op">)</span></span>
 <span><span class="co">#&gt; # A tibble: 6 × 1</span></span>
 <span><span class="co">#&gt;     p.value</span></span>
 <span><span class="co">#&gt;       &lt;dbl&gt;</span></span>
-<span><span class="co">#&gt; 1 3.23e- 19</span></span>
-<span><span class="co">#&gt; 2 2.31e- 25</span></span>
-<span><span class="co">#&gt; 3 1.82e- 38</span></span>
-<span><span class="co">#&gt; 4 4.73e-201</span></span>
-<span><span class="co">#&gt; 5 2.41e-184</span></span>
-<span><span class="co">#&gt; 6 5.33e-  3</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="co">#&gt; 1 1.39e- 32</span></span>
+<span><span class="co">#&gt; 2 1.69e- 18</span></span>
+<span><span class="co">#&gt; 3 7.45e- 28</span></span>
+<span><span class="co">#&gt; 4 1.46e-201</span></span>
+<span><span class="co">#&gt; 5 2.92e-142</span></span>
+<span><span class="co">#&gt; 6 1.75e-  3</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>or, to grab the output for a particular variable of interest:</p>
 <div class="cell" data-appendix="true">
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://generics.r-lib.org/reference/tidy.html">tidy</a></span><span class="op">(</span><span class="va">coffee_mod</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="va">term</span> <span class="op">==</span> <span class="st">"aroma"</span><span class="op">)</span></span>
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://generics.r-lib.org/reference/tidy.html">tidy</a></span><span class="op">(</span><span class="va">coffee_mod</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="va">term</span> <span class="op">==</span> <span class="st">"aroma"</span><span class="op">)</span></span>
 <span><span class="co">#&gt; # A tibble: 1 × 5</span></span>
 <span><span class="co">#&gt;   term  estimate std.error statistic  p.value</span></span>
 <span><span class="co">#&gt;   &lt;chr&gt;    &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt;</span></span>
-<span><span class="co">#&gt; 1 aroma     1.95     0.146      13.4 1.82e-38</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="co">#&gt; 1 aroma     1.65     0.147      11.2 7.45e-28</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section><section id="glance" class="level3" data-number="8.1.2"><h3 data-number="8.1.2" class="anchored" data-anchor-id="glance">
 <span class="header-section-number">8.1.2</span> <code>glance()</code>
 </h3>
 <p><code><a href="https://generics.r-lib.org/reference/glance.html">glance()</a></code> puts some model summary statistics into a tidy tibble. For example, if we run</p>
 <div class="cell" data-appendix="true">
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://generics.r-lib.org/reference/glance.html">glance</a></span><span class="op">(</span><span class="va">coffee_mod</span><span class="op">)</span></span>
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://generics.r-lib.org/reference/glance.html">glance</a></span><span class="op">(</span><span class="va">coffee_mod</span><span class="op">)</span></span>
 <span><span class="co">#&gt; # A tibble: 1 × 12</span></span>
 <span><span class="co">#&gt;   r.squared adj.r.squared sigma statistic p.value    df logLik   AIC   BIC</span></span>
 <span><span class="co">#&gt;       &lt;dbl&gt;         &lt;dbl&gt; &lt;dbl&gt;     &lt;dbl&gt;   &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;</span></span>
-<span><span class="co">#&gt; 1     0.889         0.889  1.17     2137.       0     5 -2105. 4224. 4260.</span></span>
+<span><span class="co">#&gt; 1     0.820         0.819  1.14     1214.       0     5 -2073. 4160. 4197.</span></span>
 <span><span class="co">#&gt; # ℹ 3 more variables: deviance &lt;dbl&gt;, df.residual &lt;int&gt;, nobs &lt;int&gt;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>you should notice a lot of statistics that you are familiar with from STAT 213, including <code>r.squared</code>, <code>adj.r.squared</code>, <code>sigma</code> (the residual standard error), <code>statistic</code> (the overall F-statistic), <code>AIC</code>, and <code>BIC</code>. We are going to focus mainly on coefficient interpretation in this course, so there is no need to worry if you do not remember exactly what, for example, <code>BIC</code> is.</p>
@@ -490,17 +515,17 @@ Y = \beta_0 + \beta_1 species + \beta_2 aroma + \beta_3 flavor + \beta_4 sweetne
 </h3>
 <p><code><a href="https://generics.r-lib.org/reference/augment.html">augment()</a></code> is my personal favourite of the three. The function returns a <code>tibble</code> that contains all of the variables used to fit the model appended with commonly used diagnostic statistics like the fitted values (<code>.fitted)</code>, cook’s distance (<code>.cooksd)</code>, <code>.hat</code> values for leverage, and residuals (<code>.resid</code>).</p>
 <div class="cell" data-appendix="true">
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://generics.r-lib.org/reference/augment.html">augment</a></span><span class="op">(</span><span class="va">coffee_mod</span><span class="op">)</span></span>
-<span><span class="co">#&gt; # A tibble: 1,339 × 12</span></span>
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://generics.r-lib.org/reference/augment.html">augment</a></span><span class="op">(</span><span class="va">coffee_mod</span><span class="op">)</span></span>
+<span><span class="co">#&gt; # A tibble: 1,338 × 12</span></span>
 <span><span class="co">#&gt;   total_cup_points species aroma flavor sweetness moisture .fitted  .resid</span></span>
 <span><span class="co">#&gt;              &lt;dbl&gt; &lt;chr&gt;   &lt;dbl&gt;  &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;</span></span>
-<span><span class="co">#&gt; 1             90.6 Arabica  8.67   8.83        10     0.12    91.1 -0.537 </span></span>
-<span><span class="co">#&gt; 2             89.9 Arabica  8.75   8.67        10     0.12    90.5 -0.538 </span></span>
-<span><span class="co">#&gt; 3             89.8 Arabica  8.42   8.5         10     0       89.2  0.577 </span></span>
-<span><span class="co">#&gt; 4             89   Arabica  8.17   8.58        10     0.11    88.9  0.114 </span></span>
-<span><span class="co">#&gt; 5             88.8 Arabica  8.25   8.5         10     0.12    88.6  0.214 </span></span>
-<span><span class="co">#&gt; 6             88.8 Arabica  8.58   8.42        10     0.11    88.9 -0.0411</span></span>
-<span><span class="co">#&gt; # ℹ 1,333 more rows</span></span>
+<span><span class="co">#&gt; 1             90.6 Arabica  8.67   8.83        10     0.12    90.7 -0.0702</span></span>
+<span><span class="co">#&gt; 2             89.9 Arabica  8.75   8.67        10     0.12    90.0 -0.0612</span></span>
+<span><span class="co">#&gt; 3             89.8 Arabica  8.42   8.5         10     0       88.8  0.917 </span></span>
+<span><span class="co">#&gt; 4             89   Arabica  8.17   8.58        10     0.11    88.6  0.406 </span></span>
+<span><span class="co">#&gt; 5             88.8 Arabica  8.25   8.5         10     0.12    88.3  0.525 </span></span>
+<span><span class="co">#&gt; 6             88.8 Arabica  8.58   8.42        10     0.11    88.5  0.360 </span></span>
+<span><span class="co">#&gt; # ℹ 1,332 more rows</span></span>
 <span><span class="co">#&gt; # ℹ 4 more variables: .hat &lt;dbl&gt;, .sigma &lt;dbl&gt;, .cooksd &lt;dbl&gt;,</span></span>
 <span><span class="co">#&gt; #   .std.resid &lt;dbl&gt;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
@@ -510,62 +535,48 @@ Y = \beta_0 + \beta_1 species + \beta_2 aroma + \beta_3 flavor + \beta_4 sweetne
 <code><a href="https://dplyr.tidyverse.org/reference/filter.html">filter()</a></code> the data set to examine values with high cook’s distance that might be influential</li>
 </ul>
 <div class="cell" data-appendix="true">
-<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">augment_df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://generics.r-lib.org/reference/augment.html">augment</a></span><span class="op">(</span><span class="va">coffee_mod</span><span class="op">)</span></span>
-<span><span class="va">augment_df</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="va">.cooksd</span> <span class="op">&gt;</span> <span class="fl">1</span><span class="op">)</span></span>
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">augment_df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://generics.r-lib.org/reference/augment.html">augment</a></span><span class="op">(</span><span class="va">coffee_mod</span><span class="op">)</span></span>
+<span><span class="va">augment_df</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="va">.cooksd</span> <span class="op">&gt;</span> <span class="fl">0.5</span><span class="op">)</span></span>
+<span><span class="co">#&gt; # A tibble: 0 × 12</span></span>
+<span><span class="co">#&gt; # ℹ 12 variables: total_cup_points &lt;dbl&gt;, species &lt;chr&gt;, aroma &lt;dbl&gt;,</span></span>
+<span><span class="co">#&gt; #   flavor &lt;dbl&gt;, sweetness &lt;dbl&gt;, moisture &lt;dbl&gt;, .fitted &lt;dbl&gt;,</span></span>
+<span><span class="co">#&gt; #   .resid &lt;dbl&gt;, .hat &lt;dbl&gt;, .sigma &lt;dbl&gt;, .cooksd &lt;dbl&gt;, .std.resid &lt;dbl&gt;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>We see right away that there are not any potentially influential observations (using a Cook’s distance of 0.5 as a cut-off value).</p>
+<p>We could also find observations with high leverage</p>
+<div class="cell" data-appendix="true">
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">augment_df</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="va">.hat</span> <span class="op">&gt;</span> <span class="fl">0.2</span><span class="op">)</span></span>
 <span><span class="co">#&gt; # A tibble: 1 × 12</span></span>
 <span><span class="co">#&gt;   total_cup_points species aroma flavor sweetness moisture .fitted .resid</span></span>
 <span><span class="co">#&gt;              &lt;dbl&gt; &lt;chr&gt;   &lt;dbl&gt;  &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt;   &lt;dbl&gt;  &lt;dbl&gt;</span></span>
-<span><span class="co">#&gt; 1                0 Arabica     0      0         0     0.12    6.81  -6.81</span></span>
-<span><span class="co">#&gt; # ℹ 4 more variables: .hat &lt;dbl&gt;, .sigma &lt;dbl&gt;, .cooksd &lt;dbl&gt;,</span></span>
-<span><span class="co">#&gt; #   .std.resid &lt;dbl&gt;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<p>We see right away that there is a potentially influential observation with <code>0</code> <code>total_cup_points</code>. Examining this variable further, we see that it is probably a data entry error that can be removed from the data.</p>
-<div class="cell" data-appendix="true">
-<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">coffee_df</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">total_cup_points</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_histogram.html">geom_histogram</a></span><span class="op">(</span>bins <span class="op">=</span> <span class="fl">15</span>, fill <span class="op">=</span> <span class="st">"white"</span>, colour <span class="op">=</span> <span class="st">"black"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output-display">
-<div>
-<figure class="figure"><p><img src="07-stat213_files/figure-html/unnamed-chunk-11-1.png" class="img-fluid figure-img" width="672"></p>
-</figure>
-</div>
-</div>
-</div>
-<p>We won’t refit the model here after removing the data entry error to save time.</p>
-<p>We could also find observations with high leverage</p>
-<div class="cell" data-appendix="true">
-<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">augment_df</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="va">.hat</span> <span class="op">&gt;</span> <span class="fl">0.2</span><span class="op">)</span></span>
-<span><span class="co">#&gt; # A tibble: 2 × 12</span></span>
-<span><span class="co">#&gt;   total_cup_points species aroma flavor sweetness moisture .fitted .resid</span></span>
-<span><span class="co">#&gt;              &lt;dbl&gt; &lt;chr&gt;   &lt;dbl&gt;  &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt;   &lt;dbl&gt;  &lt;dbl&gt;</span></span>
-<span><span class="co">#&gt; 1             59.8 Arabica   7.5   6.67      1.33     0.1    58.4    1.38</span></span>
-<span><span class="co">#&gt; 2              0   Arabica   0     0         0        0.12    6.81  -6.81</span></span>
+<span><span class="co">#&gt; 1             59.8 Arabica   7.5   6.67      1.33      0.1    60.5 -0.632</span></span>
 <span><span class="co">#&gt; # ℹ 4 more variables: .hat &lt;dbl&gt;, .sigma &lt;dbl&gt;, .cooksd &lt;dbl&gt;,</span></span>
 <span><span class="co">#&gt; #   .std.resid &lt;dbl&gt;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>or observations that are outliers:</p>
 <div class="cell" data-appendix="true">
-<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">augment_df</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="va">.std.resid</span> <span class="op">&gt;</span> <span class="fl">3</span> <span class="op">|</span> <span class="va">.std.resid</span> <span class="op">&lt;</span> <span class="op">-</span><span class="fl">3</span><span class="op">)</span></span>
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">augment_df</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="va">.std.resid</span> <span class="op">&gt;</span> <span class="fl">3</span> <span class="op">|</span> <span class="va">.std.resid</span> <span class="op">&lt;</span> <span class="op">-</span><span class="fl">3</span><span class="op">)</span></span>
 <span><span class="co">#&gt; # A tibble: 25 × 12</span></span>
 <span><span class="co">#&gt;   total_cup_points species aroma flavor sweetness moisture .fitted .resid</span></span>
 <span><span class="co">#&gt;              &lt;dbl&gt; &lt;chr&gt;   &lt;dbl&gt;  &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt;   &lt;dbl&gt;  &lt;dbl&gt;</span></span>
-<span><span class="co">#&gt; 1             82.8 Arabica  8.08   8.17     10        0.12    86.6  -3.85</span></span>
-<span><span class="co">#&gt; 2             82.4 Arabica  5.08   7.75     10        0.11    78.6   3.79</span></span>
-<span><span class="co">#&gt; 3             82.3 Arabica  7.75   8.08      6.67     0.11    78.1   4.27</span></span>
-<span><span class="co">#&gt; 4             80.7 Arabica  7.67   7.5       6.67     0       75.2   5.51</span></span>
-<span><span class="co">#&gt; 5             80   Arabica  7.58   7.75     10        0       83.7  -3.71</span></span>
-<span><span class="co">#&gt; 6             79.9 Arabica  7.83   7.67     10        0       83.8  -3.87</span></span>
+<span><span class="co">#&gt; 1             82.8 Arabica  8.08   8.17     10        0.12    86.4  -3.62</span></span>
+<span><span class="co">#&gt; 2             82.3 Arabica  7.75   8.08      6.67     0.11    78.7   3.65</span></span>
+<span><span class="co">#&gt; 3             80.7 Arabica  7.67   7.5       6.67     0       75.9   4.80</span></span>
+<span><span class="co">#&gt; 4             80   Arabica  7.58   7.75     10        0       83.7  -3.69</span></span>
+<span><span class="co">#&gt; 5             79.9 Arabica  7.83   7.67     10        0       83.7  -3.78</span></span>
+<span><span class="co">#&gt; 6             79.2 Arabica  7.17   7.42      6.67     0.1     74.4   4.73</span></span>
 <span><span class="co">#&gt; # ℹ 19 more rows</span></span>
 <span><span class="co">#&gt; # ℹ 4 more variables: .hat &lt;dbl&gt;, .sigma &lt;dbl&gt;, .cooksd &lt;dbl&gt;,</span></span>
 <span><span class="co">#&gt; #   .std.resid &lt;dbl&gt;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>Finally, we can use our <code>ggplot2</code> skills to construct plots like a residuals versus fitted values plot (filtering out the outlying observation first):</p>
+<p>Finally, we can use our <code>ggplot2</code> skills to construct plots like a residuals versus fitted values plot:</p>
 <div class="cell" data-appendix="true">
-<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">augment_df</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="va">.fitted</span> <span class="op">&gt;</span> <span class="fl">25</span><span class="op">)</span>,</span>
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">augment_df</span>,</span>
 <span>       <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">.fitted</span>, y <span class="op">=</span> <span class="va">.resid</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html">geom_point</a></span><span class="op">(</span><span class="op">)</span> </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
-<figure class="figure"><p><img src="07-stat213_files/figure-html/unnamed-chunk-14-1.png" class="img-fluid figure-img" width="672"></p>
+<figure class="figure"><p><img src="07-stat213_files/figure-html/unnamed-chunk-15-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -574,7 +585,7 @@ Y = \beta_0 + \beta_1 species + \beta_2 aroma + \beta_3 flavor + \beta_4 sweetne
 <span class="header-section-number">8.1.4</span> Exercises</h3>
 <p><strong>Exercise 1</strong>. Examine the <code>penguins</code> data set in the <code>palmerpenguins</code> package:</p>
 <div class="cell">
-<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://allisonhorst.github.io/palmerpenguins/">palmerpenguins</a></span><span class="op">)</span></span>
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://allisonhorst.github.io/palmerpenguins/">palmerpenguins</a></span><span class="op">)</span></span>
 <span><span class="va">penguins</span></span>
 <span><span class="co">#&gt; # A tibble: 344 × 8</span></span>
 <span><span class="co">#&gt;   species island   bill_length_mm bill_depth_mm flipper_length_mm body_mass_g</span></span>

@@ -284,84 +284,6 @@ We are also not able to see outliers from this plot, so, while it is a useful st
 
 __Exercise 1__. In the example where we sampled from the very large data set to construct a graphic, can you think of some possible flaws in this approach? 
 
-## Statistical Learning Models
-
-Some of you have enrolled in, are enrolled in, or will enroll in CS/DATA/STAT 352: Statistical and Machine Learning. We can use visualization to better communicate the results of each of the statistical learning methods you learn about, including k-nearest-neighbors, clustering algorithms, linear discriminant analysis, principal components analysis, decision trees, random forests, lasso regression, etc.
-
-However, because the course is neither a pre-requisite nor a co-requisite for this course, we will just give a couple of short examples. Additionally, you will not be assessed on anything in this subsection. If you decide to use a statistical learning method for your final project, you should be able to use a search engine to help you see how others have visualized that particular method. Usually, someone will have written a package that can be used to help with the visualization.
-
-For the first short example, examine some code below that has been modified from Dr. Torrey. The model fit here uses the `ns()` function from the `splines` package. Notice that, besides the addition of `ns()` to the `lm()` function, the remaining steps in visualizing a "grid" of predictions remains the same.
-
-```{r}
-#| eval: false
-download.file("https://myslu.stlawu.edu/~ltorrey/ml/Auto.csv", "Auto.csv")
-library(tidyverse)
-library(splines)
-
-Auto <- read_csv("Auto.csv",
-                 col_types = list(origin = readr::col_factor()))
-
-## model code below from Dr. Torrey
-## dropping horsepower to keep the plot simpler
-gam.lm <- lm(mpg ~ ns(weight, df = 2) + year + origin, data = Auto)
-
-pure.lm <- lm(mpg ~  weight + year + origin, data = Auto)
-
-library(broom)
-library(modelr)
-
-grid <- Auto |>
-  data_grid(
-    weight = seq_range(weight, n = 20),
-    year = seq_range(year, n = 4),
-    origin = Auto |> pull(origin) |> levels()
-  )
-
-gam_aug <- broom::augment(gam.lm, newdata = grid)
-
-ggplot(data = gam_aug, aes(x = weight, y = .fitted)) +
-  geom_point(data = Auto, aes(y = mpg), alpha = 0.4) +
-  geom_line(aes(colour = factor(year)),
-            linewidth = 2) +
-  facet_wrap(~ origin) +
-  scale_colour_viridis_d() +
-  theme_minimal() +
-  labs(colour = "year",
-       y = "mpg")
-```
-
-We can see from the resulting plot that the usage of splines has allowed the relationship between `weight` and `mpg` to be non-linear.
-
-However, for other stat learning algorithms, extending what we've done is not as simple. In particular, many classification algorithms do not actually give a predicted probability like logistic regression does. So, we need to think about visualizing how observations are classified instead. For a short example here, a quick google search on how to visualize the decision boundaries in a decision tree leads to <https://www.r-bloggers.com/2020/03/visualizing-decision-tree-partition-and-decision-boundaries/>. The `parttree` package, written by Grant McDermott can be used with the `rpart` package to construct:
-
-```{r}
-#| warning: false
-library(tidymodels)
-library(titanic)
-
-## remotes::install_github("grantmcdermott/parttree")
-library(parttree)
-set.seed(123) ## For consistent jitter
-
-titanic_train$Survived = as.factor(titanic_train$Survived)
-
-## Build our tree using parsnip (but with rpart as the model engine)
-ti_tree =
-  decision_tree() %>%
-  set_engine("rpart") %>%
-  set_mode("classification") %>%
-  fit(Survived ~ Pclass + Age, data = titanic_train)
-
-## Plot the data and model partitions
-titanic_train %>%
-  ggplot(aes(x = Pclass, y = Age)) +
-  geom_jitter(aes(colour = Survived), alpha = 0.7) +
-  geom_parttree(data = ti_tree, aes(fill = Survived), alpha = 0.1) +
-  theme_minimal()
-```
-
-Note that I've copied the code directly from the R bloggers site for this example. Additionally, the code used to create the `ti_tree` object is from the `tidymodels` ecosystem of statistical learning. If you decide to do something involving statistical learning, I would highly encourage you to learn how to fit your model with `tidymodels` <https://www.tidymodels.org/start/models/>.
-
 ## Network Visualization
 
 If we are interested in a visualization that shows the "connectedness" between different people, subjects, etc., we might construct a __network graph__ to illustrate the nature of the connectedness between subjects. Before starting to think about a network graph, we should define a couple of key terms. We'll think about passes within a hockey team as a hypothetical example to help define the terms.
@@ -391,7 +313,7 @@ Read in the majors data with:
 library(tidyverse)
 library(readxl)
 library(here)
-df <- read_excel(here::here("data/slu_graduates_17_23.xlsx"))
+df <- read_excel(here::here("data/slu_graduates_17_25.xlsx"))
 
 ## fixes error in the data
 df <- df |> mutate(across(everything(),
@@ -543,7 +465,7 @@ What edge has the largest thickness? Run through the plot code, slowly adding ea
 
 __Exercise 7__. Something that can __really__ help the readability of these network graphs is to use colour to group nodes together in a logical way. Go back to the `nodes` data frame and create a new variable called `major_type` that is 
 
-* equal to `MCSS` for `MATH`, `CS`, `STAT`, and `EC_MA`, 
+* equal to `MCSS` for `MATH`, `CS`, `STAT`, `DATA`, and `EC_MA`, 
 * equal to `Science` for `BIOL`, `PSYC`, and `PHYS`,
 * equal to `Social Science` for `ECON`, `EN_EC`, `EC_SP`, `SOC`, `ANTH`, `GOVT`, and `BUSLA`
 * equal to `Arts and Humanities` for all other majors (can use the `.default` argument to `case_when()` for this).
