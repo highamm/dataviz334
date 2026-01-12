@@ -358,6 +358,7 @@ c. Before completing the next part, explain what you think a plot will look like
 d. Run the code below to construct the plot. Why does the model look like it fits the points very poorly?
 
 ```{r}
+#| output: false
 fat_preds <- ggpredict(mod, terms = c("weight")) |>
   as.data.frame(terms_to_colnames = TRUE) |>
   as_tibble()

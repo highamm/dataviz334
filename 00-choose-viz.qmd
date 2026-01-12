@@ -15,7 +15,7 @@ Data visualization is important in many aspects of statistics and data science. 
 
 But, isn't it obvious how to create a "good" data visualization? Why should there be an entire course on the subject? Part of the answer is that there is some code that we need to learn to create flexible data visualizations. However, even if that were not the case, people are not necessarily innately good at constructing informative data visuals.
 
-Before we examine some common visualizations in this section, we will do a very quick `tidyverse` review problem to help us answer the question "What are the most commonly used `geom`'s in the `ggplot2` package?" To help us answer this question, data was collected by @michistoelzle (the account no longer on the web) from searching github repositories for any uses of the various `ggplot2` `geom`'s. The data set below gives the number of times the terms appeared on a subset of public github repositories (Git and GitHub is something we will learn to use in this class for version control).
+Before we examine some common visualizations in this section, we will do a very quick `tidyverse` review problem to help us answer the question "What are the most commonly used `geom`'s in the `ggplot2` package?" To help us answer this question, data was collected by \@michistoelzle (the account no longer on the web) from searching github repositories for any uses of the various `ggplot2` `geom`'s. The data set below gives the number of times the terms appeared on a subset of public github repositories (Git and GitHub is something we will learn to use in this class for version control).
 
 ```{r}
 #| output: false
