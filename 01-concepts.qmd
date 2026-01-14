@@ -248,6 +248,52 @@ a.  the points are coloured by species, but there is only one smoother instead o
 
 b.  there are three different coloured smoothers (one for each species) but the points are all the same colour.
 
-**Exercise 5**. Construct another graph that explicitly uses all 7 grammar of graphics parameters (you may set some of these parameters to be the default values, but you should do so explicitly).
+**Exercise 5**. Create two different graphs that differ only by __1__ of the 7 grammar of graphics parameters. Then, show your two graphs (but not your code) to a partner and see if they can identify which graphics parameter has been modified.
 
-**Exercise 6**. Create two different graphs that differ only by __1__ of the 7 grammar of graphics parameters. Then, show your two graphs (but not your code) to a partner and see if they can identify which graphics parameter has been modified.
+**Exercise 6**. Construct a bar plot that gives the 15 most popular major-minor combinations are at SLU for students graduating within the last 9 years. To do, examine the data set below, which was obtained from our institutional research office. After the pivoting steps are completed, each row corresponds to an individual major-minor combination. If a student had two majors and one minor, then they appear as two rows in the data set (one for each unique major-minor combination).
+
+In your graph, you should explicitly uses all 7 grammar of graphics parameters (you may set some of these parameters to be the default values, but you should do so explicitly). The purpose of this question is to both review more DATA/STAT 234 and to practice using the 7 parameters in the grammar of graphics.
+
+```{r}
+library(tidyverse)
+library(readxl)
+library(here)
+df <- read_excel(here::here("data/slu_graduates_17_25.xlsx"))
+
+## fixes error in the data
+df <- df |> mutate(across(everything(),
+                          .fns = ~replace(., . ==  "STATS" , "STAT")))
+
+df_major_minor <- df |> filter(!is.na(minor1)) |> 
+  pivot_longer(starts_with("major"), names_to = "major_number",
+               values_to = "major") |>
+  filter(!is.na(major)) |>
+  pivot_longer(starts_with("minor"), names_to = "minor_number",
+               values_to = "minor") |>
+  filter(!is.na(minor)) |>
+  relocate(major, minor)
+```
+
+```{r}
+#| echo: false
+#| output: false
+major_minor_sum <- df_major_minor |>
+  group_by(major, minor) |>
+  summarise(n_students = n()) |>
+  ungroup() |> 
+  arrange(desc(n_students)) |>
+  unite("major_minor", c(major, minor), sep = "-") |>
+  slice(1:15) |>
+  mutate(major_minor = fct_reorder(major_minor, n_students))
+
+ggplot(data = major_minor_sum, aes(x = n_students, y = major_minor)) +
+  geom_bar(stat = "identity", fill = "skyblue1", colour = "skyblue4",
+           position = "stack") +
+  theme_minimal() +
+  facet_null() +
+  coord_cartesian()
+```
+
+
+
+

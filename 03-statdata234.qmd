@@ -277,7 +277,7 @@ The variables in the data set are:
 library(tidyverse)
 library(readxl)
 library(here)
-df <- read_excel(here::here("data/slu_graduates_17_23.xlsx"))
+df <- read_excel(here::here("data/slu_graduates_17_25.xlsx"))
 
 ## fixes error in the data
 df <- df |> mutate(across(everything(),
