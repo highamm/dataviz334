@@ -229,7 +229,7 @@ The other 4 parameters are given default values: `<FACET>` is `facet_null()` (wh
 
 **Exercise 3**. Modify the frequency plot made with `geom_freqpoly()` to use `colour` in two different ways:
 
-a.  change the colour of the line to any colour that `R` knows. A list of some colours can be found <a href="http://www.stat.columbia.edu/~tzheng/files/Rcolor.pdf" target="_blank">at this link</a>.
+a.  change the colour of the line to any colour that `R` knows. A list of some colours can be found <a href="https://www.stat.auckland.ac.nz/~ihaka/downloads/R-colours-a4.pdf" target="_blank">at this link</a>.
 
 b.  add a colour aesthetic to make three different frequency lines, one for each `species` of penguin.
 
