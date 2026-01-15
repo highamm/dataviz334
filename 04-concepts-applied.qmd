@@ -158,10 +158,12 @@ ggplot(data = penguins |>
   theme_minimal()
 
 ggplot(data = penguins |> filter(!is.na(sex)), 
-                                 aes(x = bill_length_mm, y = bill_depth_mm)) +
+                                 aes(x = bill_length_mm, y = bill_depth_mm,
+                                     colour = sex)) +
   geom_point() +
-  facet_wrap(~ species_island_sex) +
-  theme_minimal()
+  facet_grid(species ~ island) +
+  theme_minimal() +
+  scale_colour_viridis_d(option = "C", end = 0.9)
 ```
 
 Both plots can be improved upon but which plot is preferable? Why?
