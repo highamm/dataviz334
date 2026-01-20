@@ -125,7 +125,7 @@ ggplot(data = gpa_means, aes(x = a_year, y = meanGPA)) +
   labs(x = "Academic Year",
        y = "GPA")
 
-ggsave("grades.pdf", width = 8, height = 5)
+## ggsave("grades.pdf", width = 8, height = 5)
 # ggplot(data = statsurvey_df, aes(x = time_both, y = GPA)) +
 #   geom_point(alpha = 0.1) +
 #   geom_point(data = gpa_means, aes(x = time_both, y = meanGPA), colour = "red") +

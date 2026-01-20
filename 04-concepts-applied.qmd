@@ -166,11 +166,9 @@ ggplot(data = penguins |> filter(!is.na(sex)),
   scale_colour_viridis_d(option = "C", end = 0.9)
 ```
 
-Both plots can be improved upon but which plot is preferable? Why?
+Which plot is preferable? Why?
 
 <!-- The second. In the first, there are too many colours to distinguish anything. -->
-
-On a sheet of paper, sketch out an improved plot to investigate these variables.
 
 <!-- Sketch should be faceted by 2 things, coloured by the third. -->
 
@@ -205,11 +203,11 @@ ggplot(penguins_island, aes(x = "", y = n, fill = island)) +
 
 Which plot is preferable? Can you relate your choice to a concept in the reading?
 
-<!-- The first. Its much easier to perceive position and length than it is to perceive area.  -->
+<!-- The first. Its much easier to perceive position and length than it is to perceive area and angle.  -->
 
 <br>
 
-__Example 6__: Construct two different plots using the Happy Planet Index data to show the top 10 and bottom 10 countries for the `HappyPlanetIndex` variable, a variable that is meant to measure how "happy" its citizens while taking into account how the average citizen from that country affects our planet. 
+__Example 6__: Construct two different plots (a bar plot and a lollipop plot) using the Happy Planet Index data to show the top 10 and bottom 10 countries for the `HappyPlanetIndex` variable, a variable that is meant to measure how "happy" its citizens while taking into account how the average citizen from that country affects our planet. 
 
 A short description of the Happy Planet Index data is given below. The Happy Planet Index (HPI) is a measure of how efficiently a country uses its ecological resources to give its citizens long "happy" lives.
 
@@ -250,6 +248,18 @@ ggplot(data = hpi_extreme, aes(x = Country, y = HappyPlanetIndex,
   scale_colour_viridis_d() +
   coord_flip() +
   theme_minimal()
+
+# ggplot(data = hpi_df, aes(x = HappyLifeYears, y = Footprint)) +
+#   geom_point(alpha = 0.5) +
+#   geom_hline(aes(yintercept = median(hpi_df$Footprint)),
+#              linetype = 2) +
+#   geom_vline(aes(xintercept = median(hpi_df$HappyLifeYears)), 
+#              linetype = 2) +
+#   geom_point(data = hpi_extreme |> slice(1:5), aes(colour = Country),
+#              size = 3, shape = 1) +
+#   ggrepel::geom_text_repel(data = hpi_extreme |> slice(1:5), aes(label = Country,
+#                                                   colour = Country)) +
+#   geom_point(data = hpi_extreme |> slice(1:5), aes(colour = Country))
 ```
 
 Construct and examine each plot. Which plot is preferable? Can you relate your choice to a concept in the reading?

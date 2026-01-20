@@ -32,13 +32,13 @@ The basic idea is that the HPI is a metric that computes how happy and healthy a
 -   `GDPcapita`, the Gross Domestic Product per population
 -   `Region`, the region the country is in
 
-Make sure the `hpi-tidy.csv` data set is in a `/data` folder in your current `R Project` directory. Run the code in the following chunk to read in the data:
+Run the code in the following chunk to read in the data:
 
 ```{r, appendix = TRUE}
 library(tidyverse)
 library(here)
 theme_set(theme_minimal())
-hpi_df <- read_csv(here("data/hpi-tidy.csv"))
+hpi_df <- read_csv("https://raw.githubusercontent.com/highamm/ds234_quarto/main/data_online/hpi-tidy.csv")
 hpi_df
 ```
 
@@ -358,5 +358,14 @@ mcss_df
 )
 
 ggsave("majors_plot.pdf", majors_plotly, width = 6, height = 4)
+
+majors_plot_high <- majors_plot |> filter(F >= 200 | M >= 400)
+ggplot(data = majors_plot, aes(x = F, y = M)) +
+  geom_point() +
+  geom_abline(slope = 1, intercept = 0, linetype = 2) +
+  geom_text(data = majors_plot_high, aes(label = major))
+
+ggplot(data = majors_plot, aes(x = prop_male, y = total_students)) +
+  geom_point()
 ```
 
