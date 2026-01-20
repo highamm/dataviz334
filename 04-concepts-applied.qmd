@@ -207,7 +207,7 @@ Which plot is preferable? Can you relate your choice to a concept in the reading
 
 <br>
 
-__Example 6__: Construct two different plots (a bar plot and a lollipop plot) using the Happy Planet Index data to show the top 10 and bottom 10 countries for the `HappyPlanetIndex` variable, a variable that is meant to measure how "happy" its citizens while taking into account how the average citizen from that country affects our planet. 
+__Example 6__: Construct a couple of different plots using the Happy Planet Index data to explore whether there is a particular region of the world for which countries have a larger `HappyPlanetIndex` variable, a variable that is meant to measure how "happy" its citizens while taking into account how the average citizen from that country affects our planet. 
 
 A short description of the Happy Planet Index data is given below. The Happy Planet Index (HPI) is a measure of how efficiently a country uses its ecological resources to give its citizens long "happy" lives.
 
@@ -260,9 +260,17 @@ ggplot(data = hpi_extreme, aes(x = Country, y = HappyPlanetIndex,
 #   ggrepel::geom_text_repel(data = hpi_extreme |> slice(1:5), aes(label = Country,
 #                                                   colour = Country)) +
 #   geom_point(data = hpi_extreme |> slice(1:5), aes(colour = Country))
+
+means <- hpi_df |> group_by(Region) |>
+  summarise(mean_planetindex = mean(HappyPlanetIndex))
+
+ggplot(data = hpi_df, aes(x = Region, y = HappyPlanetIndex)) +
+  geom_jitter(width = 0.2) +
+  geom_point(data = means, aes(y = mean_planetindex), colour = "lightpink",
+             shape = 8)
 ```
 
-Construct and examine each plot. Which plot is preferable? Can you relate your choice to a concept in the reading?
+Construct and examine each plot. Which plot is preferable? Might there be an even better plot to answer the question of interest?
 
 <!-- The second: minimizes data to ink ratio. -->
 
