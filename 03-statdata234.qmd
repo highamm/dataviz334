@@ -274,14 +274,26 @@ The variables in the data set are:
 * `major1`, `major2`, `major3`, `minor1`, `minor2`, `minor3`, the majors and minors of the student.
 
 ```{r}
+#| output: false
 library(tidyverse)
 library(readxl)
 library(here)
 df <- read_excel(here::here("data/slu_graduates_17_25.xlsx"))
 
+## one row per student
+df
+
 ## fixes error in the data
 df <- df |> mutate(across(everything(),
                           .fns = ~replace(., . ==  "STATS" , "STAT")))
+
+majors_long <- df |> select(-starts_with("minor")) |>
+  pivot_longer(starts_with("major"), names_to = "major_num",
+               values_to = "major") |>
+  filter(!is.na(major))
+
+## double majors now are in two rows
+majors_long
 ```
 
 Using this data set, construct a visualization that explores gender balance within each of the majors at SLU. We will begin this exercise by sketching out what we want to create as a class.
@@ -336,12 +348,34 @@ majors_plot <- df |> select(-starts_with("minor")) |>
   pivot_wider(names_from = sex, values_from = n_majors) |>
   mutate(prop_male = M / (`F` + M),
          total_students = `F` + M) |>
-  filter(total_students >= 30) |>
+  filter(total_students >= 45) |>
   mutate(major = fct_reorder(major, prop_male))
 
 mcss_df <- majors_plot |> filter(major %in% c("STAT", "MATH", "CS",
                                               "DATA"))
 mcss_df
+
+majors_plot <- majors_plot |> mutate(mcss = if_else(major %in% c("STAT", "MATH", "CS",
+                                              "DATA"),
+                                              true = "mcss",
+                                              false = "other"))
+
+## alt way to do this
+(majors_plotly <- ggplot(data = majors_plot, aes(x = major, y = prop_male,
+                                                 colour = mcss, size = mcss)) +
+  geom_segment(aes(xend = major, y = 0, yend = prop_male), show.legend = FALSE) +
+  geom_point(show.legend = FALSE) +
+  coord_flip() +
+  theme_minimal() +
+  labs(caption = "Data Source: SLU Institutional Research Office",
+       title = "Proportion of Male Students Graduating from 2017 through 2023.",
+       y = "Proportion of Male Students",
+       x = "Major")
+) +
+  scale_colour_manual(values = c("maroon", "grey40")) +
+  scale_size_manual(values = c(2, 1))
+
+## alt way to do this
 (majors_plotly <- ggplot(data = majors_plot, aes(x = major, y = prop_male,
                                label = total_students,
                                other_label =major )) +
