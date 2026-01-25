@@ -18,7 +18,7 @@ This section does **not** describe all of the `dplyr` and other `tidyverse` func
 
 The data set that we will use is the Happy Planet Index: you may have encountered this data set before, but we are using it again here because (1) it's really cool and (2) it has a lot of nice properties for basic data visualization (variables to colour by and facet by, ways to label points that make sense, etc.).
 
-The Happy Planet Index (HPI) is a measure of how efficiently a country uses its ecological resources to give its citizens long "happy" lives. You can read more about this data <a href="https://static1.squarespace.com/static/5735c421e321402778ee0ce9/t/578dec7837c58157b929b3d6/1468918904805/Methods+paper_2016.pdf" target="_blank">here</a>.
+The Happy Planet Index (HPI) is a measure of how efficiently a country uses its ecological resources to give its citizens long "happy" lives. You can read more about this data <a href="https://happyplanetindex.org/wp-content/themes/hpi/public/downloads/happy-planet-index-briefing-paper.pdf" target="_blank">here</a>.
 
 The basic idea is that the HPI is a metric that computes how happy and healthy a country's citizens are, but adjusts that by that country's ecological footprint (how much "damage" the country does to planet Earth). Variables in the data set are:
 
@@ -296,7 +296,9 @@ majors_long <- df |> select(-starts_with("minor")) |>
 majors_long
 ```
 
-Using this data set, construct a visualization that explores gender balance within each of the majors at SLU. We will begin this exercise by sketching out what we want to create as a class.
+a. Using this data set, construct a visualization that explores gender balance within each of the majors at SLU. We will begin this exercise by sketching out what we want to create as a class.
+
+b. Suppose that we want to present our visualization to members of the MCSSDS department. How can we modify this visualization to be tailored to this particular audience? 
 
 ```{r}
 #| echo: false
