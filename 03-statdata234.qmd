@@ -344,12 +344,10 @@ majors_plot <- df |> select(-starts_with("minor")) |>
   pivot_longer(starts_with("major"), names_to = "major_num",
                values_to = "major") |>
   filter(!is.na(major)) |>
-  group_by(sex, major) |>
-  summarise(n_majors = n()) |>
-  ungroup() |>
-  pivot_wider(names_from = sex, values_from = n_majors) |>
-  mutate(prop_male = M / (`F` + M),
-         total_students = `F` + M) |>
+  mutate(sex_ind = if_else(sex == "M", true = 1, false = 0)) |>
+  group_by(major) |>
+  summarise(total_students = n(),
+            prop_male = mean(sex_ind)) |>
   filter(total_students >= 45) |>
   mutate(major = fct_reorder(major, prop_male))
 

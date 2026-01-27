@@ -6,9 +6,7 @@
 source("_common.R")
 ```
 
-The purpose of this section is to visualize potentially complex linear models. We will begin with how to visualize a linear regression model with a single quantitative predictor in order to see how the package works. We will then expand our usage to include models with categorical predictors, interaction terms, and quadratic (or higher order) terms.
-
-Throughout this section, we will use a data set on course evaluations at the University of Texas Austin from the `openintro` package. Each row of the data set corresponds to a course at UT Austin. Variables that we will use include course evaluation `score` (on a 1-5 scale), `age` of professor, `bty_avg` (the attractiveness of the professor), `ethnicity` (either `minority` or `not minority`) and `gender` (either `male` or `female` in this data set).
+The purpose of this section is to visualize potentially complex linear models. We will begin with how to visualize a linear regression model with a single quantitative predictor in order to see how the package works. We will then expand our usage to include models with categorical predictors, interaction terms, and quadratic (or higher order) terms. Throughout this section, we will use a data set on course evaluations at the University of Texas Austin from the `openintro` package. Each row of the data set corresponds to a course at UT Austin. Variables that we will use include course evaluation `score` (on a 1-5 scale), `age` of professor, `bty_avg` (the attractiveness of the professor), `ethnicity` (either `minority` or `not minority`) and `gender` (either `male` or `female` in this data set).
 
 ::: {.callout-note}
 ## Note

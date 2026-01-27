@@ -170,9 +170,7 @@ preds_titanic_large <- ggpredict(titanic_large, terms = c("Age", "Sex", "Pclass"
 
 We will complete the rest of this exercise as a class.
 
-__Exercise 1__. Examine the `predicted` column in `aug_surv`. Can you calculate one of these values using the model output "by hand?"
-
-__Exercise 2__. Make a plot of the values of `predicted` that lets you explore how our predictors are associated with the survival on the Titanic.
+__Exercise 1__. Make a plot of the values of `predicted` that lets you explore how our predictors are associated with the survival on the Titanic.
 
 ```{r}
 #| echo: false
