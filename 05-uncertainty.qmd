@@ -70,12 +70,6 @@ OR
 
 <a href="https://www.gannett-cdn.com/presto/2020/08/22/PNDN/0dc22b42-a96f-48e5-9427-49026950ff05-205347.png?width=660&height=542&fit=crop&format=pjpg&auto=webp" target="_blank">Option 2</a>
 
-**Exercise 5**.
-
-Next, consider fivethirtyeight.com's coverage of the 2020 presidential election. Much of their <a href="https://projects.fivethirtyeight.com/2020-election-forecast/" target="_blank">forecast given on this page</a> can be simply summarised by saying they predict Biden to win the election with 89% probability. So, why make the supplementary graphics that say the same thing but use a lot more space?
-
-<br>
-
 ## STAT 113 Survey
 
 You may recall from taking STAT 113 that you completed a survey at the beginning of the semester. Responses from the survey were then used in some examples throughout the semester. We will explore some of these surveys from the past few years, examining different trends in some of the variables through time. For this example, we will also pay particular attention to making sure that our graphics show the underlying variability in the data.
