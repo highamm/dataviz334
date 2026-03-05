@@ -201,6 +201,19 @@ pred_comp <- ggpredict(mod_comp, terms = c("bty_avg",
   as_tibble()
 ```
 
+```{r}
+#| echo: false
+#| output: false
+
+## first variable is assumed to be the quantitative variable
+## can also give a vector of specific values that you want predictions for
+ggpredict(mod_comp, terms = c("bty_avg",
+                              "age [c(4, 7, 11)]",
+                              "gender")) |>
+  as.data.frame(terms_to_colnames = TRUE) |>
+  as_tibble()
+```
+
 We obtain 90 predictions: there are 3 unique values for age, 2 unique values for gender, and 15 unique values for beauty average (3 * 2 * 15 = 90). Note that `ggpredict()` will "assume" that the first term provided in `terms` is the term that we plan on putting on the x-axis of our plot, giving a relatively large number of unique values to make predictions for (15 here). Any subsequent terms are assumed to be grouping variables and are given fewer unique values (we specified 3 here for age and gender has 2 levels).
 
 And the final step is to create a plot of the resulting model predictions. This is the step that requires the most critical thinking, as the plot will change depending on (1) how many models we fit (just 1 in this example) and (2) how many predictor variables we have.

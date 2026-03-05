@@ -284,6 +284,47 @@ We are also not able to see outliers from this plot, so, while it is a useful st
 
 __Exercise 1__. In the example where we sampled from the very large data set to construct a graphic, can you think of some possible flaws in this approach? 
 
+## Statistical Learning Models
+
+Some of you have enrolled in, are enrolled in, or will enroll in CS/DATA/STAT 352: Statistical and Machine Learning. We can use visualization to better communicate the results of each of the statistical learning methods you learn about, including k-nearest-neighbors, clustering algorithms, linear discriminant analysis, principal components analysis, decision trees, random forests, lasso regression, etc.
+
+However, because the course is neither a pre-requisite nor a co-requisite for this course, we will just give a short example here. Additionally, you will not be assessed on anything in this subsection. If you decide to use a statistical learning method for your final project, you should be able to use a search engine to help you see how others have visualized that particular method. 
+
+For the first short example, examine some code below that has been modified from Dr. Torrey. The model fit here uses the `ns()` function from the `splines` package. Notice that, besides the addition of `ns()` to the `lm()` function, the remaining steps in visualizing a "grid" of predictions remains the same. __`ggpredict()` can be used with many statistical learning algorithms that have a quantitative response, including smoothing splines, lasso regression, and ridge regression__.
+
+```{r}
+library(tidyverse)
+library(splines)
+Auto <- read_csv("https://raw.githubusercontent.com/selva86/datasets/master/Auto.csv",
+                 col_types = list(origin = readr::col_factor()))
+
+## model code below from Dr. Torrey
+## dropping horsepower to keep the plot simpler
+gam.lm <- lm(mpg ~ ns(weight, df = 2) + year + origin, data = Auto)
+
+pure.lm <- lm(mpg ~  weight + year + origin, data = Auto)
+
+library(broom)
+library(ggeffects)
+
+gam_preds <- ggpredict(gam.lm, terms = c("weight", "year [threenum]", "origin")) |> 
+  as.data.frame(terms_to_colnames = TRUE) |>
+  as_tibble()
+
+
+ggplot(data = gam_preds, aes(x = weight, y = predicted)) +
+  geom_point(data = Auto, aes(y = mpg), alpha = 0.4) +
+  geom_line(aes(colour = factor(year)),
+            linewidth = 2) +
+  facet_wrap(~ origin) +
+  scale_colour_viridis_d() +
+  theme_minimal() +
+  labs(colour = "year",
+       y = "mpg")
+```
+
+We can see from the resulting plot that the usage of splines has allowed the relationship between `weight` and `mpg` to be non-linear.
+
 ## Network Visualization
 
 If we are interested in a visualization that shows the "connectedness" between different people, subjects, etc., we might construct a __network graph__ to illustrate the nature of the connectedness between subjects. Before starting to think about a network graph, we should define a couple of key terms. We'll think about passes within a hockey team as a hypothetical example to help define the terms.
