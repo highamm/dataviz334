@@ -31,8 +31,8 @@ library(tidyverse)
 
 theme_set(theme_minimal())
 
-atp_df <- read_csv("https://raw.githubusercontent.com/JeffSackmann/tennis_atp/master/atp_matches_2023.csv")
-wta_df <- read_csv("https://raw.githubusercontent.com/JeffSackmann/tennis_wta/master/wta_matches_2023.csv")
+atp_df <- read_csv("https://raw.githubusercontent.com/JeffSackmann/tennis_atp/master/atp_matches_2024.csv")
+wta_df <- read_csv("https://raw.githubusercontent.com/JeffSackmann/tennis_wta/master/wta_matches_2024.csv")
 
 both_df <- bind_rows(atp_df, wta_df)
 
@@ -100,9 +100,9 @@ library(tidyverse)
 
 theme_set(theme_minimal())
 
-atp_df <- read_csv("https://raw.githubusercontent.com/JeffSackmann/tennis_atp/master/atp_matches_2023.csv") |>
+atp_df <- read_csv("https://raw.githubusercontent.com/JeffSackmann/tennis_atp/master/atp_matches_2024.csv") |>
   mutate(tour = "atp")
-wta_df <- read_csv("https://raw.githubusercontent.com/JeffSackmann/tennis_wta/master/wta_matches_2023.csv") |>
+wta_df <- read_csv("https://raw.githubusercontent.com/JeffSackmann/tennis_wta/master/wta_matches_2024.csv") |>
   mutate(tour = "wta")
 
 both_df <- bind_rows(atp_df, wta_df)
