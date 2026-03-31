@@ -215,21 +215,48 @@ __Exercise 2__. Draw the reactive graph for the Tennis app. Make sure to include
 
 __Exercise 3__. Sketch the reactive graph for the majors app in the previous section. Make sure to include all inputs, outputs, and reactive expressions in your graph. 
 
-```{r}
-#| echo: false
-#| eval: false
+## Your Turn
 
+**Exercise 1**. In the tennis app, change the histogram input from a `sliderInput()` to a `numericInput()`.
+
+**Exercise 2**. In the tennis app, change the histogram input back to `sliderinput()`. Then, apply 2.2.8 Exercise 3 in the *Mastering Shiny* book to the tennis app slider.
+
+__Exercise 3__. Add an additional input or output (or both!) to the Tennis App. You can decide what you want to add here!
+
+__Exercise 4__. The following app UI was taken from the *Mastering Shiny* book. With the app skeleton, complete the following.
+
+```{r}
+#| echo: true
+#| eval: false
 library(shiny)
 library(gapminder)
-gapminder
 continents <- unique(gapminder$continent)
 
 ui <- fluidPage(
-  selectInput("continent", "Continent", choices = continents), 
+  selectInput("continent", "Continent", choices = continents),
   selectInput("country", "Country", choices = NULL),
   tableOutput("data")
 )
 
+server <- function(input, output, session) {
+  
+}
+```
+
+a. Complete the server function so that the country choices update according to the continent that the user selects. Have the app display a table with the corresponding rows to the country that the user then selects.
+
+b. Add an action button so that the table only updates after the user clicks the button (see @sec-action_button).
+
+c. Extend the app so that there is an option to choose "All" for continent, which lets you see all of the countries in the list. To do this, you can use a base `R` `if else` statement (see @sec-ifelse) to trigger the "special" case for when "All" is selected. You can also use this code to get "All" to appear as an option in your list of choices for the continent:
+
+```{r}
+#| eval: false
+continents <- continents |> fct_expand("All")
+```
+
+```{r}
+#| echo: false
+#| eval: false
 server <- function(input, output, session) {
   observeEvent(input$continent, {
     country_choices <- gapminder |> 
@@ -270,15 +297,6 @@ server <- function(input, output, session) {
 
 shinyApp(ui, server)
 ```
-
-## Your Turn
-
-**Exercise 1**. In the tennis app, change the histogram input from a `sliderInput()` to a `numericInput()`.
-
-**Exercise 2**. In the tennis app, change the histogram input back to `sliderinput()`. Then, apply 2.2.8 Exercise 3 in the *Mastering Shiny* book to the tennis app slider.
-
-__Exercise 3__. Add an additional input or output (or both!) to the Tennis App. You can decide what you want to add here!
-
 
 
 
@@ -749,70 +767,18 @@ In the code above, there are a few new pieces we added to get the UI to update d
 * the code within the `{}` filters the pokemon data set according to the `Generation` selected and puts all of the pokemon `Name`s from this `Generation` into a vector.
 * finally, the `updateSelectizeInput` piece tells the `selectizeInput` in the UI to update with these new choices.
 
-### Action Button
+### Action Button {#sec-action_button}
 
 An action button is useful if you do not want your plot to update until the user clicks the button. There are a couple of useful cases for an action button:
 
 -   the code in your Shiny app takes a long time to run (so you don't want it updating each time the user changes an input).
 -   the output does not make sense unless the user changes multiple inputs (so again, you don't want the shiny app to run each time the user changes an input).
 
-We will add an `actionButton` to the UI, paired with `eventReactive` in the server, to the following example that lets a user compare the statistics of a few different Pokemon.
+The code below adds `actionButton` to the UI, paired with `eventReactive` in the server, to the following example so that the user compare the statistics of a few different Pokemon. But, the graph will not update until the user clicks the action button!
 
 ```{r}
 #| echo: true
-#| output: true
-
-poke_df <- read_csv(here::here("data/pokemon_full.csv"))
-poke_long <- poke_df |> pivot_longer(4:9, values_to = "value", 
-                                      names_to = "stat")
-
-poke_small <- poke_long |>
-  filter(Name == "Bulbasaur" | Name == "Ivysaur")
-ggplot(data = poke_small, aes(x = stat, y = value)) +
-  geom_col(aes(fill = Name), position = "dodge") +
-  scale_fill_viridis_d()
-
-library(shiny)
-
-ui <- fluidPage(
-  sidebarLayout(
-    sidebarPanel(
-      selectizeInput("pokechoose1", label = "Choose Pokemon",
-                     choices = poke_df$Name, selected = "Bulbasaur",
-                     multiple = TRUE)
-      ),
-    mainPanel(
-      plotOutput(outputId = "pokegraph")
-    )
-  )
-)
-
-server <- function(input, output, session) {
-  
-  poke_react <- reactive({
-    poke_long |> filter(Name %in% input$pokechoose1) 
-  })
-  
-  output$pokegraph <- renderPlot({
-    
-    ggplot(data = poke_react(),
-           aes(x = value, y = stat)) +
-      geom_col(aes(fill = Name),
-               position = position_dodge2(reverse = TRUE)) +
-      scale_fill_viridis_d() +
-      theme_minimal(base_size = 34)
-    
-  })
-  
-}
-
-shinyApp(ui, server)
-```
-
-```{r}
-#| echo: false
 #| eval: false
-
 poke_df <- read_csv(here::here("data/pokemon_full.csv"))
 poke_long <- poke_df |> pivot_longer(4:9, values_to = "value", 
                                       names_to = "stat")
@@ -841,7 +807,7 @@ ui <- fluidPage(
 
 server <- function(input, output, session) {
   
-  poke_react <-  eventReactive(input$runappbutton, {
+  poke_react <- eventReactive(input$runappbutton, {
     poke_long |> filter(Name %in% input$pokechoose1)
   })
   
@@ -851,8 +817,7 @@ server <- function(input, output, session) {
       geom_col(aes(fill = Name), position = "dodge") +
       coord_flip() +
       scale_fill_viridis_d()
-  }
-  )
+  })
   
 }
 
@@ -861,7 +826,7 @@ shinyApp(ui, server)
 
 You must often pair an `actionButton` with either `eventReactive()` or `observeEvent()`. The differences between the two are a little confusing but the primary difference is that `eventReactive()` is used to create a reactive expression when the action button is clicked while `observeEvent()` just runs some code when an action button is clicked.
 
-### Using `if` and `else`
+### Using `if` and `else` {#sec-ifelse}
 
 If we want our app do do something completely different when a user changes an input, we might consider using `if` and `else`. If we have time in class, we will do an example in `Shiny`: `if` an `input` is equal to some value, do something or make a certain plot; `else` make a different type of plot. Below is an example of the syntax in base `R`:
 
