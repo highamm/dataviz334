@@ -79,19 +79,21 @@ We will try to use a similar workflow for this problem as we did for the majors 
 
 **Step 1**: Make a histogram of **one** variable for **one** specific player.
 
-**Step 2**: Set up our `shiny` app inputs. Before, we just had a single input. Now, we will have two: one for player and one for variable. Let's focus on one at a time, doing `player` first. Type `shinyapp` and click on the `R Studio` snippet to bring up a base app.
+**Step 2**: Set up our `shiny` app inputs. Before, we just had a single input. Now, we will have two: one for player and one for variable. Let's focus on one at a time, doing `player` first. Type `shinyapp` and click on the `R Studio` snippet to bring up a base app. Then, add `player` as an input in the UI.
 
 **Step 3**: Now that we have one of our inputs in the UI, let's work on the server. First, we will ignore the `input$` selector and put in our graph from step 1. We again use the `plotOutput()`, `renderPlot({})` combination.
 
 **Step 4**: Now we want to connect the `input` defined in the UI to the server so that the graph changes depending on which player we select.
 
-**Step 5**: Now we repeat some of these steps for a second input: a variable that the user selects. We will use `radioButtons()` as the input in the UI.
+**Step 5**: We can then repeat some of these steps for a second input: a variable that the user selects. We will use `radioButtons()` as the input in the UI.
 
-We will discuss why we need to take some extra steps to perform the "user can select a variable" operation in class. In particular, we will need to briefly discuss <a href="https://mastering-shiny.org/action-tidy.html" target="_blank">tidy evaluation</a> to use some of the `tidyverse` functions in `shiny`.
+We will discuss why we need to take some extra steps to perform the "user can select a variable" operation in class. In particular, we will need to briefly discuss <a href="https://mastering-shiny.org/action-tidy.html" target="_blank">tidy evaluation</a> to use some of the `tidyverse` functions in `shiny` (see @sec-tidyeval).
 
-**Step 6**: Finally, we will add a third input that will let the user change the number of bins in the histogram.
+**Step 6**: Add a third input that will let the user change the number of bins in the histogram.
 
-**Step 7**: Use the `glue()` function from the `glue` package to change the title of the histogram to include the name of the player in the plot.
+**Step 7**: Use the `glue()` function from the `glue` package to change the title of the histogram to include the name of the player in the plot (see @sec-glue).
+
+**Step 8**: Suppose that we want to add a buttons that the user can select corresponding to the two main professional tennis tours (`atp` for the men's tour and `wta` for the women's tour). After the user selects an appropriate tour, we want the player choices to give players corresponding __only__ to that tour (so that only men appear when `atp` is selected and only women appear when `wta` is selected). To make something like this happen, we need to learn about how to make the UI __dynamic__ (@sec-dynamicui).
 
 ```{r}
 #| echo: false
@@ -583,7 +585,7 @@ ggplot(data = janfeb_df, aes(x = tempmin)) +
 
 ## Other Useful Things for `shiny`
 
-### Tidy Evaluation
+### Tidy Evaluation {#sec-tidyeval}
 
 When using some tidyverse functions inside of a function environment, there are some issues in that we are mixing two different types of "variables" in `R`. In particular,
 
@@ -646,7 +648,7 @@ select_mtcars <- function(var_select) {
 select_mtcars(var_select = "mpg")
 ```
 
-### `glue::glue()`
+### `glue::glue()` {#sec-glue}
 
 The `glue()` function from the `glue` package is really useful for making plot titles, axis titles, etc. that depend on variables you have made. For example, you might want a title for `ggplot2` to change depending on which input a user selects.
 
@@ -656,12 +658,6 @@ It's a fairly simple function: you just put together text in `" "` and variable 
 poke_df <- read_csv(here::here("data/pokemon_full.csv"))
 poke_long <- poke_df |> pivot_longer(4:9, values_to = "value", 
                                       names_to = "stat")
-
-poke_small <- poke_long |>
-  filter(Name == "Bulbasaur" | Name == "Ivysaur")
-ggplot(data = poke_small, aes(x = stat, y = value)) +
-  geom_col(aes(fill = Name), position = "dodge") +
-  scale_fill_viridis_d()
 
 library(shiny)
 
@@ -693,6 +689,65 @@ server <- function(input, output, session) {
 
 shinyApp(ui, server)
 ```
+
+### Dynamic UI {#sec-dynamicui}
+
+For what we have learned about so far, we have set up a Shiny app so that, when the user changes something in the user interface (UI), something else in the server changes. But suppose that we would the __UI__ itself to update when the user changes something in the UI. If we want the UI to update based on what a user selects, then we want the UI to be __dynamic__.
+
+As an example, suppose that in the previous Pokemon example, we want the user to choose a pokemon `Generation` (1, 2, 3, 4, 5, 6) and to have our list only contain Pokemon for that particular Generation. This situation calls for dynamic UI because our `selectizeInput` UI component should update when the user chooses a `Generation` in the UI.
+
+```{r}
+poke_df <- read_csv(here::here("data/pokemon_full.csv"))
+poke_long <- poke_df |> pivot_longer(4:9, values_to = "value", 
+                                      names_to = "stat")
+
+library(shiny)
+
+ui <- fluidPage(
+  sidebarLayout(
+    sidebarPanel(
+      selectInput("genchoose", label = "Choose a Generation",
+                  choices = 1:6, selected = 1),
+      selectizeInput("pokechoose1", label = "Choose Pokemon",
+                     choices = poke_df$Name, selected = "Bulbasaur")
+    ),
+    mainPanel(
+      plotOutput(outputId = "pokegraph")
+    )
+  )
+)
+
+server <- function(input, output, session) {
+  
+  observeEvent(input$genchoose, {
+    pokemon_choices <- poke_df |> 
+      filter(Generation == input$genchoose) |>
+      pull(Name) ## makes the Name a vector
+    updateSelectizeInput(inputId = "pokechoose1", choices = pokemon_choices)
+  })
+  
+  output$pokegraph <- renderPlot({
+    poke_react <- poke_long |> filter(Name %in% input$pokechoose1)
+    
+    ggplot(data = poke_react, aes(x = stat, y = value)) +
+      geom_point() +
+      geom_segment(aes(xend = stat, y = 0, yend = value)) +
+      coord_flip() +
+      labs(title = glue::glue("Graph of the Stats for", input$pokechoose1))
+  })
+  
+}
+
+shinyApp(ui, server)
+```
+
+In the code above, there are a few new pieces we added to get the UI to update dynamically:
+
+* we added a `selectInput` piece in the UI so that a user can select a `Generation`.
+* we added an `observeEvent` piece in the server. The first argument of `observeEvent` gives the event that we want shiny to "watch for". In this case, the event that we are watching for is a change to the "choose generation" input.
+* when `input$genchoose` is changed by the user, Shiny "observes this event," which triggers the code in the `{}` to run.
+* the code within the `{}` filters the pokemon data set according to the `Generation` selected and puts all of the pokemon `Name`s from this `Generation` into a vector.
+* finally, the `updateSelectizeInput` piece tells the `selectizeInput` in the UI to update with these new choices.
 
 ### Action Button
 

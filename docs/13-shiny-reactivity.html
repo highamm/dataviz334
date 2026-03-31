@@ -291,11 +291,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li>
 <a href="#other-useful-things-for-shiny" id="toc-other-useful-things-for-shiny" class="nav-link" data-scroll-target="#other-useful-things-for-shiny"><span class="header-section-number">15.4</span> Other Useful Things for <code>shiny</code></a>
   <ul class="collapse">
-<li><a href="#tidy-evaluation" id="toc-tidy-evaluation" class="nav-link" data-scroll-target="#tidy-evaluation"><span class="header-section-number">15.4.1</span> Tidy Evaluation</a></li>
-  <li><a href="#glueglue" id="toc-glueglue" class="nav-link" data-scroll-target="#glueglue"><span class="header-section-number">15.4.2</span> <code>glue::glue()</code></a></li>
-  <li><a href="#action-button" id="toc-action-button" class="nav-link" data-scroll-target="#action-button"><span class="header-section-number">15.4.3</span> Action Button</a></li>
-  <li><a href="#using-if-and-else" id="toc-using-if-and-else" class="nav-link" data-scroll-target="#using-if-and-else"><span class="header-section-number">15.4.4</span> Using <code>if</code> and <code>else</code></a></li>
-  <li><a href="#source-and-write_csv" id="toc-source-and-write_csv" class="nav-link" data-scroll-target="#source-and-write_csv"><span class="header-section-number">15.4.5</span> <code>source()</code> and <code>write_csv()</code></a></li>
+<li><a href="#sec-tidyeval" id="toc-sec-tidyeval" class="nav-link" data-scroll-target="#sec-tidyeval"><span class="header-section-number">15.4.1</span> Tidy Evaluation</a></li>
+  <li><a href="#sec-glue" id="toc-sec-glue" class="nav-link" data-scroll-target="#sec-glue"><span class="header-section-number">15.4.2</span> <code>glue::glue()</code></a></li>
+  <li><a href="#sec-dynamicui" id="toc-sec-dynamicui" class="nav-link" data-scroll-target="#sec-dynamicui"><span class="header-section-number">15.4.3</span> Dynamic UI</a></li>
+  <li><a href="#action-button" id="toc-action-button" class="nav-link" data-scroll-target="#action-button"><span class="header-section-number">15.4.4</span> Action Button</a></li>
+  <li><a href="#using-if-and-else" id="toc-using-if-and-else" class="nav-link" data-scroll-target="#using-if-and-else"><span class="header-section-number">15.4.5</span> Using <code>if</code> and <code>else</code></a></li>
+  <li><a href="#source-and-write_csv" id="toc-source-and-write_csv" class="nav-link" data-scroll-target="#source-and-write_csv"><span class="header-section-number">15.4.6</span> <code>source()</code> and <code>write_csv()</code></a></li>
   </ul>
 </li>
   </ul></nav>
@@ -385,13 +386,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>Now, we have our five variables (<code>ace</code>, <code>df</code>, <code>svperc</code>, <code>firstwon</code>, and <code>secondwon</code>). We want an app that lets that user make a histogram of one of these variables for a player of their choosing.</p>
 <p>We will try to use a similar workflow for this problem as we did for the majors app.</p>
 <p><strong>Step 1</strong>: Make a histogram of <strong>one</strong> variable for <strong>one</strong> specific player.</p>
-<p><strong>Step 2</strong>: Set up our <code>shiny</code> app inputs. Before, we just had a single input. Now, we will have two: one for player and one for variable. Let’s focus on one at a time, doing <code>player</code> first. Type <code>shinyapp</code> and click on the <code>R Studio</code> snippet to bring up a base app.</p>
+<p><strong>Step 2</strong>: Set up our <code>shiny</code> app inputs. Before, we just had a single input. Now, we will have two: one for player and one for variable. Let’s focus on one at a time, doing <code>player</code> first. Type <code>shinyapp</code> and click on the <code>R Studio</code> snippet to bring up a base app. Then, add <code>player</code> as an input in the UI.</p>
 <p><strong>Step 3</strong>: Now that we have one of our inputs in the UI, let’s work on the server. First, we will ignore the <code>input$</code> selector and put in our graph from step 1. We again use the <code><a href="https://rdrr.io/pkg/shiny/man/plotOutput.html">plotOutput()</a></code>, <code>renderPlot({})</code> combination.</p>
 <p><strong>Step 4</strong>: Now we want to connect the <code>input</code> defined in the UI to the server so that the graph changes depending on which player we select.</p>
-<p><strong>Step 5</strong>: Now we repeat some of these steps for a second input: a variable that the user selects. We will use <code><a href="https://rdrr.io/pkg/shiny/man/radioButtons.html">radioButtons()</a></code> as the input in the UI.</p>
-<p>We will discuss why we need to take some extra steps to perform the “user can select a variable” operation in class. In particular, we will need to briefly discuss <a href="https://mastering-shiny.org/action-tidy.html" target="_blank">tidy evaluation</a> to use some of the <code>tidyverse</code> functions in <code>shiny</code>.</p>
-<p><strong>Step 6</strong>: Finally, we will add a third input that will let the user change the number of bins in the histogram.</p>
-<p><strong>Step 7</strong>: Use the <code>glue()</code> function from the <code>glue</code> package to change the title of the histogram to include the name of the player in the plot.</p>
+<p><strong>Step 5</strong>: We can then repeat some of these steps for a second input: a variable that the user selects. We will use <code><a href="https://rdrr.io/pkg/shiny/man/radioButtons.html">radioButtons()</a></code> as the input in the UI.</p>
+<p>We will discuss why we need to take some extra steps to perform the “user can select a variable” operation in class. In particular, we will need to briefly discuss <a href="https://mastering-shiny.org/action-tidy.html" target="_blank">tidy evaluation</a> to use some of the <code>tidyverse</code> functions in <code>shiny</code> (see <a href="#sec-tidyeval" class="quarto-xref"><span>Section 15.4.1</span></a>).</p>
+<p><strong>Step 6</strong>: Add a third input that will let the user change the number of bins in the histogram.</p>
+<p><strong>Step 7</strong>: Use the <code>glue()</code> function from the <code>glue</code> package to change the title of the histogram to include the name of the player in the plot (see <a href="#sec-glue" class="quarto-xref"><span>Section 15.4.2</span></a>).</p>
+<p><strong>Step 8</strong>: Suppose that we want to add a buttons that the user can select corresponding to the two main professional tennis tours (<code>atp</code> for the men’s tour and <code>wta</code> for the women’s tour). After the user selects an appropriate tour, we want the player choices to give players corresponding <strong>only</strong> to that tour (so that only men appear when <code>atp</code> is selected and only women appear when <code>wta</code> is selected). To make something like this happen, we need to learn about how to make the UI <strong>dynamic</strong> (<a href="#sec-dynamicui" class="quarto-xref"><span>Section 15.4.3</span></a>).</p>
 <p><strong>Exercise 1</strong>. If we move the <code>output$name_of_histogram &lt;- ....</code> code to the very beginning of the server function, do you think the app will still run? Give a reason.</p>
 <p><strong>Exercise 2</strong>. Draw the reactive graph for the Tennis app. Make sure to include all inputs, outputs, and reactive expressions in your graph.</p>
 <p><strong>Exercise 3</strong>. Sketch the reactive graph for the majors app in the previous section. Make sure to include all inputs, outputs, and reactive expressions in your graph.</p>
@@ -408,7 +410,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section><section id="other-useful-things-for-shiny" class="level2" data-number="15.4"><h2 data-number="15.4" class="anchored" data-anchor-id="other-useful-things-for-shiny">
 <span class="header-section-number">15.4</span> Other Useful Things for <code>shiny</code>
 </h2>
-<section id="tidy-evaluation" class="level3" data-number="15.4.1"><h3 data-number="15.4.1" class="anchored" data-anchor-id="tidy-evaluation">
+<section id="sec-tidyeval" class="level3" data-number="15.4.1"><h3 data-number="15.4.1" class="anchored" data-anchor-id="sec-tidyeval">
 <span class="header-section-number">15.4.1</span> Tidy Evaluation</h3>
 <p>When using some tidyverse functions inside of a function environment, there are some issues in that we are mixing two different types of “variables” in <code>R</code>. In particular,</p>
 <ul>
@@ -545,7 +547,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span><span class="co">#&gt; Volvo 142E          21.4</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>We will spend a little time fixing the code that does not work.</p>
-</section><section id="glueglue" class="level3" data-number="15.4.2"><h3 data-number="15.4.2" class="anchored" data-anchor-id="glueglue">
+</section><section id="sec-glue" class="level3" data-number="15.4.2"><h3 data-number="15.4.2" class="anchored" data-anchor-id="sec-glue">
 <span class="header-section-number">15.4.2</span> <code>glue::glue()</code>
 </h3>
 <p>The <code>glue()</code> function from the <code>glue</code> package is really useful for making plot titles, axis titles, etc. that depend on variables you have made. For example, you might want a title for <code>ggplot2</code> to change depending on which input a user selects.</p>
@@ -555,18 +557,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span><span class="va">poke_long</span> <span class="op">&lt;-</span> <span class="va">poke_df</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://tidyr.tidyverse.org/reference/pivot_longer.html">pivot_longer</a></span><span class="op">(</span><span class="fl">4</span><span class="op">:</span><span class="fl">9</span>, values_to <span class="op">=</span> <span class="st">"value"</span>, </span>
 <span>                                      names_to <span class="op">=</span> <span class="st">"stat"</span><span class="op">)</span></span>
 <span></span>
-<span><span class="va">poke_small</span> <span class="op">&lt;-</span> <span class="va">poke_long</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="va">Name</span> <span class="op">==</span> <span class="st">"Bulbasaur"</span> <span class="op">|</span> <span class="va">Name</span> <span class="op">==</span> <span class="st">"Ivysaur"</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">poke_small</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">stat</span>, y <span class="op">=</span> <span class="va">value</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_bar.html">geom_col</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>fill <span class="op">=</span> <span class="va">Name</span><span class="op">)</span>, position <span class="op">=</span> <span class="st">"dodge"</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_viridis.html">scale_fill_viridis_d</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output-display">
-<div>
-<figure class="figure"><p><img src="13-shiny-reactivity_files/figure-html/unnamed-chunk-16-1.png" class="img-fluid figure-img" width="672"></p>
-</figure>
-</div>
-</div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://shiny.posit.co/">shiny</a></span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">ui</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/fluidPage.html">fluidPage</a></span><span class="op">(</span></span>
@@ -598,13 +588,74 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span><span class="fu"><a href="https://rdrr.io/pkg/shiny/man/shinyApp.html">shinyApp</a></span><span class="op">(</span><span class="va">ui</span>, <span class="va">server</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <div>
-<figure class="figure"><p><img src="13-shiny-reactivity_files/figure-html/unnamed-chunk-16-2.png" class="img-fluid figure-img" width="672"></p>
+<figure class="figure"><p><img src="13-shiny-reactivity_files/figure-html/unnamed-chunk-16-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
 </div>
-</section><section id="action-button" class="level3" data-number="15.4.3"><h3 data-number="15.4.3" class="anchored" data-anchor-id="action-button">
-<span class="header-section-number">15.4.3</span> Action Button</h3>
+</section><section id="sec-dynamicui" class="level3" data-number="15.4.3"><h3 data-number="15.4.3" class="anchored" data-anchor-id="sec-dynamicui">
+<span class="header-section-number">15.4.3</span> Dynamic UI</h3>
+<p>For what we have learned about so far, we have set up a Shiny app so that, when the user changes something in the user interface (UI), something else in the server changes. But suppose that we would the <strong>UI</strong> itself to update when the user changes something in the UI. If we want the UI to update based on what a user selects, then we want the UI to be <strong>dynamic</strong>.</p>
+<p>As an example, suppose that in the previous Pokemon example, we want the user to choose a pokemon <code>Generation</code> (1, 2, 3, 4, 5, 6) and to have our list only contain Pokemon for that particular Generation. This situation calls for dynamic UI because our <code>selectizeInput</code> UI component should update when the user chooses a <code>Generation</code> in the UI.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">poke_df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://readr.tidyverse.org/reference/read_delim.html">read_csv</a></span><span class="op">(</span><span class="fu">here</span><span class="fu">::</span><span class="fu"><a href="https://here.r-lib.org/reference/here.html">here</a></span><span class="op">(</span><span class="st">"data/pokemon_full.csv"</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">poke_long</span> <span class="op">&lt;-</span> <span class="va">poke_df</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://tidyr.tidyverse.org/reference/pivot_longer.html">pivot_longer</a></span><span class="op">(</span><span class="fl">4</span><span class="op">:</span><span class="fl">9</span>, values_to <span class="op">=</span> <span class="st">"value"</span>, </span>
+<span>                                      names_to <span class="op">=</span> <span class="st">"stat"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://shiny.posit.co/">shiny</a></span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">ui</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/fluidPage.html">fluidPage</a></span><span class="op">(</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/sidebarLayout.html">sidebarLayout</a></span><span class="op">(</span></span>
+<span>    <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/sidebarLayout.html">sidebarPanel</a></span><span class="op">(</span></span>
+<span>      <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/selectInput.html">selectInput</a></span><span class="op">(</span><span class="st">"genchoose"</span>, label <span class="op">=</span> <span class="st">"Choose a Generation"</span>,</span>
+<span>                  choices <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">6</span>, selected <span class="op">=</span> <span class="fl">1</span><span class="op">)</span>,</span>
+<span>      <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/selectInput.html">selectizeInput</a></span><span class="op">(</span><span class="st">"pokechoose1"</span>, label <span class="op">=</span> <span class="st">"Choose Pokemon"</span>,</span>
+<span>                     choices <span class="op">=</span> <span class="va">poke_df</span><span class="op">$</span><span class="va">Name</span>, selected <span class="op">=</span> <span class="st">"Bulbasaur"</span><span class="op">)</span></span>
+<span>    <span class="op">)</span>,</span>
+<span>    <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/sidebarLayout.html">mainPanel</a></span><span class="op">(</span></span>
+<span>      <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/plotOutput.html">plotOutput</a></span><span class="op">(</span>outputId <span class="op">=</span> <span class="st">"pokegraph"</span><span class="op">)</span></span>
+<span>    <span class="op">)</span></span>
+<span>  <span class="op">)</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">server</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">input</span>, <span class="va">output</span>, <span class="va">session</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  </span>
+<span>  <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/observeEvent.html">observeEvent</a></span><span class="op">(</span><span class="va">input</span><span class="op">$</span><span class="va">genchoose</span>, <span class="op">{</span></span>
+<span>    <span class="va">pokemon_choices</span> <span class="op">&lt;-</span> <span class="va">poke_df</span> <span class="op">|&gt;</span> </span>
+<span>      <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="va">Generation</span> <span class="op">==</span> <span class="va">input</span><span class="op">$</span><span class="va">genchoose</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>      <span class="fu"><a href="https://dplyr.tidyverse.org/reference/pull.html">pull</a></span><span class="op">(</span><span class="va">Name</span><span class="op">)</span> <span class="co">## makes the Name a vector</span></span>
+<span>    <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/updateSelectInput.html">updateSelectizeInput</a></span><span class="op">(</span>inputId <span class="op">=</span> <span class="st">"pokechoose1"</span>, choices <span class="op">=</span> <span class="va">pokemon_choices</span><span class="op">)</span></span>
+<span>  <span class="op">}</span><span class="op">)</span></span>
+<span>  </span>
+<span>  <span class="va">output</span><span class="op">$</span><span class="va">pokegraph</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/renderPlot.html">renderPlot</a></span><span class="op">(</span><span class="op">{</span></span>
+<span>    <span class="va">poke_react</span> <span class="op">&lt;-</span> <span class="va">poke_long</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="va">Name</span> <span class="op"><a href="https://rdrr.io/r/base/match.html">%in%</a></span> <span class="va">input</span><span class="op">$</span><span class="va">pokechoose1</span><span class="op">)</span></span>
+<span>    </span>
+<span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">poke_react</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">stat</span>, y <span class="op">=</span> <span class="va">value</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>      <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html">geom_point</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
+<span>      <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_segment.html">geom_segment</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>xend <span class="op">=</span> <span class="va">stat</span>, y <span class="op">=</span> <span class="fl">0</span>, yend <span class="op">=</span> <span class="va">value</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>      <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/coord_flip.html">coord_flip</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
+<span>      <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op">(</span>title <span class="op">=</span> <span class="fu">glue</span><span class="fu">::</span><span class="fu"><a href="https://glue.tidyverse.org/reference/glue.html">glue</a></span><span class="op">(</span><span class="st">"Graph of the Stats for"</span>, <span class="va">input</span><span class="op">$</span><span class="va">pokechoose1</span><span class="op">)</span><span class="op">)</span></span>
+<span>  <span class="op">}</span><span class="op">)</span></span>
+<span>  </span>
+<span><span class="op">}</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/shiny/man/shinyApp.html">shinyApp</a></span><span class="op">(</span><span class="va">ui</span>, <span class="va">server</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure"><p><img src="13-shiny-reactivity_files/figure-html/unnamed-chunk-17-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>In the code above, there are a few new pieces we added to get the UI to update dynamically:</p>
+<ul>
+<li>we added a <code>selectInput</code> piece in the UI so that a user can select a <code>Generation</code>.</li>
+<li>we added an <code>observeEvent</code> piece in the server. The first argument of <code>observeEvent</code> gives the event that we want shiny to “watch for”. In this case, the event that we are watching for is a change to the “choose generation” input.</li>
+<li>when <code>input$genchoose</code> is changed by the user, Shiny “observes this event,” which triggers the code in the <code><a href="https://rdrr.io/r/base/Paren.html">{}</a></code> to run.</li>
+<li>the code within the <code><a href="https://rdrr.io/r/base/Paren.html">{}</a></code> filters the pokemon data set according to the <code>Generation</code> selected and puts all of the pokemon <code>Name</code>s from this <code>Generation</code> into a vector.</li>
+<li>finally, the <code>updateSelectizeInput</code> piece tells the <code>selectizeInput</code> in the UI to update with these new choices.</li>
+</ul></section><section id="action-button" class="level3" data-number="15.4.4"><h3 data-number="15.4.4" class="anchored" data-anchor-id="action-button">
+<span class="header-section-number">15.4.4</span> Action Button</h3>
 <p>An action button is useful if you do not want your plot to update until the user clicks the button. There are a couple of useful cases for an action button:</p>
 <ul>
 <li>the code in your Shiny app takes a long time to run (so you don’t want it updating each time the user changes an input).</li>
@@ -623,7 +674,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_viridis.html">scale_fill_viridis_d</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <div>
-<figure class="figure"><p><img src="13-shiny-reactivity_files/figure-html/unnamed-chunk-17-1.png" class="img-fluid figure-img" width="672"></p>
+<figure class="figure"><p><img src="13-shiny-reactivity_files/figure-html/unnamed-chunk-18-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -665,14 +716,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span><span class="fu"><a href="https://rdrr.io/pkg/shiny/man/shinyApp.html">shinyApp</a></span><span class="op">(</span><span class="va">ui</span>, <span class="va">server</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <div>
-<figure class="figure"><p><img src="13-shiny-reactivity_files/figure-html/unnamed-chunk-17-2.png" class="img-fluid figure-img" width="672"></p>
+<figure class="figure"><p><img src="13-shiny-reactivity_files/figure-html/unnamed-chunk-18-2.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
 </div>
 <p>You must often pair an <code>actionButton</code> with either <code><a href="https://rdrr.io/pkg/shiny/man/observeEvent.html">eventReactive()</a></code> or <code><a href="https://rdrr.io/pkg/shiny/man/observeEvent.html">observeEvent()</a></code>. The differences between the two are a little confusing but the primary difference is that <code><a href="https://rdrr.io/pkg/shiny/man/observeEvent.html">eventReactive()</a></code> is used to create a reactive expression when the action button is clicked while <code><a href="https://rdrr.io/pkg/shiny/man/observeEvent.html">observeEvent()</a></code> just runs some code when an action button is clicked.</p>
-</section><section id="using-if-and-else" class="level3" data-number="15.4.4"><h3 data-number="15.4.4" class="anchored" data-anchor-id="using-if-and-else">
-<span class="header-section-number">15.4.4</span> Using <code>if</code> and <code>else</code>
+</section><section id="using-if-and-else" class="level3" data-number="15.4.5"><h3 data-number="15.4.5" class="anchored" data-anchor-id="using-if-and-else">
+<span class="header-section-number">15.4.5</span> Using <code>if</code> and <code>else</code>
 </h3>
 <p>If we want our app do do something completely different when a user changes an input, we might consider using <code>if</code> and <code>else</code>. If we have time in class, we will do an example in <code>Shiny</code>: <code>if</code> an <code>input</code> is equal to some value, do something or make a certain plot; <code>else</code> make a different type of plot. Below is an example of the syntax in base <code>R</code>:</p>
 <div class="cell">
@@ -684,8 +735,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span><span class="op">}</span></span>
 <span><span class="co">#&gt; [1] 10</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-</section><section id="source-and-write_csv" class="level3" data-number="15.4.5"><h3 data-number="15.4.5" class="anchored" data-anchor-id="source-and-write_csv">
-<span class="header-section-number">15.4.5</span> <code>source()</code> and <code>write_csv()</code>
+</section><section id="source-and-write_csv" class="level3" data-number="15.4.6"><h3 data-number="15.4.6" class="anchored" data-anchor-id="source-and-write_csv">
+<span class="header-section-number">15.4.6</span> <code>source()</code> and <code>write_csv()</code>
 </h3>
 <div class="callout callout-style-simple callout-important callout-titled">
 <div class="callout-header d-flex align-content-center">

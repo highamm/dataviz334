@@ -469,7 +469,7 @@ edges <- left_join(network_sum, nodes, by = join_by(major_first == label)) |>
   left_join(nodes, by = join_by(major_second == label)) |>
   rename(to = "id") |>
   ungroup() |>
-  dplyr::select(to, from, n_majors)
+  dplyr::select(from, to, n_majors)
 edges
 ```
 

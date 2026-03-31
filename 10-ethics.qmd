@@ -38,7 +38,7 @@ The following section deals with sensitive data on lynchings in the United State
 When visualizing sensitive data, we not only need to consider the context that the data came from, but also we need to critically examine the ramifications of producing the graphic. 
 :::
 
-In particular, if our data points are human beings that were killed, tortured, or mistreated, there is danger in "dehumanizing" these people to single data points.
+In particular, if our data points are human beings that were killed, tortured, or mistreated, there is danger in "dehumanizing" these people by aggregating them to simple statistics displayed in a graphic or choropleth map.
 
 Consider the following two examples, both of which map lynchings in the United States.
 
