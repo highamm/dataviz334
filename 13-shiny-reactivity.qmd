@@ -79,7 +79,7 @@ We will try to use a similar workflow for this problem as we did for the majors 
 
 **Step 1**: Make a histogram of **one** variable for **one** specific player.
 
-**Step 2**: Set up our `shiny` app inputs. Before, we just had a single input. Now, we will have two: one for player and one for variable. Let's focus on one at a time, doing `player` first. Type `shinyapp` and click on the `R Studio` snippet to bring up a base app. Then, add `player` as an input in the UI.
+**Step 2**: Set up our `shiny` app inputs. Before, we just had a single input. Now, we will have two: one for player and one for variable. Let's focus on one at a time, doing `player` first. Type `shinyapp` and click on the `R Studio` snippet to bring up a base app. Then, add `player` as an input in `sidebarPanel()` part of a `sidebarLayout()` UI.
 
 **Step 3**: Now that we have one of our inputs in the UI, let's work on the server. First, we will ignore the `input$` selector and put in our graph from step 1. We again use the `plotOutput()`, `renderPlot({})` combination.
 
