@@ -31,8 +31,10 @@ library(tidyverse)
 
 theme_set(theme_minimal())
 
-atp_df <- read_csv("https://raw.githubusercontent.com/JeffSackmann/tennis_atp/master/atp_matches_2024.csv")
-wta_df <- read_csv("https://raw.githubusercontent.com/JeffSackmann/tennis_wta/master/wta_matches_2024.csv")
+atp_df <- read_csv("https://raw.githubusercontent.com/JeffSackmann/tennis_atp/master/atp_matches_2024.csv") |>
+  mutate(tour = "atp")
+wta_df <- read_csv("https://raw.githubusercontent.com/JeffSackmann/tennis_wta/master/wta_matches_2024.csv") |>
+  mutate(tour = "wta")
 
 both_df <- bind_rows(atp_df, wta_df)
 
@@ -59,12 +61,14 @@ major_tennis_w <- major_tennis |> filter(name == "winner_name")
 major_tennis_l <- major_tennis |> filter(name == "loser_name")
 
 w_small <- major_tennis_w |> select(value, winner_seed, w_ace, w_df,
-                                    w_svperc, w_firstwon, w_secondwon) |>
+                                    w_svperc, w_firstwon, w_secondwon,
+                                    tour) |>
   rename(seed = winner_seed, ace = w_ace, df = w_df, svperc = w_svperc,
          firstwon = w_firstwon, secondwon = w_secondwon)
 
 l_small <- major_tennis_l |> select(value, loser_seed, l_ace, l_df,
-                                    l_svperc, l_firstwon, l_secondwon) |>
+                                    l_svperc, l_firstwon, l_secondwon,
+                                    tour) |>
   rename(seed = loser_seed, ace = l_ace, df = l_df, svperc = l_svperc,
          firstwon = l_firstwon, secondwon = l_secondwon)
 

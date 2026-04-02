@@ -334,8 +334,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span></span>
 <span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/get_theme.html">theme_set</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html">theme_minimal</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
-<span><span class="va">atp_df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://readr.tidyverse.org/reference/read_delim.html">read_csv</a></span><span class="op">(</span><span class="st">"https://raw.githubusercontent.com/JeffSackmann/tennis_atp/master/atp_matches_2024.csv"</span><span class="op">)</span></span>
-<span><span class="va">wta_df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://readr.tidyverse.org/reference/read_delim.html">read_csv</a></span><span class="op">(</span><span class="st">"https://raw.githubusercontent.com/JeffSackmann/tennis_wta/master/wta_matches_2024.csv"</span><span class="op">)</span></span>
+<span><span class="va">atp_df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://readr.tidyverse.org/reference/read_delim.html">read_csv</a></span><span class="op">(</span><span class="st">"https://raw.githubusercontent.com/JeffSackmann/tennis_atp/master/atp_matches_2024.csv"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span>tour <span class="op">=</span> <span class="st">"atp"</span><span class="op">)</span></span>
+<span><span class="va">wta_df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://readr.tidyverse.org/reference/read_delim.html">read_csv</a></span><span class="op">(</span><span class="st">"https://raw.githubusercontent.com/JeffSackmann/tennis_wta/master/wta_matches_2024.csv"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span>tour <span class="op">=</span> <span class="st">"wta"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">both_df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/bind_rows.html">bind_rows</a></span><span class="op">(</span><span class="va">atp_df</span>, <span class="va">wta_df</span><span class="op">)</span></span>
 <span></span>
@@ -360,27 +362,29 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span><span class="va">major_tennis_l</span> <span class="op">&lt;-</span> <span class="va">major_tennis</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="va">name</span> <span class="op">==</span> <span class="st">"loser_name"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">w_small</span> <span class="op">&lt;-</span> <span class="va">major_tennis_w</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="va">value</span>, <span class="va">winner_seed</span>, <span class="va">w_ace</span>, <span class="va">w_df</span>,</span>
-<span>                                    <span class="va">w_svperc</span>, <span class="va">w_firstwon</span>, <span class="va">w_secondwon</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>                                    <span class="va">w_svperc</span>, <span class="va">w_firstwon</span>, <span class="va">w_secondwon</span>,</span>
+<span>                                    <span class="va">tour</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/rename.html">rename</a></span><span class="op">(</span>seed <span class="op">=</span> <span class="va">winner_seed</span>, ace <span class="op">=</span> <span class="va">w_ace</span>, df <span class="op">=</span> <span class="va">w_df</span>, svperc <span class="op">=</span> <span class="va">w_svperc</span>,</span>
 <span>         firstwon <span class="op">=</span> <span class="va">w_firstwon</span>, secondwon <span class="op">=</span> <span class="va">w_secondwon</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">l_small</span> <span class="op">&lt;-</span> <span class="va">major_tennis_l</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="va">value</span>, <span class="va">loser_seed</span>, <span class="va">l_ace</span>, <span class="va">l_df</span>,</span>
-<span>                                    <span class="va">l_svperc</span>, <span class="va">l_firstwon</span>, <span class="va">l_secondwon</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>                                    <span class="va">l_svperc</span>, <span class="va">l_firstwon</span>, <span class="va">l_secondwon</span>,</span>
+<span>                                    <span class="va">tour</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/rename.html">rename</a></span><span class="op">(</span>seed <span class="op">=</span> <span class="va">loser_seed</span>, ace <span class="op">=</span> <span class="va">l_ace</span>, df <span class="op">=</span> <span class="va">l_df</span>, svperc <span class="op">=</span> <span class="va">l_svperc</span>,</span>
 <span>         firstwon <span class="op">=</span> <span class="va">l_firstwon</span>, secondwon <span class="op">=</span> <span class="va">l_secondwon</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/bind_rows.html">bind_rows</a></span><span class="op">(</span><span class="va">w_small</span>, <span class="va">l_small</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/rename.html">rename</a></span><span class="op">(</span>player <span class="op">=</span> <span class="st">"value"</span><span class="op">)</span></span>
 <span><span class="va">df</span></span>
-<span><span class="co">#&gt; # A tibble: 3,985 × 7</span></span>
-<span><span class="co">#&gt;   player           seed   ace    df svperc firstwon secondwon</span></span>
-<span><span class="co">#&gt;   &lt;chr&gt;           &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt;    &lt;dbl&gt;     &lt;dbl&gt;</span></span>
-<span><span class="co">#&gt; 1 Grigor Dimitrov     2     8     2   70.3     76.9      59.1</span></span>
-<span><span class="co">#&gt; 2 Holger Rune         1     7     4   66.7     81.2      45.8</span></span>
-<span><span class="co">#&gt; 3 Grigor Dimitrov     2    10     3   67.2     86.7      45.5</span></span>
-<span><span class="co">#&gt; 4 Holger Rune         1    13     0   55.4     86.1      58.6</span></span>
-<span><span class="co">#&gt; 5 Jordan Thompson    NA     8     3   61.5     76.1      47.6</span></span>
-<span><span class="co">#&gt; 6 Grigor Dimitrov     2    12     2   66       78.8      70.6</span></span>
+<span><span class="co">#&gt; # A tibble: 3,985 × 8</span></span>
+<span><span class="co">#&gt;   player           seed   ace    df svperc firstwon secondwon tour </span></span>
+<span><span class="co">#&gt;   &lt;chr&gt;           &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt;    &lt;dbl&gt;     &lt;dbl&gt; &lt;chr&gt;</span></span>
+<span><span class="co">#&gt; 1 Grigor Dimitrov     2     8     2   70.3     76.9      59.1 atp  </span></span>
+<span><span class="co">#&gt; 2 Holger Rune         1     7     4   66.7     81.2      45.8 atp  </span></span>
+<span><span class="co">#&gt; 3 Grigor Dimitrov     2    10     3   67.2     86.7      45.5 atp  </span></span>
+<span><span class="co">#&gt; 4 Holger Rune         1    13     0   55.4     86.1      58.6 atp  </span></span>
+<span><span class="co">#&gt; 5 Jordan Thompson    NA     8     3   61.5     76.1      47.6 atp  </span></span>
+<span><span class="co">#&gt; 6 Grigor Dimitrov     2    12     2   66       78.8      70.6 atp  </span></span>
 <span><span class="co">#&gt; # ℹ 3,979 more rows</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>Now, we have our five variables (<code>ace</code>, <code>df</code>, <code>svperc</code>, <code>firstwon</code>, and <code>secondwon</code>). We want an app that lets that user make a histogram of one of these variables for a player of their choosing.</p>
